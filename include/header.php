@@ -1,4 +1,3 @@
-
 <div id="header">	
 	<!-- BEGIN HEADER-->
 	<header>
@@ -9,7 +8,7 @@
 					<li class="header-nav-brand" >
 						<div class="brand-holder">
 							<a href="">
-								<span class="text-lg text-bold text-biz"><i class="fa fa-cube fa-fw"></i>Kho System</span>
+								<span class="text-lg text-bold text-biz"><i class="fa fa-cube fa-fw"></i>Vina Business System</span>
 							</a>
 						</div>
 					</li>
@@ -85,7 +84,7 @@
 					<li class="dropdown">
 						<a href="javascript:void(0);" class="dropdown-toggle ink-reaction" data-toggle="dropdown">							
 							<span class="profile-info" id="profile-info">
-								Kevin Kho
+								<?php echo $_SESSION['firstname']." ".$_SESSION['lastname']; ?>
 							</span>
 						</a>
 						<ul class="dropdown-menu animation-dock">

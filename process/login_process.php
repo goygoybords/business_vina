@@ -8,27 +8,32 @@
 	$db = new Database();
 	extract($_POST);
 	
-	$user_model = new User_Model($db->connectDb());
-
-	$user->setEmail(htmlentities($email));
-	$user->setPassword(htmlentities($password));
-
-	$login = $user_model->login($user->getEmail(), $user->getPassword());
-	if(count($login) > 0)
+	if(isset($_POST['login']))
 	{
-		foreach ($login as $l ) 
+		
+		$user_model = new User_Model($db->connectDb());
+		$user->setEmail(htmlentities($email));
+		$user->setPassword(htmlentities($password));
+		$login = $user_model->login($user->getEmail(), $user->getPassword());
+		if(count($login) > 0)
 		{
-			$_SESSION['firstname'] = $l['firstname'];
-			$_SESSION['lastname'] = $l['lastname'];
-			$_SESSION['user_type'] = $l['usertypeid'];
-			$_SESSION['isLogin'] = true;
-			header("location: ../dashboard/main.php");
+			foreach ($login as $l ) 
+			{
+				$_SESSION['firstname'] = $l['firstname'];
+				$_SESSION['lastname'] = $l['lastname'];
+				$_SESSION['user_type'] = $l['usertypeid'];
+				$_SESSION['isLogin'] = true;
+				header("location: ../dashboard/main.php");
+			}
 		}
+		else
+		{
+			header("location: ../index.php?error=invalid");
+		}
+		
+		
 	}
-	else
-	{
-		header("location: ../index.php?err=1");
-	}
+	
 		
 	
 

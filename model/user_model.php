@@ -1,21 +1,26 @@
 <?php 
 	class User_Model 
 	{
+        //require '../class/database.php';
 		
 		private $connection = "";
+        private $db = "";
 	 	public function __construct($connection)
     	{
     		$this->connection = $connection;
-        	
     	}
+
+
+    
     	public function createUser($user)
     	{
     		try
     		{
+
     			$sql = "INSERT INTO users VALUES (DEFAULT, ?,?,?,?,?,?,?,?)";
     			$cmd = $this->connection->prepare($sql);
     			$res = $cmd->execute(array($user->getFirstname(), $user->getLastname(), $user->getEmail(), 
-				$user->getPassword(), $user->getUserstatusid() ,$user->getUsertypeid() , $user->getDatecreated(), $user->getDatelastlogin()));
+				$user->getPassword(),  $user->getUsertypeid() , $user->getDatecreated(), $user->getDatelastlogin(),$user->getStatus() ));
     			return $res;
     		}
     		catch(Exception $e)

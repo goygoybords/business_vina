@@ -1,7 +1,15 @@
 <?php
 	session_start();	
 	include '../include/start.html'; 
-	require('../include/header.php');					
+	require('../include/header.php');	
+
+	$table = "users";
+
+	$array = array('lastname' => 'kane');
+	$columnString = implode(',', array_keys($array));
+ 	$valueString = implode(',', array_fill(0, count($array), '?'));
+
+ 	echo $sql = "INSERT INTO {$table } ({$columnString}) VALUES ({$valueString}) ";	
 ?>	
 <!-- BEGIN BASE-->
 <div id="base">
@@ -29,14 +37,14 @@
 										<div class="row">
 											<div class="col-xs-12 col-sm-12 col-md-1 col-lg-2"></div> 
 											<div class="col-xs-12 col-sm-12 col-md-10 col-lg-8">
-												<form class="form-horizontal">
+												<form class="form-horizontal" method = "post" action = '../process/register.php'>
 													<div class="card-body" id="div-add-user">
 														<div class="row">
 															<div class="col-sm-6">
 																<div class="form-group">
 																	<label for="Firstname5" class="col-sm-4 control-label">Firstname</label>
 																	<div class="col-sm-8">
-																		<input type="text" class="form-control" id="Firstname5">
+																		<input type="text" name = "firstname" class="form-control" id="Firstname5" required>
 																	</div>
 																</div>
 															</div>
@@ -44,37 +52,53 @@
 																<div class="form-group">
 																	<label for="Lastname5" class="col-sm-4 control-label">Lastname</label>
 																	<div class="col-sm-8">
-																		<input type="text" class="form-control" id="Lastname5">
+																		<input type="text" name = "lastname" class="form-control" id="Lastname5" required>
 																	</div>
 																</div>
 															</div>
 														</div>
 														<div class="form-group">
-															<label for="Username5" class="col-sm-2 control-label">Username</label>
+															<label for="Email5" class="col-sm-2 control-label">Email</label>
 															<div class="col-sm-10">
-																<input type="text" class="form-control" id="Username5">
+																<input type="text" name = "email" class="form-control"  id="Email5" required>
 															</div>
 														</div>
 														<div class="form-group">
 															<label for="Password5" class="col-sm-2 control-label">Password</label>
 															<div class="col-sm-10">
-																<input type="password" class="form-control" id="Password5">
+																<input type="password" name = "password" class="form-control" id="Password5" required>
 															</div>
 														</div>
 														<div class="form-group">
-															<label for="RetypePassword5" class="col-sm-2 control-label">Re-type Password</label>
+															<label for="UserType" class="col-sm-2 control-label">User Type</label>
 															<div class="col-sm-10">
-																<input type="password" class="form-control" id="RetypePassword5">
+																<select name = "user_type" id="UserType" class = "form-control" required>
+																	<option value = "1">Agent</option>
+																	<option value = "2">Admin</option>
+																</select>
 															</div>
 														</div>														
 														<br />
 														<div class="row">
 															<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-right">
-																<button type="submit" class="btn btn-info">CREATE ACCOUNT</button>
+																<button type="submit" name = "register" class="btn btn-info">CREATE ACCOUNT</button>
 															</div>			
 														</div>											
 													</div><!--end .card-body -->
-												</form>												
+												</form>			
+													<?php 
+													if(isset($_GET['msg']))
+													{
+														$msg = $_GET['msg'];
+														if($msg == 'user_exist')
+															$error = "User Already Exists!";
+														else if($msg == 'inserted')
+															$error = 'Record Successfully Saved';
+
+														echo '<span>'.$error.'</span>';
+													}
+												?>				
+												
 											</div>
 											<div class="col-xs-12 col-sm-12 col-md-1 col-lg-2"></div> 
 										</div>

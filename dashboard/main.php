@@ -1,5 +1,8 @@
 <?php
-	session_start();
+	 session_start(); 
+	if(isset($_SESSION['isLogin']) == false)
+		header("location: ../index.php");
+
 	set_include_path('../include');
 	include 'start.html'; 
 	require('header.php');					
@@ -27,8 +30,7 @@
 							<div class="col-lg-offset-0 col-md-12">
 								<div class="card-body style-default-bright">
 									<div class="card-body">
-
-
+										
 
 									</div><!--end .card -->
 								</div><!--end .col -->

@@ -15,11 +15,11 @@
 							<br/>
 							<form class="form floating-label" action="process/login_process.php" accept-charset="utf-8" method="post">
 								<div class="form-group">
-									<input type="email" class="form-control" id="email" name="email">
+									<input type="email" class="form-control" id="email" name="email" required>
 									<label for="email">Username or Email</label>
 								</div>
 								<div class="form-group">
-									<input type="password" class="form-control" id="password" name="password">
+									<input type="password" class="form-control" id="password" name="password" required>
 									<label for="password">Password</label>									
 								</div>
 								<br/>
@@ -36,7 +36,21 @@
 									</div><!--end .col -->
 								</div><!--end .row -->
 							</form>
+							<?php 
+								if(isset($_GET['error']))
+								{
+									
+									 if($_GET['error'] = 'invalid')
+									{
+										echo '<div id = "error">
+										<span style = "font-size: 14px;color: red;font-style: italic;">Invalid Username or Password</span>
+										</div>';
+									}
+									
+								}
+							?>
 						</div><!--end .col -->
+
 					</div><!--end .card -->
 				</section>
 				<!-- END LOGIN SECTION -->

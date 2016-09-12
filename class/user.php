@@ -6,7 +6,7 @@
 		private $lastname;
 		private $email;
 		private $password;
-		private $userstatusid;
+		private $status;
 		private $usertypeid;
 		private $datecreated;
 		private $datelastlogin;
@@ -60,17 +60,18 @@
 			$this->password = $password;
 		}
 
-		public function getUserstatusid()
+		public function getStatus()
 		{
-			return $this->userstatusid;
+			return $this->status;
 		}
 
-		public function setUserstatusid($userstatusid)
+		public function setStatus($status)
 		{
-			$this->userstatusid = $userstatusid;
+			$this->status = $status;
 		}
 
-		public function getUsertypeid(){
+		public function getUsertypeid()
+		{
 			return $this->usertypeid;
 		}
 
