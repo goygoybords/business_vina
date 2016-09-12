@@ -14,10 +14,8 @@
 		$user->setLastname(htmlentities($lastname));
 		$user->setEmail(htmlentities($email));
 		$user->setPassword(htmlentities(md5($password)));
-		
 		$user->setUsertypeid($user_type);
 		$user->setDatecreated(strtotime(date('Y-m-d')));
-		//$user->setDatelastlogin(0);
 		$user->setStatus(1);
 
 		$data = [
