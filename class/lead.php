@@ -3,12 +3,12 @@
 	{
 		private $id;
 		private $companyname;
-        private $position;
+    private $position;
 		private $firstname;
 		private $middlename;
 		private $lastname;
 		private $email;
-        private $siccode;
+    private $siccode;
 		private $leaddetailsid;
 		private $address;
 		private $city;
@@ -177,7 +177,7 @@
     {
         $this->datelastupdated = $datelastupdated;
     }
-    
+
 }
 
 ?>

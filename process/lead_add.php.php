@@ -1,20 +1,21 @@
 <?php
 	session_start();
-	require '../class/user.php';
-	require '../model/user_model.php';
-	$user = new User();
-	$user_model = new User_Model();
+	require '../class/lead.php';
+	require '../model/lead_model.php';
+	$lead = new Leads();
+	$lead_model = new Lead_Model();
 
 	extract($_POST);
 	if(isset($_POST['register']))
 	{
 
-		// user setters and getters
+		// lead setters and getters
 
-		$user->setFirstname(htmlentities($firstname));
-		$user->setLastname(htmlentities($lastname));
-		$user->setEmail(htmlentities($email));
-		$user->setPassword(htmlentities(md5($password)));
+		$lead->setFirstname(htmlentities($firstname));
+		$lead->setLastname(htmlentities($lastname));
+		$lead->setEmail(htmlentities($email));
+		$lead->setPassword(htmlentities(md5($password)));
+
 
 		$user->setUsertypeid($user_type);
 		$user->setDatecreated(strtotime(date('Y-m-d')));

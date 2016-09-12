@@ -1,4 +1,4 @@
-<div id="header">	
+<div id="header">
 	<!-- BEGIN HEADER-->
 	<header>
 		<div class="headerbar">
@@ -82,9 +82,9 @@
 				</ul><!--end .header-nav-options -->
 				<ul class="header-nav header-nav-profile">
 					<li class="dropdown">
-						<a href="javascript:void(0);" class="dropdown-toggle ink-reaction" data-toggle="dropdown">							
+						<a href="javascript:void(0);" class="dropdown-toggle ink-reaction" data-toggle="dropdown">
 							<span class="profile-info" id="profile-info">
-								<?php echo $_SESSION['firstname']." ".$_SESSION['lastname']; ?>
+								<?php  ?>
 							</span>
 						</a>
 						<ul class="dropdown-menu animation-dock">

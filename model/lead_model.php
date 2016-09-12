@@ -1,13 +1,14 @@
 <?php
     require '../class/database.php';
-    class Lead_Model
+    class Lead_Model extends Database
     {
         private $connection = "";
         private $db = "";
 
         public function __construct()
         {
-            $this->db = new Database();
+            parent::__construct();
+            //$this->db = new Database();
         }
         public function createLead($table , $data)
         {

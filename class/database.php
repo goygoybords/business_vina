@@ -1,5 +1,5 @@
-<?php 
-	class Database 
+<?php
+	class Database
 	{
 
 		protected $host = 'localhost';
@@ -7,12 +7,12 @@
     	protected $user = 'root';
     	protected $pass = '';
     	protected $db = "";
- 	
+
     	public function __construct()
     	{
     		$this->db = new PDO("mysql:host=$this->host;dbname=$this->dbname",$this->user,$this->pass);
     	}
- 	
+
  		public function insert($table , $data)
  		{
  			try
@@ -29,10 +29,10 @@
  			{
  				echo $e->getMessage();
  			}
- 			
+
  		}
- 		public function select($table, $fields, $where = '1', $params = array() , $limit = '') 
- 		{ 
+ 		public function select($table, $fields, $where = '1', $params = array() , $limit = '')
+ 		{
 	 		//fetchArgs, etc
 	        $fields = implode(', ', $fields);
 	        //create query
@@ -45,7 +45,13 @@
 	        return $result;
 	    }
 
-	   
+	    public function getDB()
+	    {
+	    		return $this->db;
+
+	    }
+
+
  		public function closeDb()
  		{
  			return $db = null;

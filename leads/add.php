@@ -3,13 +3,11 @@
 	include '../include/start.html';
 	require('../include/header.php');
 
+
+	require '../class/position.php';
+	require '../model/position_model.php';
+
 	$table = "leads";
-
-	$array = array('lastname' => 'kane');
-	$columnString = implode(',', array_keys($array));
- 	$valueString = implode(',', array_fill(0, count($array), '?'));
-
- 	echo $sql = "INSERT INTO {$table } ({$columnString}) VALUES ({$valueString}) ";
 ?>
 <!-- BEGIN BASE-->
 <div id="base">
@@ -61,8 +59,15 @@
 															</div>
 														</div>
 														<div class="form-group">
+															<label for="email" class="col-sm-2 control-label">Position</label>
+															<div class="col-sm-4">
+																<?php
+																		$positions = new Position_Model();
+																		print_r($positions->get_all("positions"));
+																?>
+															</div>
 															<label for="email" class="col-sm-2 control-label">Email</label>
-															<div class="col-sm-10">
+															<div class="col-sm-4">
 																<input type="text" name = "email" class="form-control"  id="email" required>
 															</div>
 														</div>
