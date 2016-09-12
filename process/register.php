@@ -1,12 +1,11 @@
 <?php 
 	session_start();
 	require '../class/user.php';
-	require '../class/database.php';
 	require '../model/user_model.php';
 	$user = new User();
-	$db = new Database();
+	$user_model = new User_Model();
+	
 	extract($_POST);
-
 	if(isset($_POST['register']))
 	{
 	
@@ -18,22 +17,34 @@
 		
 		$user->setUsertypeid($user_type);
 		$user->setDatecreated(strtotime(date('Y-m-d')));
-		$user->setDatelastlogin(0);
+		//$user->setDatelastlogin(0);
 		$user->setStatus(1);
 
+		$data = [
+					'firstname' => $user->getFirstname()  , 
+					'lastname'  => $user->getLastname()   ,
+					'email'     => $user->getEmail()      ,
+					'password'  => $user->getPassword()   ,
+					'usertypeid' => $user->getUsertypeid() ,
+					'datecreated' => $user->getDatecreated() ,
+					'status' => $user->getStatus() ,
+				];
+	
+	
 		// connection to the user model
-		$user_model = new User_Model($db->connectDb());
+		print_r($data);
 
-		$check = $user_model->checkUser($email);
-		if($check == 1)
-		{
-			header("location: ../user/add.php?msg=user_exist");
-		}
-		else
-		{
-			$result = $user_model->createUser($user);
+		// $check = $user_model->checkUser($email);
+		// if($check == 1)
+		// {
+		// 	header("location: ../user/add.php?msg=user_exist");
+		// }
+		// else
+		// 	
+			$result = $user_model->createUser('users', $data);
+	
 			header("location: ../user/add.php?msg=inserted");
-		}
+		// }
 
 	}
 ?>
