@@ -1,20 +1,23 @@
 <?php 
 	session_start();
 	require '../class/user.php';
-	require '../class/database.php';
 	require '../model/user_model.php';
 	
 	$user = new User();
-	$db = new Database();
+	$user_model = new User_Model();
+
 	extract($_POST);
 	
 	if(isset($_POST['login']))
 	{
-		
-		$user_model = new User_Model($db->connectDb());
 		$user->setEmail(htmlentities($email));
 		$user->setPassword(htmlentities($password));
-		$login = $user_model->login($user->getEmail(), $user->getPassword());
+
+		$table = "users";
+		$fields = array('firstname' , 'lastname', 'usertypeid');
+		$where = "email = ? AND password = ?";
+		$params = array($user->getEmail(), md5($user->getPassword()) );
+		$login = $user_model->login($table, $fields, $where, $params);
 		if(count($login) > 0)
 		{
 			foreach ($login as $l ) 

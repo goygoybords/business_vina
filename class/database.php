@@ -13,7 +13,7 @@
     		$this->db = new PDO("mysql:host=$this->host;dbname=$this->dbname",$this->user,$this->pass);
     	}
  	
- 		public function dynamicInsert($table , $data)
+ 		public function insert($table , $data)
  		{
  			try
  			{
@@ -31,12 +31,28 @@
  			}
  			
  		}
- 		public function view_by($table,$fields,$id,$spec_field)
+ 		public function select($table, $fields, $where = '1', $params = array() , $limit = '') 
+ 		{ 
+	 		//fetchArgs, etc
+	        $fields = implode(', ', $fields);
+	        //create query
+	        $sql = "SELECT {$fields} FROM {$table} WHERE $where $limit";
+
+	        //prepare statement
+	        $cmd = $this->db->prepare($sql);
+	        $cmd->execute($params);
+	        $result = $cmd->fetchAll();
+	        return $result;
+	    }
+
+	    //...
+
+ 		public function selectByField($table,$fields,$id,$spec_field)
    		{
-        	// $stmt = $this->_dbh->prepare('SELECT ' . $fields . ' FROM ' . $table .  ' WHERE ' . $spec_field . ' = ' . $id);
-        	// $stmt->execute();
-        	// $record = $stmt->fetch(PDO::FETCH_ASSOC);
-        	// return $record;
+        	$stmt = $this->_dbh->prepare('SELECT ' . $fields . ' FROM ' . $table .  ' WHERE ' . $spec_field . ' = ' . $id);
+        	$stmt->execute();
+        	$record = $stmt->fetch(PDO::FETCH_ASSOC);
+        	return $record;
     	}
  		public function closeDb()
  		{
