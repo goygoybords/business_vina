@@ -47,22 +47,21 @@
 	    public function update($table, $fields, $where = '', $params)
 	    {
 		 	$i=0;
-		    foreach($data as $key => $value)
+		    foreach($fields as $key => $value)
 		    {
-		            $data[$i] = $value."  = ?";
+		            $fields[$i] = $value."  = ?";
 		            $i++;
 		    }
-		    $set = implode(", ",$data);
+		    $set = implode(", ",$fields);
 		    $sql = "UPDATE {$table} SET {$set} {$where} ";	
 		    $cmd = $this->db->prepare($sql);
-	        $cmd->execute($params);
-	        return true;
+	        $result = $cmd->execute($params);
+	        return $result;
 	    }
 
 	    public function getDB()
 	    {
-	    		return $this->db;
-
+	    	return $this->db;
 	    }
 
 

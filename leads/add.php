@@ -3,10 +3,10 @@
 	include '../include/start.html';
 	require('../include/header.php');
 
-
+	require '../class/database.php';
 	require '../class/position.php';
 	require '../model/position_model.php';
-
+	
 	$table = "leads";
 ?>
 <!-- BEGIN BASE-->

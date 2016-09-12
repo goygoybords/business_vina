@@ -1,12 +1,13 @@
 <?php
-    class Position_Model extends Database
+    require '../class/database.php';
+    class Position_Model 
     {
         private $connection = "";
         private $db = "";
 
         public function __construct()
         {
-            require '../class/database.php';
+            
             $this->db = new Database();
         }
 

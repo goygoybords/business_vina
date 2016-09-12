@@ -36,6 +36,20 @@
 					</a>
 				</li>
 				<li>
+					<!--<a href="../../html/customer/customerTab.php" class="active">-->
+					<a href="../leads/leads.php">
+						<div class="gui-icon"><i class="fa fa-users"></i></div>
+						<span class="title">Leads</span>
+					</a>
+				</li>
+				<li>
+					<!--<a href="../../html/customer/customerTab.php" class="active">-->
+					<a href="#">
+						<div class="gui-icon"><i class="fa fa-users"></i></div>
+						<span class="title">Calendar</span>
+					</a>
+				</li>
+				<li>
 					<a href="../logout.php">
 						<div class="gui-icon"><i class="fa fa-sign-out"></i></div>
 						<span class="title">Sign Out</span>

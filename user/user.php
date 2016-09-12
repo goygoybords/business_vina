@@ -7,10 +7,10 @@
 	require '../class/user.php';
 	$list = new User_Model();
 		$table = 'users';
-		$fields = array('firstname' , 'lastname' , 'usertypeid' ,'email');
+		$fields = array('id','firstname' , 'lastname' , 'usertypeid' ,'email');
 		$where = "status = ?";
 		$params = array(1);
-	$users = $list->getAllUsers($table, $fields, $where, $params);	
+	$users = $list->queryUser($table, $fields, $where, $params);	
 	
 
 ?>	
@@ -60,6 +60,7 @@
 									<tbody>
 										<?php $user = new User(); foreach ($users as $u ) : ?>
 										<?php 
+											$user->setId($u['id']);
 											$user->setFirstname($u['firstname']);
 											$user->setLastname($u['lastname']);
 											$user->setEmail($u['email']);
@@ -74,8 +75,9 @@
 											<td><?php echo $user->getEmail(); ?></td>
 											<td><?php echo $role; ?></td>
 											<td>
-												<a href ="">Edit</a>
-												<a href ="">Delete</a>
+												<a href ="edit.php?id=<?php echo $user->getId();   ?>">Edit</a>
+												<a href ="../process/delete_user.php?id=<?php echo $user->getId(); ?>" 
+													onclick="return confirm('Are you sure you want to delete this record?')">Delete</a>
 											</td>
 										</tr>
 										<?php endforeach; ?>
