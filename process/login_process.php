@@ -33,13 +33,5 @@
 		{
 			header("location: ../index.php?error=invalid");
 		}
-		
-		
 	}
-	
-		
-	
-
-
-
 ?>
