@@ -44,6 +44,20 @@
 	        $result = $cmd->fetchAll();
 	        return $result;
 	    }
+	    public function update($table, $fields, $where = '', $params)
+	    {
+		 	$i=0;
+		    foreach($data as $key => $value)
+		    {
+		            $data[$i] = $value."  = ?";
+		            $i++;
+		    }
+		    $set = implode(", ",$data);
+		    $sql = "UPDATE {$table} SET {$set} {$where} ";	
+		    $cmd = $this->db->prepare($sql);
+	        $cmd->execute($params);
+	        return true;
+	    }
 
 	    public function getDB()
 	    {

@@ -1,7 +1,18 @@
 <?php
 	session_start();	
 	include '../include/start.html'; 
-	require('../include/header.php');					
+	require('../include/header.php');		
+
+	require '../model/user_model.php';	
+	require '../class/user.php';
+	$list = new User_Model();
+		$table = 'users';
+		$fields = array('firstname' , 'lastname' , 'usertypeid' ,'email');
+		$where = "status = ?";
+		$params = array(1);
+	$users = $list->getAllUsers($table, $fields, $where, $params);	
+	
+
 ?>	
 <!-- BEGIN BASE-->
 <div id="base">
@@ -31,10 +42,48 @@
 												<a class="btn btn-success btn-block" href="add.php" name="btnAddUser" id="btnAddUser">ADD NEW USER</a>
 											</div>
 										</div>
+										<br>
+										
 									</div><!--end .card -->
 								</div><!--end .col -->
 							
 							</div>
+							<div class="col-lg-offset-0 col-md-12">
+							<div class = "row" >
+								<table class = "table table-hover">
+									<thead>
+										<th>Name</th>
+										<th>Email</th>
+										<th>User Type</th>
+										<th>Action</th>
+									</thead>
+									<tbody>
+										<?php $user = new User(); foreach ($users as $u ) : ?>
+										<?php 
+											$user->setFirstname($u['firstname']);
+											$user->setLastname($u['lastname']);
+											$user->setEmail($u['email']);
+											$user->setUsertypeid($u['usertypeid']);
+											if($user->getUsertypeid() == 1)
+												$role = "Agent";
+											else if($user->getUsertypeid() == 2)
+												$role = "Admin";
+										?>
+										<tr>
+											<td><?php echo $user->getFirstname()." ".$user->getLastname();   ?></td>
+											<td><?php echo $user->getEmail(); ?></td>
+											<td><?php echo $role; ?></td>
+											<td>
+												<a href ="">Edit</a>
+												<a href ="">Delete</a>
+											</td>
+										</tr>
+										<?php endforeach; ?>
+									</tbody>
+								</table>
+							</div>
+							</div>
+									
 						</div><!--end .card -->
 						
 					</div>
