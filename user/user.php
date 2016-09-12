@@ -1,11 +1,14 @@
 <?php
 	session_start();	
 	include '../include/start.html'; 
-	require('../include/header.php');		
+	require('../include/header.php');
+
+	require '../class/database.php';
+	require '../class/user.php';
 
 	require '../model/user_model.php';	
-	require '../class/user.php';
-	$list = new User_Model();
+
+	$list = new User_Model(new Database());
 		$table = 'users';
 		$fields = array('id','firstname' , 'lastname' , 'usertypeid' ,'email');
 		$where = "status = ?";

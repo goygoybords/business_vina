@@ -10,14 +10,20 @@
 
     	public function __construct()
     	{
-    		$this->db = new PDO("mysql:host=$this->host;dbname=$this->dbname",$this->user,$this->pass);
+    		try
+    		{
+    			$this->db = new PDO("mysql:host=$this->host;dbname=$this->dbname",$this->user,$this->pass);
+    		}
+    		catch(Exception $e)
+ 			{
+ 				echo $e->getMessage();
+ 			}
     	}
 
  		public function insert($table , $data)
  		{
  			try
  			{
- 				//$db = $this->connectDb();
  				$columnString = implode(',', array_keys($data));
 	 			$valueString = implode(',', array_fill(0, count($data), '?'));
 	 			$sql = "INSERT INTO {$table} ({$columnString}) VALUES ({$valueString}) ";
@@ -58,12 +64,6 @@
 	        $result = $cmd->execute($params);
 	        return $result;
 	    }
-
-	    public function getDB()
-	    {
-	    	return $this->db;
-	    }
-
 
  		public function closeDb()
  		{

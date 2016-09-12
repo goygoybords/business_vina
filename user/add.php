@@ -2,14 +2,6 @@
 	session_start();	
 	include '../include/start.html'; 
 	require('../include/header.php');	
-
-	$table = "users";
-
-	$array = array('lastname' => 'kane');
-	$columnString = implode(',', array_keys($array));
- 	$valueString = implode(',', array_fill(0, count($array), '?'));
-
- 	echo $sql = "INSERT INTO {$table } ({$columnString}) VALUES ({$valueString}) ";	
 ?>	
 <!-- BEGIN BASE-->
 <div id="base">

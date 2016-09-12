@@ -34,10 +34,26 @@
 									</div><!--end .card -->
 								</div><!--end .col -->
 
+								<div class="col-lg-offset-0 col-md-12">
+									<div class = "row" >
+										<table class = "table table-hover">
+											<thead>
+												<th>Name</th>
+												<th>Email</th>
+												<th>User Type</th>
+												<th>Action</th>
+											</thead>
+											<tbody>
+												
+											</tbody>
+										</table>
+									</div>
+								</div>
 							</div>
 						</div><!--end .card -->
 
 					</div>
+					
 				</div>
 			</div>
 		</section>

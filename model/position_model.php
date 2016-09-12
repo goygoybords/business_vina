@@ -1,19 +1,15 @@
 <?php
-    require '../class/database.php';
     class Position_Model 
     {
-        private $connection = "";
-        private $db = "";
-
-        public function __construct()
+        private $con = "";
+        public function __construct($con)
         {
-            
-            $this->db = new Database();
+            $this->con = $con;
         }
 
         public function get_all($table)
         {
-            return $this->db->select($table, array("*"), "1",  array());
+            return $this->con->select($table, array("*"), "1",  array());
         }
     }
 ?>

@@ -2,10 +2,13 @@
 	session_start();	
 	include '../include/start.html'; 
 	require('../include/header.php');	
-	require('../model/user_model.php');
+	// class
+	require('../class/database.php');
 	require('../class/user.php');
+	// models
+	require('../model/user_model.php');
 
-	$list = new User_Model();
+	$list = new User_Model(new Database());
 		$table = 'users';
 		$fields = array('id','firstname' , 'lastname' , 'usertypeid' ,'email', 'password');
 		$where = "id = ?";

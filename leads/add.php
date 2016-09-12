@@ -4,9 +4,11 @@
 	require('../include/header.php');
 
 	require '../class/database.php';
+	
 	require '../class/position.php';
 	require '../model/position_model.php';
-	
+
+	$db = new Database();
 	$table = "leads";
 ?>
 <!-- BEGIN BASE-->
@@ -62,7 +64,7 @@
 															<label for="email" class="col-sm-2 control-label">Position</label>
 															<div class="col-sm-4">
 																<?php
-																		$positions = new Position_Model();
+																		$positions = new Position_Model($db);
 																		print_r($positions->get_all("positions"));
 																?>
 															</div>
