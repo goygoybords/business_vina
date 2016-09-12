@@ -29,22 +29,17 @@
 					'datecreated' => $user->getDatecreated() ,
 					'status' => $user->getStatus() ,
 				];
-	
-	
-		// connection to the user model
-		print_r($data);
 
-		// $check = $user_model->checkUser($email);
-		// if($check == 1)
-		// {
-		// 	header("location: ../user/add.php?msg=user_exist");
-		// }
-		// else
-		// 	
+		$check = $user_model->checkUser("users", array('email'), "email = ?" , array($user->getEmail())  );
+		if(count($check) == 1)
+		{
+			header("location: ../user/add.php?msg=user_exist");
+		}
+		else
+		{
 			$result = $user_model->createUser('users', $data);
-	
 			header("location: ../user/add.php?msg=inserted");
-		// }
+		}
 
 	}
 ?>

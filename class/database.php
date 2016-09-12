@@ -45,15 +45,7 @@
 	        return $result;
 	    }
 
-	    //...
-
- 		public function selectByField($table,$fields,$id,$spec_field)
-   		{
-        	$stmt = $this->_dbh->prepare('SELECT ' . $fields . ' FROM ' . $table .  ' WHERE ' . $spec_field . ' = ' . $id);
-        	$stmt->execute();
-        	$record = $stmt->fetch(PDO::FETCH_ASSOC);
-        	return $record;
-    	}
+	   
  		public function closeDb()
  		{
  			return $db = null;
