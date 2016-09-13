@@ -1,17 +1,15 @@
 <?php
-    require '../class/parent.php'
-    class Lead_Model extends Parent
+    class Lead_Model 
     {
-        private $connection = "";
-        private $db = "";
+        private $con = "";
 
-        public function __construct($db)
+        public function __construct($con)
         {
-            $this->db = new Database();
+            $this->con = $con;
         }
         public function createLead($table , $data)
         {
-            return $this->db->insert($table , $data);
+            return $this->con->insert($table , $data);
         }
     }
 ?>

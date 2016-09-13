@@ -1,18 +1,16 @@
 <?php
     class SICode_Model
     {
-        private $connection = "";
-        private $db = "";
-
-        public function __construct()
+        private $con = "";
+        public function __construct($con)
         {
-            require '../class/database.php';
-            $this->db = new Database();
+      
+            $this->con = $con;
         }
 
         public function get_all($table)
         {
-            return $this->db->select($table, array("*"), "1",  array());
+            return $this->con->select($table, array("*"), "1 ORDER BY 2 ",  array());
         }
     }
 ?>

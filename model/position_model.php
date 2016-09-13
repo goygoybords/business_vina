@@ -9,7 +9,7 @@
 
         public function get_all($table)
         {
-            return $this->con->select($table, array("*"), "1",  array());
+            return $this->con->select($table, array("id , position"), "1",  array());
         }
     }
 ?>
