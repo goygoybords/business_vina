@@ -64,29 +64,6 @@
 	        $result = $cmd->execute($params);
 	        return $result;
 	    }
-
-	    public function getAllData()
-        {
-            $sql = "SELECT * FROM users";
-            $cmd = $this->db->query($sql);
-            $result = $cmd->fetchAll();
-          
-   //          $data = array();
-			// foreach ($result as $k) 
-			// {
-			// 	$e =array();
-			// 	$e['firstname'] = $k['firstname'];
-			// 	$e['lastname'] = $k['lastname'];
-			// 	$e['email'] = $k['email'];
-			// 	$e['password'] = $k['password'];
-			// 	$e['datecreated'] = $k['datecreated'];
-			// 	$e['action'] = "action";
-		 //     	array_push($data, $e);
-			// 	# code...
-			// }
-			  return $result;
-        }
-
  		public function closeDb()
  		{
  			return $db = null;
