@@ -59,10 +59,15 @@
 		            $i++;
 		    }
 		    $set = implode(", ",$fields);
-		    $sql = "UPDATE {$table} SET {$set} {$where} ";	
+		    $sql = "UPDATE {$table} SET {$set} {$where} ";
 		    $cmd = $this->db->prepare($sql);
 	        $result = $cmd->execute($params);
 	        return $result;
+	    }
+
+	    public function getDb()
+	    {
+	    	return $this->db;
 	    }
  		public function closeDb()
  		{

@@ -7,9 +7,9 @@
 
 	require '../class/database.php';
 	require '../class/lead.php';
-	require '../model/lead_model.php';	
+	require '../model/lead_model.php';
 	$db = new Database();
-	
+
 ?>
 <!-- BEGIN BASE-->
 <div id="base">
@@ -36,7 +36,7 @@
 									<div class="card-body">
 										<div class="row">
 											<div class="col-xs-12 col-sm-3 col-md-3 col-lg-2">
-												<a class="btn btn-success btn-block" href="add.php" name="btnAddLead" id="btnAddLead">ADD NEW LEAD</a>
+												<a class="btn btn-success btn-block" href="manage.php" name="btnAddLead" id="btnAddLead">ADD NEW LEAD</a>
 											</div>
 										</div>
 									</div><!--end .card -->
@@ -49,21 +49,13 @@
 												<th>Company Name</th>
 												<th>Contact Person</th>
 												<th>Email</th>
-												<th>SI Code</th>
-												<th>Complete Address</th>
-												<th>Action</th>
 											</thead>
-											<tbody>
-												
-											</tbody>
 										</table>
 									</div>
 								</div>
 							</div>
 						</div><!--end .card -->
-
 					</div>
-					
 				</div>
 			</div>
 		</section>
@@ -81,17 +73,27 @@
  //    	$('#lead-tbl').DataTable();
 	// } );
 
-	$(document).ready(function() 
+	$(document).ready(function()
 	{
+/*    $('#lead-tbl').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": "..//scripts/server_processing.php"
+    } );*/
+
 	    $('#lead-tbl').DataTable( {
-	    	"processing": true,
-            "serverSide": true,
+		"bProcessing": true,
+		"bServerSide": true,
+        "sPaginationType": "full_numbers",
             "ajax":{
-                url :"", // json datasource
+                url :"../process/lead_list.php", // json datasource
                 type: "get",  // method  , by default get
-                
             }
 	    } );
+
+
+
+
 
 	} );
 </script>

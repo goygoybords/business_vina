@@ -1,9 +1,9 @@
-<?php 
- 
-    class User_Model 
+<?php
+
+    class User_Model
     {
         private $con = "";
-        
+
         public function __construct($con)
         {
             $this->con = $con;

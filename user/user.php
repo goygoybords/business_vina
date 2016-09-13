@@ -1,23 +1,23 @@
 <?php
-	session_start();	
-	include '../include/start.html'; 
+	session_start();
+	include '../include/start.html';
 	require('../include/header.php');
 
 	require '../class/database.php';
 	require '../class/user.php';
 
-	require '../model/user_model.php';	
+	require '../model/user_model.php';
 
 	$list = new User_Model(new Database());
 		$table = 'users';
 		$fields = array('id','firstname' , 'lastname' , 'usertypeid' ,'email');
 		$where = "status = ?";
 		$params = array(1);
-	$users = $list->queryUser($table, $fields, $where, $params);	
-	
+	$users = $list->queryUser($table, $fields, $where, $params);
+
 	echo json_encode($users);
 
-?>	
+?>
 <!-- BEGIN BASE-->
 <div id="base">
 
@@ -47,10 +47,10 @@
 											</div>
 										</div>
 										<br>
-										
+
 									</div><!--end .card -->
 								</div><!--end .col -->
-							
+
 							</div>
 							<div class="col-lg-offset-0 col-md-12">
 							<div class = "row" >
@@ -63,7 +63,7 @@
 									</thead>
 									<tbody>
 										<?php $user = new User(); foreach ($users as $u ) : ?>
-										<?php 
+										<?php
 											$user->setId($u['id']);
 											$user->setFirstname($u['firstname']);
 											$user->setLastname($u['lastname']);
@@ -80,7 +80,7 @@
 											<td><?php echo $role; ?></td>
 											<td>
 												<a href ="edit.php?id=<?php echo $user->getId();   ?>">Edit</a>
-												<a href ="../process/delete_user.php?id=<?php echo $user->getId(); ?>" 
+												<a href ="../process/delete_user.php?id=<?php echo $user->getId(); ?>"
 													onclick="return confirm('Are you sure you want to delete this record?')">Delete</a>
 											</td>
 										</tr>
@@ -89,9 +89,9 @@
 								</table>
 							</div>
 							</div>
-									
+
 						</div><!--end .card -->
-						
+
 					</div>
 				</div>
 			</div>
@@ -100,7 +100,7 @@
 	<!-- END CONTENT -->
 </div>
 <!-- END BASE -->
-<?php 
-	include '../include/sidebar.php'; 
-	include '../include/end.html';	
+<?php
+	include '../include/sidebar.php';
+	include '../include/end.html';
 ?>

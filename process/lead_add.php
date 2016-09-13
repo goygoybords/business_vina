@@ -1,10 +1,10 @@
-<?php 
+<?php
 	require '../class/database.php';
 	require '../class/lead.php';
 	require '../model/lead_model.php';
 	$leads = new Leads();
 	$lead_model = new Lead_Model(new Database());
-	
+
 	extract($_POST);
 	if(isset($_POST['create_lead']))
 	{
@@ -26,7 +26,7 @@
 
 
 		$data = [
-					'companyname' => $leads->getCompanyname() , 
+					'companyname' => $leads->getCompanyname() ,
 					'position'  => $leads->getPosition()   ,
 					'firstname'     => $leads->getFirstname()      ,
 					'middlename'  => $leads->getMiddlename()   ,
@@ -42,6 +42,6 @@
 				];
 
 		$result = $lead_model->createLead('leads', $data);
-		header("location: ../user/add.php?msg=inserted");
+		header("location: ../leads/manage.php?msg=inserted");
 	}
 ?>

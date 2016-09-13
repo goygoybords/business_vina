@@ -1,7 +1,7 @@
 <?php
-	session_start();	
-	include '../include/start.html'; 
-	require('../include/header.php');	
+	session_start();
+	include '../include/start.html';
+	require('../include/header.php');
 	// class
 	require('../class/database.php');
 	require('../class/user.php');
@@ -14,9 +14,9 @@
 		$where = "id = ?";
 		$params = array($_GET['id']);
 	$users = $list->queryUser($table, $fields, $where, $params);
-	
-	foreach ($users as $u ) 
-	{	
+
+	foreach ($users as $u )
+	{
 		$user = new User();
 		$user->setId($u['id']);
 		$user->setFirstname($u['firstname']);
@@ -26,7 +26,7 @@
 		$user->setUsertypeid($u['usertypeid']);
 	}
 
-?>	
+?>
 <!-- BEGIN BASE-->
 <div id="base">
 
@@ -51,7 +51,7 @@
 								<div class="card-body style-default-bright">
 									<div class="card-body">
 										<div class="row">
-											<div class="col-xs-12 col-sm-12 col-md-1 col-lg-2"></div> 
+											<div class="col-xs-12 col-sm-12 col-md-1 col-lg-2"></div>
 											<div class="col-xs-12 col-sm-12 col-md-10 col-lg-8">
 												<form class="form-horizontal" method = "post" action = '../process/edit_user.php'>
 													<div class="card-body" id="div-add-user">
@@ -60,7 +60,7 @@
 																<div class="form-group">
 																	<label for="Firstname5" class="col-sm-4 control-label">Firstname</label>
 																	<div class="col-sm-8">
-																		<input type="text" name = "firstname" class="form-control" id="Firstname5" 
+																		<input type="text" name = "firstname" class="form-control" id="Firstname5"
 																		value = "<?php echo $user->getFirstname(); ?>" required>
 																	</div>
 																</div>
@@ -78,14 +78,14 @@
 														<div class="form-group">
 															<label for="Email5" class="col-sm-2 control-label">Email</label>
 															<div class="col-sm-10">
-																<input type="text" name = "email" class="form-control"  id="Email5" 
+																<input type="text" name = "email" class="form-control"  id="Email5"
 																value = "<?php echo $user->getEmail(); ?>" required>
 															</div>
 														</div>
 														<div class="form-group">
 															<label for="Password5" class="col-sm-2 control-label">Password</label>
 															<div class="col-sm-10">
-																<input type="password" name = "password" class="form-control" id="Password5" 
+																<input type="password" name = "password" class="form-control" id="Password5"
 																value = "<?php echo $user->getPassword(); ?>" required>
 															</div>
 														</div>
@@ -97,17 +97,17 @@
 																	<option value = "2" <?php if($user->getUsertypeid() == 2) echo 'selected="selected"'; ?> >Admin</option>
 																</select>
 															</div>
-														</div>														
+														</div>
 														<br />
 														<div class="row">
 															<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-right">
 																<button type="submit" name = "update" class="btn btn-info">UPDATE RECORD</button>
-															</div>			
-														</div>											
+															</div>
+														</div>
 													</div><!--end .card-body -->
 													<input type = "hidden" value = "<?php echo $user->getId(); ?>" name = "id">
-												</form>			
-													<?php 
+												</form>
+													<?php
 													if(isset($_GET['msg']))
 													{
 														$msg = $_GET['msg'];
@@ -117,19 +117,19 @@
 															$error = 'Record Successfully Updated';
 														echo '<span>'.$error.'</span>';
 													}
-												?>				
-												
+												?>
+
 											</div>
-											<div class="col-xs-12 col-sm-12 col-md-1 col-lg-2"></div> 
+											<div class="col-xs-12 col-sm-12 col-md-1 col-lg-2"></div>
 										</div>
-									</div><!--end .card -->	
+									</div><!--end .card -->
 								</div><!--end .col -->
 								<div class="col-md-12">
 
 								</div>
 							</div>
 						</div><!--end .card -->
-						
+
 					</div>
 				</div>
 			</div>
@@ -138,7 +138,7 @@
 	<!-- END CONTENT -->
 </div>
 <!-- END BASE -->
-<?php 
-	include '../include/sidebar.php'; 
-	include '../include/end.html';	
+<?php
+	include '../include/sidebar.php';
+	include '../include/end.html';
 ?>
