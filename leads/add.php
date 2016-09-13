@@ -15,8 +15,7 @@
 	$list_positions = new Position_Model(new Database());
 	$list_siccode = new SICode_Model(new Database());
 	$list_state = new State_Model(new Database());
-																													
-	$table = "leads";
+
 ?>
 <!-- BEGIN BASE-->
 <div id="base">

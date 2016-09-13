@@ -11,5 +11,10 @@
         {
             return $this->con->insert($table , $data);
         }
+        public function get_all($table, $fields, $where, $params)
+        {
+            return $this->con->select($table, $fields, $where, $params );
+        }
+       
     }
 ?>

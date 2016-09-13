@@ -15,6 +15,7 @@
 		$params = array(1);
 	$users = $list->queryUser($table, $fields, $where, $params);	
 	
+	echo json_encode($users);
 
 ?>	
 <!-- BEGIN BASE-->

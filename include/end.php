@@ -22,7 +22,7 @@
 		<script src="../assets/js/libs/DataTables/jquery.dataTables.js"></script>
 		<script src="https://cdn.datatables.net/fixedheader/3.1.2/js/dataTables.fixedHeader.min.js"></script>
 		<!--custom script -->
-		<script src="../assets/js/script.js"></script>
+		<script src="../assets/js/script.js"></script>	
 		<!-- END JAVASCRIPT -->
 	</body>
 </html>
