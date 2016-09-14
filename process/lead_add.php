@@ -1,9 +1,15 @@
 <?php
 	require '../class/database.php';
 	require '../class/lead.php';
+	require '../class/phones.php';
+	require '../model/phones_model.php';
 	require '../model/lead_model.php';
+
+
 	$leads = new Leads();
 	$lead_model = new Lead_Model(new Database());
+	$phone = new Phone();
+	$phone_model = new Phone_Model(new Database());
 
 	extract($_POST);
 	if(isset($_POST['create_lead']))
@@ -42,6 +48,22 @@
 				];
 
 		$result = $lead_model->createLead('leads', $data);
+		for($i=0; $i<count($phones); $i++)
+		{
+			$data = null;
+			$phone = new Phone();
+			$phone->setNumber($phones[$i]);
+			$phone->setPhoneTypeId($phonetypes[$i]);
+			$phone->setLeadId($result);
+
+			$data = [
+								'number' => $phone->getNumber(),
+								'phonetypeid' => $phone->getPhoneTypeId(),
+								'leadid' => $phone->getLeadId()
+							];
+			$phone_result = $phone_model->createPhone('phones', $data);
+		}
+
 		header("location: ../leads/manage.php?msg=inserted");
 	}
 ?>

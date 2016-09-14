@@ -7,20 +7,30 @@
 	require '../class/position.php';
 	require '../class/sicode.php';
 	require '../class/state.php';
+	require '../class/phones.php';
+	require '../class/phonetypes.php';
 	require '../class/lead.php';
 
 	require '../model/position_model.php';
 	require '../model/sicode_model.php';
 	require '../model/state_model.php';
+	require '../model/phones_model.php';
+	require '../model/phonetypes_model.php';
 	require '../model/lead_model.php';
 
 	$list_positions = new Position_Model(new Database());
 	$list_siccode = new SICode_Model(new Database());
 	$list_state = new State_Model(new Database());
+	$list_phones = new Phone_Model(new Database());
+	$list_phonetypes = new PhoneTypes_Model(new Database());
 	$lead_model = new Lead_Model(new Database());
 
 	$lead_id = (isset($_GET["id"]) ? $_GET["id"] : "");
+
 	$lead_record = new Leads();
+	$lead_phones = null;
+	$phone_types = $list_phonetypes->get_all("phonetypes");
+
 	$form_state = 1;
 	$form_header = "Add New Lead";
 	$submit_caption = "Create Lead";
@@ -61,6 +71,7 @@
 
 					if($lead_record->getStatus() == 1)
 					{
+						$lead_phones = $list_phones->get_phones_by_leadid($lead_record->getId());
 						$form_state = 2;
 						$form_header = "Edit Lead Details";
 						$submit_caption = "Save Changes";
@@ -104,27 +115,36 @@
 								<div class="card-body style-default-bright">
 									<div class="card-body">
 										<div class="row">
-											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-11">
-												<form class="form-horizontal" method = "post" action = '<?php echo $submit_url; ?>'>
+											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+												<form class="form" method = "post" action = '<?php echo $submit_url; ?>'>
 													<input type="hidden" name="id" id="id" value="<?php echo $lead_record->getId() ?>" />
 													<div class="card-body" id="div-add-lead">
-														<div class="form-group">
-															<label for="companyname" class="col-sm-2 control-label">Company Name</label>
-															<div class="col-sm-10">
-																<input type="text" name = "companyname" class="form-control"  id="companyname" value="<?php echo $lead_record->getCompanyname(); ?>" required autofocus='autofocus'>
+														<div class="row">
+															<div class="col-sm-12">
+																<div class="form-group">
+																	<div class="col-sm-6">
+																		<label for="companyname">Company Name</label>
+																	</div>
+																</div>
+																<div class="form-group">
+																	<div class="col-sm-6">
+																		<input type="text" name = "companyname" class="form-control"  id="companyname" value="<?php echo $lead_record->getCompanyname(); ?>" required autofocus='autofocus'>
+																	</div>
+																</div>
+
 															</div>
 														</div>
 														<div class="row">
 															<div class="col-sm-12">
 																<div class="form-group">
-																	<label class="col-sm-2 control-label">Contact Person</label>
+																	<label class="col-sm-12 control-label">Contact Person</label>
 																	<div class="col-sm-4">
 																		<input type="text" name = "firstname" class="form-control" id="firstname" value="<?php echo $lead_record->getFirstname(); ?>" required placeholder='Firstname'>
 																	</div>
-																	<div class="col-sm-3">
+																	<div class="col-sm-4">
 																		<input type="text" name = "middlename" class="form-control" id="middlename" value="<?php echo $lead_record->getMiddlename(); ?>" required placeholder='Middlename'>
 																	</div>
-																	<div class="col-sm-3">
+																	<div class="col-sm-4">
 																		<input type="text" name = "lastname" class="form-control" id="lastname" value="<?php echo $lead_record->getLastname(); ?>" required placeholder='Lastname'>
 																	</div>
 																</div>
@@ -196,29 +216,58 @@
 																</div>
 															</div>
 														</div>
-														<?php
-														/*if($form_state == 2)
-															{
-																	echo "<div class='row'>";
-																		echo "<div class='col-sm-12'>";
-																			echo "<div class='form-group'>";
-																				echo "<label for='status' class='col-sm-2 control-label'>Status</label>";
-																				echo "<div class='col-sm-4'>";
-																					echo "<select name = 'status' class = 'form-control'>";
-																						echo "<option value='1' ".($lead_record->getStatus() == 1 ? "selected='selected'" : "").">Active</option>";
-																						echo "<option value='0' ".($lead_record->getStatus() == 0 ? "selected='selected'" : "").">Inactive</option>";
-																					echo "</select>";
-																				echo "</div>";
-																			echo "</div>";
-																		echo "</div>";
-																	echo "</div>";
-															}*/
-														?>
+														<br />
+														<div class="form-group">
+															<div class="col-sm-2"></div>
+															<div class="col-sm-10">
+																	<div class="row">
+																		<div class="col-sm-4">
+																			<div class="form-group">
+																				<label for="phones[]" class="control-label">Contact Numbers</label>
+																			</div>
+																		</div>
+																	</div>
+																	<?php
+																		foreach ($phone_types as $pt) :
+																			$phone_type = new PhoneTypes();
+																			$phone_type->setId($pt['id']);
+																			$phone_type->setType($pt['type']);
+																	?>
+																	<div class="row">
+																		<div class="col-sm-4">
+																				<div class="form-group">
+																					<input type="text" name = "phones[]" class="form-control" value="<?php
+																						if($form_state == 2)
+																						{
+																							foreach($lead_phones as $lp)
+																							{
+																								$lead_phone = new Phone();
+																								$lead_phone->setId($lp['id']);
+																								$lead_phone->setNumber($lp['number']);
+																								$lead_phone->setPhoneTypeId($lp['phonetypeid']);
+																								$lead_phone->setLeadId($lp['leadid']);
+
+																								if($lead_phone->getPhoneTypeId() == $phone_type->getId())
+																								{
+																									echo $lead_phone->getNumber();
+																									break;
+																								}
+																							}
+																						}
+																					 ?>" placeholder="<?php echo $phone_type->getType();  ?>" maxlength="20" />
+																					<input type="hidden" name="phonetypes[]" value="<?php echo $phone_type->getId(); ?>" />
+																				</div>
+																		</div>
+																	</div>
+																	<?php endforeach; ?>
+															</div>
+														</div>
+
 														<br />
 														<div class="row">
 															<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-right">
-														
-																<?php 
+
+																<?php
 																	if($form_state == 2)
 																		echo '<a href = "../calendar/specific_event.php?id='.$lead_record->getId().'" class = "btn btn-secondary">Join Event</a>';
 																?>
@@ -226,8 +275,7 @@
 																<?php
 																	if($form_state == 2)
 																	{
-																			
-																		echo "<button type='submit' name = 'delete_lead' class='btn btn-warning'>Delete</button>";
+																		echo "<a href='../process/lead_manage.php?id={$lead_record->getId()}&p=form&del' class='btn btn-warning' onclick='return confirm(\"Are you sure you want to delete this record?\")'>Delete</a>";
 																	}
 																?>
 															</div>

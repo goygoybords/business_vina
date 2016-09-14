@@ -1,13 +1,19 @@
 <?php
 	require '../class/database.php';
 	require '../class/lead.php';
+	require '../class/phones.php';
 	require '../model/lead_model.php';
+	require '../model/phones_model.php';
+
 	$leads = new Leads();
 	$lead_model = new Lead_Model(new Database());
 
-	extract($_POST);
-	if(isset($_POST['create_lead']) || isset($_POST['delete_lead']))
+	$phone = new Phone();
+	$phone_model = new Phone_Model(new Database());
+
+	if(isset($_POST['create_lead']))
 	{
+		extract($_POST);
 		$leads->setId(htmlentities($id));
 		$leads->setCompanyname(htmlentities($companyname));
 		$leads->setFirstname(htmlentities($firstname));
@@ -45,20 +51,131 @@
 									$leads->getId()
 								);
 			$result = $lead_model->updateLead($table, $fields, $where, $params);
+
+
+			$lead_phones = $phone_model->get_phones_by_leadid($leads->getId());
+			foreach($lead_phones as $lp)
+			{
+				$lead_phone = new Phone();
+				$lead_phone->setId($lp[0]); //id
+				$lead_phone->setNumber('');
+				$lead_phone->setPhoneTypeId($lp['phonetypeid']);
+				$lead_phone->setLeadId($lp['leadid']);
+
+				$fields = array('number');
+				$where  = " WHERE id = ? ";
+				$params = array(
+											$lead_phone->getNumber(),
+											$lead_phone->getId()
+											);
+
+				$resultEmptyPhones = $phone_model->updatePhone("phones", $fields, $where, $params);
+			}
+
+			for($i=0; $i<count($phones); $i++)
+			{
+				$phone = new Phone();
+				$phone->setNumber($phones[$i]);
+				$phone->setPhoneTypeId($phonetypes[$i]);
+				$phone->setLeadId($result);
+
+				$fields = array('number');
+				$where  = " WHERE phonetypeid = ? and leadid = ? ";
+				$params = array(
+											$phone->getNumber(),
+											$phone->getPhoneTypeId(),
+											$leads->getId()
+											);
+
+				$resultUpdatePhones = $phone_model->updatePhone("phones", $fields, $where, $params);
+			}
 			header("location: ../leads/manage.php?id=".$leads->getId()."&msg=updated");
 		}
-		else if(isset($_POST['delete_lead']))
+	}
+
+	if(isset($_GET['del']))
+	{
+		$lead_id = (isset($_GET["id"]) ? $_GET["id"] : "");
+		$page_request = (isset($_GET["p"]) ? $_GET["p"] : "");
+
+		$table = 'leads';
+		$fields = array('*');
+		$where = " id = ? ";
+		$params = array($lead_id);
+		$leads = $lead_model->get_by_id($table, $fields, $where, $params);
+
+		if(count($leads))
 		{
-			$leads->setStatus(0);
-			$fields = array('status', 'datelastupdated');
-			$where  = "WHERE id = ?";
-			$params = array(
-									$leads->getStatus(),
-									$leads->getDatelastupdated(),
-									$leads->getId()
-								);
-			$result = $lead_model->updateLead($table, $fields, $where, $params);
-			header("location: ../leads/manage.php?id=".$leads->getId()."&msg=deleted");
+			$lead_record = new Leads();
+			foreach ($leads as $l)
+			{
+				$lead_record->setId($l['id']);
+				$lead_record->setCompanyname($l['companyname']);
+				$lead_record->setPosition($l['position']);
+				$lead_record->setFirstname($l['firstname']);
+				$lead_record->setMiddlename($l['middlename']);
+				$lead_record->setLastname($l['lastname']);
+				$lead_record->setEmail($l['email']);
+				$lead_record->setSiccode($l['siccode']);
+				$lead_record->setLeaddetailsid($l['leaddetailsid']);
+				$lead_record->setAddress($l['address']);
+				$lead_record->setCity($l['city']);
+				$lead_record->setZip($l['zip']);
+				$lead_record->setState($l['state']);
+				$lead_record->setDatecreated($l['datecreated']);
+				$lead_record->setDatelastupdated($l['datelastupdated']);
+				$lead_record->setStatus($l['status']);
+			}
+
+			if($lead_record->getStatus() == 1)
+			{
+				$lead_record->setStatus(0);
+				$fields = array('status', 'datelastupdated');
+				$where  = "WHERE id = ?";
+				$params = array(
+										$lead_record->getStatus(),
+										$lead_record->getDatelastupdated(),
+										$lead_record->getId()
+									);
+				$result = $lead_model->updateLead($table, $fields, $where, $params);
+
+				if($page_request == "form")
+				{
+					header("location: ../leads/manage.php?msg=deleted");
+					exit;
+				}
+				else if($page_request == "list")
+				{
+					header("location: ../leads/leads.php?msg=deleted");
+					exit;
+				}
+			}
+			else
+			{
+				if($page_request == "form")
+				{
+					header("location: ../leads/manage.php?msg=prev_deleted");
+					exit;
+				}
+				else if($page_request == "list")
+				{
+					header("location: ../leads/leads.php?msg=prev_deleted");
+					exit;
+				}
+			}
+		}
+		else
+		{
+				if($page_request == "form")
+				{
+					header("location: ../leads/manage.php?msg=none");
+					exit;
+				}
+				else if($page_request == "list")
+				{
+					header("location: ../leads/leads.php?msg=none");
+					exit;
+				}
 		}
 	}
 ?>
