@@ -9,7 +9,7 @@
 			</div>
 			<div class="expanded">
 				<a href="../search/search.php">
-					<span class="text-lg text-bold text-primary ">KhoSystem</span>
+					<span class="text-lg text-bold text-primary ">Vina Business System</span>
 				</a>
 			</div>
 		</div>
@@ -18,23 +18,31 @@
 			<!-- BEGIN MAIN MENU -->
 			<ul id="main-menu" class="gui-controls">
 
-				<!-- BEGIN DASHBOARD -->
-				<!-- <li>
-					<a href="../search/search.php" >
-						<div class="gui-icon"><i class="md md-search"></i></div>
-						<span class="title">Search</span>
-					</a>
-				</li> -->
-				<!--<end /menu-li -->
-
-				<!-- BEGIN EMAIL -->
 				<li>
-					<!--<a href="../../html/customer/customerTab.php" class="active">-->
+					<a href="../leads/leads.php">
+						<div class="gui-icon"><i class="fa fa-list-alt"></i></div>
+						<span class="title">Leads</span>
+					</a>
+				</li>
+				<li>
+					<a href="../calendar/calendar.php">
+						<div class="gui-icon"><i class="fa fa-calendar"></i></div>
+						<span class="title">Calendar</span>
+					</a>
+				</li>
+				<li>
 					<a href="../user/user.php">
 						<div class="gui-icon"><i class="fa fa-users"></i></div>
 						<span class="title">User Accounts</span>
 					</a>
 				</li>
+				<li>
+					<a href="">
+						<div class="gui-icon"><i class="fa fa-user"></i></div>
+						<span class="title">Admin Modules</span>
+					</a>
+				</li>
+
 				<li>
 					<a href="../logout.php">
 						<div class="gui-icon"><i class="fa fa-sign-out"></i></div>

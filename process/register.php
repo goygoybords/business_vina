@@ -1,9 +1,9 @@
 <?php 
-	session_start();
+	require '../class/database.php';
 	require '../class/user.php';
 	require '../model/user_model.php';
 	$user = new User();
-	$user_model = new User_Model();
+	$user_model = new User_Model(new Database());
 	
 	extract($_POST);
 	if(isset($_POST['register']))
