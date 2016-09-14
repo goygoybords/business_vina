@@ -5,11 +5,6 @@
 	include '../include/start.html';
 	require('../include/header.php');
 
-	require '../class/database.php';
-	require '../class/lead.php';
-	require '../model/lead_model.php';
-	$db = new Database();
-
 ?>
 <!-- BEGIN BASE-->
 <div id="base">
@@ -75,7 +70,6 @@
 <script type="text/javascript">
 	$(document).ready(function()
 	{
-
 	    $('#lead-tbl').DataTable( 
 	    {
 			"bProcessing": true,
@@ -85,10 +79,6 @@
 	            "ajax":{
 	                url :"../process/lead_list2.php", // json datasource
 	                type: "get",  // method  , by default get
-	                // success:function(data)
-	                // {
-	                // 	console.log(data);
-	                // }
 	            }
 	    } );
 	} );

@@ -54,7 +54,7 @@
 							</div>
 							<div class="col-lg-offset-0 col-md-12">
 							<div class = "row" >
-								<table class = "table table-hover">
+								<table class = "table table-hover" id = "user-tbl">
 									<thead>
 										<th>Name</th>
 										<th>Email</th>
@@ -79,7 +79,11 @@
 											<td><?php echo $user->getEmail(); ?></td>
 											<td><?php echo $role; ?></td>
 											<td>
-												<a href ="edit.php?id=<?php echo $user->getId();   ?>">Edit</a>
+												<a href ="edit.php?id=<?php echo $user->getId();   ?>">
+													<span class="label label-inverse" style = "color:black;">
+                                						<i class="fa fa-edit"></i> Edit
+                                					</span>
+												</a>
 												<a href ="../process/delete_user.php?id=<?php echo $user->getId(); ?>"
 													onclick="return confirm('Are you sure you want to delete this record?')">Delete</a>
 											</td>
@@ -104,3 +108,14 @@
 	include '../include/sidebar.php';
 	include '../include/end.html';
 ?>
+
+<script type="text/javascript">
+	$(document).ready(function()
+	{
+
+	    $('#user-tbl').DataTable( 
+	    {
+			
+	    } );
+	} );
+</script>
