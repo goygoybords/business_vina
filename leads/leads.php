@@ -46,9 +46,13 @@
 									<div class = "row" >
 										<table class = "table table-hover" id = "lead-tbl">
 											<thead>
+												<th>ID</th>
 												<th>Company Name</th>
 												<th>Contact Person</th>
-												<th>Email</th>
+												<th>Position</th>
+												<th>SI Code</th>
+												<th>Address</th>
+												<th>Action</th>
 											</thead>
 										</table>
 									</div>
@@ -69,31 +73,23 @@
 ?>
 
 <script type="text/javascript">
-	// $(document).ready(function() {
- //    	$('#lead-tbl').DataTable();
-	// } );
-
 	$(document).ready(function()
 	{
-/*    $('#lead-tbl').DataTable( {
-        "processing": true,
-        "serverSide": true,
-        "ajax": "..//scripts/server_processing.php"
-    } );*/
 
-	    $('#lead-tbl').DataTable( {
-		"bProcessing": true,
-		"bServerSide": true,
-        "sPaginationType": "full_numbers",
-            "ajax":{
-                url :"../process/lead_list.php", // json datasource
-                type: "get",  // method  , by default get
-            }
+	    $('#lead-tbl').DataTable( 
+	    {
+			"bProcessing": true,
+			"bServerSide": true,
+	        "sPaginationType": "full_numbers",
+	        "order": [0,'desc'],
+	            "ajax":{
+	                url :"../process/lead_list2.php", // json datasource
+	                type: "get",  // method  , by default get
+	                // success:function(data)
+	                // {
+	                // 	console.log(data);
+	                // }
+	            }
 	    } );
-
-
-
-
-
 	} );
 </script>
