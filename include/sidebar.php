@@ -31,6 +31,12 @@
 					</a>
 				</li>
 				<li>
+					<a href="../calendar/calendar_events.php">
+						<div class="gui-icon"><i class="fa fa-calendar"></i></div>
+						<span class="title">Calendar Events</span>
+					</a>
+				</li>
+				<li>
 					<a href="../user/user.php">
 						<div class="gui-icon"><i class="fa fa-users"></i></div>
 						<span class="title">User Accounts</span>
