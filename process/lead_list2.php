@@ -33,7 +33,7 @@ $columns = array(
     array( 'db' => '`l`.`companyname`', 'dt' => 1, 'field' => 'companyname' ),
     array( 'db' => '`l`.`firstname`',   'dt' => 2, 'field' => 'firstname' ),
     array( 'db' => '`p`.`position`',    'dt' => 3, 'field' => 'position' ),
-    array( 'db' => '`l`.`siccode`',     'dt' => 4, 'field' => 'siccode' ),
+    array( 'db' => '`s`.`description`', 'dt' => 4, 'field' => 'description' ),
     array( 'db' => '`l`.`address`',     'dt' => 5, 'field' => 'address' ),
     array( 'db' => '`l`.`id`',          'dt' => 6, 'formatter' => function( $d, $row ) 
             {
@@ -65,7 +65,9 @@ $sql_details = array(
   
     $joinQuery = "FROM leads l 
                   JOIN positions p
-                  ON l.position = p.id ";
+                  ON l.position = p.id
+                  JOIN siccode s
+                  ON l.siccode = s.id ";
     $extraWhere =  "l.status = 1" ;        
     echo json_encode(
         SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere )
