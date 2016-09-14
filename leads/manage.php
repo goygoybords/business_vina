@@ -217,11 +217,17 @@
 														<br />
 														<div class="row">
 															<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-right">
+														
+																<?php 
+																	if($form_state == 2)
+																		echo '<a href = "../calendar/specific_event.php?id='.$lead_record->getId().'" class = "btn btn-secondary">Join Event</a>';
+																?>
 																<button type="submit" name = "create_lead" class="btn btn-info"><?php echo $submit_caption; ?></button>
 																<?php
 																	if($form_state == 2)
 																	{
-																			echo "<button type='submit' name = 'delete_lead' class='btn btn-warning'>Delete</button>";
+																			
+																		echo "<button type='submit' name = 'delete_lead' class='btn btn-warning'>Delete</button>";
 																	}
 																?>
 															</div>

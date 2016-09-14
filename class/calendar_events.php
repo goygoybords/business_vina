@@ -48,7 +48,8 @@
             $this->start_date = $start_date;
         }
 
-        public function getEnd_date(){
+        public function getEnd_date()
+        {
             return $this->end_date;
         }
 
