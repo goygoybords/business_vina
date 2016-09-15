@@ -1,6 +1,9 @@
 <?php
 	session_start();
-
+	if($_SESSION['isLogin'] != true){
+		header("location: ../index.php");
+		exit;
+	}
 	include '../include/start.html';
 	require('../include/header.php');
 ?>
@@ -47,20 +50,20 @@
 												<a class="btn btn-success btn-block" href="manage.php" name="btnAddUser" id="btnAddUser">ADD NEW USER</a>
 											</div>
 										</div>
-
-								<div class="col-lg-offset-0 col-md-12">
-									<div class = "row" >
-										<table class = "display responsive nowrap" id = "user-tbl">
-											<thead>
-												<th>Firstname</th>
-												<th>Lastname</th>
-												<th>Email</th>
-												<th>User Type</th>
-												<th>Action</th>
-											</thead>
-										</table>
-									</div>
-								</div>
+										<br />
+										<div class="col-lg-offset-0 col-md-12">
+											<div class = "row" >
+												<table class = "display responsive nowrap" id = "user-tbl">
+													<thead>
+														<th>Firstname</th>
+														<th>Lastname</th>
+														<th>Email</th>
+														<th>User Type</th>
+														<th>Action</th>
+													</thead>
+												</table>
+											</div>
+										</div>
 									</div><!--end .card -->
 								</div><!--end .col -->
 							</div>

@@ -1,5 +1,9 @@
 <?php
 	session_start();
+	if($_SESSION['isLogin'] != true){
+		header("location: ../index.php");
+		exit;
+	}
 	include '../include/start.html';
 	require('../include/header.php');
 
@@ -36,7 +40,7 @@
 						$user->setPassword($l['password']);
 						$user->setEmail($l['email']);
 						$user->setUsertypeid($l['usertypeid']);
-						$user->setStatus($l['status']);		
+						$user->setStatus($l['status']);
 					}
 
 					if($user->getStatus() == 1)
@@ -92,7 +96,7 @@
 																<div class="form-group">
 																	<label for="Firstname5" class="col-sm-4 control-label">Firstname</label>
 																	<div class="col-sm-8">
-																		<input type="text" name = "firstname" class="form-control" id="Firstname5" 
+																		<input type="text" name = "firstname" class="form-control" id="Firstname5"
 																		value = "<?php echo $user->getFirstname(); ?>" required>
 																	</div>
 																</div>
@@ -110,14 +114,14 @@
 														<div class="form-group">
 															<label for="Email5" class="col-sm-2 control-label">Email</label>
 															<div class="col-sm-10">
-																<input type="text" name = "email" class="form-control"  id="Email5" 
+																<input type="text" name = "email" class="form-control"  id="Email5"
 																value = "<?php echo $user->getEmail(); ?>" required>
 															</div>
 														</div>
 														<div class="form-group">
 															<label for="Password5" class="col-sm-2 control-label">Password</label>
 															<div class="col-sm-10">
-																<input type="password" name = "password" class="form-control" id="Password5" 
+																<input type="password" name = "password" class="form-control" id="Password5"
 																value = "<?php echo $user->getPassword(); ?>" required>
 															</div>
 														</div>
@@ -129,14 +133,14 @@
 																	<option value = "2" <?php if($user->getUsertypeid() == 2) echo "selected"; ?> >Admin</option>
 																</select>
 															</div>
-														</div>														
+														</div>
 														<br />
 														<div class="row">
 															<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-right">
 																<?php if($form_state == 2) $name = "update_user"; ?>
 																<button type="submit" name = <?php echo $name; ?> class="btn btn-info"><?php echo $submit_caption; ?></button>
-															</div>			
-														</div>											
+															</div>
+														</div>
 													</div><!--end .card-body -->
 												</form>
 													<?php

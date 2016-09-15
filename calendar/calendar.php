@@ -1,5 +1,9 @@
 <?php
 	session_start();
+	if($_SESSION['isLogin'] != true){
+		header("location: ../index.php");
+		exit;
+	}
 
 	include '../include/start.html';
 	require('../include/header.php');
