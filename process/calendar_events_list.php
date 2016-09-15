@@ -22,7 +22,7 @@
 	     $e['title'] = $r['event_name'];
 	     $e['start'] = date('Y-m-d', $r['start_date']);
 	     $e['end'] = date('Y-m-d', $r['end_date']);
-	     // $e['url'] = "calendar_details.php?id=".$r['id'];
+	     $e['url'] = "specific_event.php?id=".$r['lead_id']."&event=".$r['id'];
 	     array_push($events_array, $e);
 	}
 	echo json_encode($events_array);

@@ -138,6 +138,13 @@
 				}
 			},
 			events: '../process/calendar_events_list.php',
+			eventClick: function(event) 
+					{
+				        if (event.url) {
+				            window.open(event.url);
+				            return false;
+				        }
+				    },
 			eventRender: function (event, element) {
 				element.find('#date-title').html(element.find('span.fc-event-title').text());
 			}

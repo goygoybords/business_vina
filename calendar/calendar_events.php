@@ -59,42 +59,41 @@
 												<a class="btn btn-success btn-block" href="manage.php" name="btnAddUser" id="btnAddUser">Create Calendar Events</a>
 											</div>
 										</div>
-
-								<div class="col-lg-offset-0 col-md-12">
-									<div class = "row" >
-										<table class = "table table-hover" id = "event-tbl">
-											<thead>
-												<th>Event Name</th>
-												<th>Start Date</th>
-												<th>End Date</th>
-												<th>Action</th>
-											</thead>
-											<tbody>
-												<?php foreach ($event_data as $e ) : ?>
-												<?php 
-													$events = new CalendarEvents();
-													$events->setEvent_name($e['event_name']);
-													$events->setStart_date(date('Y-m-d' , $e['start_date']));
-													$events->setEnd_date(date('Y-m-d' , $e['end_date']));
-													$events->setId($e['id']);
-												?>
-													<tr>
-														<td><?php echo $events->getEvent_name(); ?></td>
-														<td><?php echo $events->getStart_date(); ?></td>
-														<td><?php echo $events->getEnd_date();  ?></td>
-														<td>
-															<a href="manage.php?id=<?php echo $events->getId(); ?>" >
-																<span class="label label-inverse" style = "color:black;">
-																	<i class="fa fa-edit"></i> Edit
-																</span>
-															</a>
-														</td>
-													</tr>
-												<?php endforeach; ?>
-											</tbody>
-										</table>
-									</div>
-								</div>
+										<div class="col-lg-offset-0 col-md-12">
+											<div class = "row" >
+												<table class = "display responsive nowrap" id = "event-tbl">
+													<thead>
+														<th>Event Name</th>
+														<th>Start Date</th>
+														<th>End Date</th>
+														<th>Action</th>
+													</thead>
+													<tbody>
+														<?php foreach ($event_data as $e ) : ?>
+														<?php 
+															$events = new CalendarEvents();
+															$events->setEvent_name($e['event_name']);
+															$events->setStart_date(date('Y-m-d' , $e['start_date']));
+															$events->setEnd_date(date('Y-m-d' , $e['end_date']));
+															$events->setId($e['id']);
+														?>
+															<tr>
+																<td><?php echo $events->getEvent_name(); ?></td>
+																<td><?php echo $events->getStart_date(); ?></td>
+																<td><?php echo $events->getEnd_date();  ?></td>
+																<td>
+																	<a href="manage.php?id=<?php echo $events->getId(); ?>" >
+																		<span class="label label-inverse" style = "color:black;">
+																			<i class="fa fa-edit"></i> Edit
+																		</span>
+																	</a>
+																</td>
+															</tr>
+														<?php endforeach; ?>
+													</tbody>
+												</table>
+											</div>
+										</div>
 									</div><!--end .card -->
 								</div><!--end .col -->
 							</div>
@@ -121,7 +120,7 @@
 			// "bServerSide": true,
 				"responsive": true,
 	        "sPaginationType": "full_numbers",
-	        "order": [0,'desc'],
+	        // "order": [0,'desc'],
 	            // "ajax":{
 	            //     url :"../process/lead_list2.php", // json datasource
 	            //     type: "get",  // method  , by default get

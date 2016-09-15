@@ -13,6 +13,8 @@
 
 	
 	$customer_id = (isset($_GET["id"]) ? $_GET["id"] : "");
+	$event_id = (isset($_GET["event"]) ? $_GET["event"] : "");
+
 	$events = new CalendarEvents();
 	$leads = new Leads();
 	$events_model = new Calendar_Events_Model(new Database());
@@ -25,7 +27,6 @@
 	$msg = (isset($_GET["msg"]) ? $_GET["msg"] : "");
 	if($customer_id)
 	{
-		
 		$table = 'calendar_events';
 		$fields = array('*');
 		$where = " status = ? ";
@@ -42,6 +43,32 @@
 			$leads->setId($customer_id);
 			$leads->setCompanyname($c['companyname']);			
 		}
+	}
+	if($event_id && $customer_id )
+	{
+		$submit_caption = "Event Detail";
+		$table = 'calendar_events';
+		$fields = array('*');
+		$where = " id = ? AND status = ? ";
+		$params = array($event_id, 2);
+		$events_data = $events_model->get_all($table, $fields, $where, $params);
+
+		foreach ($events_data as $d ) 
+		{
+			$events->setEvent_name($d['event_name']);
+		}
+
+		$table = 'leads';
+		$fields = array('companyname');
+		$where = " id = ? AND status = ? ";
+		$params = array($customer_id, 1);
+		$company = $lead_model->get_by_id($table, $fields, $where, $params);
+		foreach ($company as $c ) 
+		{
+			$leads->setId($customer_id);
+			$leads->setCompanyname($c['companyname']);			
+		}
+
 	}
 
 ?>
@@ -84,6 +111,7 @@
 														<div class="form-group">
 															<label for="eventname" class="col-sm-2 control-label">Event Name</label>
 															<div class="col-sm-10">
+																<?php if(!$event_id) { ?>
 																<select name = "event" class = "form-control" required>
 																	<option value = "">Choose An Event</option>
 																	<?php 
@@ -92,9 +120,13 @@
 																			$events->setId($l['id']);
 																			$events->setEvent_name($l['event_name']);	
 																	?>
-																		<option value = "<?php echo $events->getId(); ?>"> <?php echo $events->getEvent_name(); ?></option>
+																		<option value = "<?php echo $events->getId(); ?>" <?php ?> > <?php echo $events->getEvent_name(); ?></option>
 																		<?php endforeach; ?>
 																</select>
+																<?php } else { ?>
+																<input type="text" name = "event" class="form-control"  id="event" 
+																value="<?php echo $events->getEvent_name(); ?>" disabled autofocus='autofocus'>
+																<?php } ?>
 															</div>
 														</div>
 														
@@ -102,7 +134,10 @@
 														<br />
 														<div class="row">
 															<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-right">
-																<button type="submit" name = "join_event" class="btn btn-info"><?php echo $submit_caption; ?></button>
+																<?php if($event_id) 
+																	$disabled = "disabled"; 
+																?>
+																<button type="submit" name = "join_event" <?php echo $disabled; ?> class="btn btn-info"><?php echo $submit_caption; ?></button>
 															</div>
 														</div>
 													</div><!--end .card-body -->

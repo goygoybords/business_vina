@@ -66,7 +66,7 @@
 
 								<div class="col-lg-offset-0 col-md-12">
 									<div class = "row" >
-										<table class = "table table-hover" id = "user-tbl">
+										<table class = "display responsive nowrap" id = "user-tbl">
 											<thead>
 												<th>Name</th>
 												<th>Email</th>
@@ -129,7 +129,7 @@
 	    {
 			// "bProcessing": true,
 			// "bServerSide": true,
-			// 	"responsive": true,
+				"responsive": true,
 	  //       "sPaginationType": "full_numbers",
 	  //       "order": [0,'desc'],
 	  //           "ajax":{
