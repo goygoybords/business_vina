@@ -137,14 +137,7 @@
 					$(this).remove();
 				}
 			},
-			events: [
-				{
-					title: 'Birthday Party',
-					start: new Date(y, m, d + 1, 19, 0),
-					end: new Date(y, m, d + 1, 22, 30),
-					allDay: false
-				}
-			],
+			events: '../process/calendar_events_list.php',
 			eventRender: function (event, element) {
 				element.find('#date-title').html(element.find('span.fc-event-title').text());
 			}
