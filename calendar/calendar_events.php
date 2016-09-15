@@ -15,8 +15,6 @@
 		$where = "status = ? ORDER BY 1 DESC";
 		$params = array(1);
 	$event_data = $event_model->get_all($table, $fields, $where, $params);
-
-
 ?>
 <!-- BEGIN BASE-->
 <div id="base">
@@ -39,6 +37,21 @@
 								<header><i class="fa fa-fw fa-users"></i> Calendar Events</header>
 							</div><!--end .card-head -->
 							<div class="col-lg-offset-0 col-md-12">
+								<?php
+								if(isset($_GET['msg']))
+								{
+									$msg = $_GET['msg'];
+									if($msg == 'deleted')
+										$error = 'Record Successfully Deleted';
+									else if($msg == 'prev_deleted')
+										$error = 'Record was deleted previously';
+									else if($msg == 'none')
+										$error = 'Sorry, the record selected does not exist.';
+									echo '<span>'.$error.'</span>';
+								}
+							?>
+							</div>
+							<div class="col-lg-offset-0 col-md-12">
 								<div class="card-body style-default-bright">
 									<div class="card-body">
 										<div class="row">
@@ -46,8 +59,6 @@
 												<a class="btn btn-success btn-block" href="manage.php" name="btnAddUser" id="btnAddUser">Create Calendar Events</a>
 											</div>
 										</div>
-									</div><!--end .card -->
-								</div><!--end .col -->
 
 								<div class="col-lg-offset-0 col-md-12">
 									<div class = "row" >
@@ -84,6 +95,8 @@
 										</table>
 									</div>
 								</div>
+									</div><!--end .card -->
+								</div><!--end .col -->
 							</div>
 						</div><!--end .card -->
 					</div>
@@ -102,16 +115,17 @@
 <script type="text/javascript">
 	$(document).ready(function()
 	{
-	    $('#lead-tbl').DataTable( 
+	    $('#event-tbl').DataTable(
 	    {
 			// "bProcessing": true,
 			// "bServerSide": true,
-	  //       "sPaginationType": "full_numbers",
-	  //       "order": [0,'desc'],
-	  //           "ajax":{
-	  //               url :"../process/lead_list2.php", // json datasource
-	  //               type: "get",  // method  , by default get
-	  //           }
+				"responsive": true,
+	        "sPaginationType": "full_numbers",
+	        "order": [0,'desc'],
+	            // "ajax":{
+	            //     url :"../process/lead_list2.php", // json datasource
+	            //     type: "get",  // method  , by default get
+	            // }
 	    } );
 	} );
 </script>

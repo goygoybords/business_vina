@@ -15,7 +15,6 @@
 	if(isset($_POST['create_lead']))
 	{
 		print_r($_POST);
-
 		$leads->setCompanyname(htmlentities($companyname));
 		$leads->setFirstname(htmlentities($firstname));
 		$leads->setMiddlename(htmlentities($middlename));

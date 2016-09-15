@@ -26,7 +26,7 @@
 						<div class="row">
 
 							<!-- BEGIN CALENDAR EVENTS -->
-							<div class="col-sm-3">
+							<!-- <div class="col-sm-3">
 								<h2>Upcoming events</h2>
 								<p class="opacity-75">Please plan your upcomming events by dragging them on the calendar.</p>
 								<br/>
@@ -75,11 +75,11 @@
 										</div>
 									</li>
 								</ul>
-							</div><!--end .col -->
+							</div><!--end .col --> 
 							<!-- END CALENDAR EVENTS -->
 
 							<!-- BEGIN CALENDAR -->
-							<div class="col-sm-9">
+							<div class="col-sm-12">
 								<div class="card">
 									<div class="card-head style-primary">
 										<header>

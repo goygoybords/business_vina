@@ -121,12 +121,13 @@
 													<div class="card-body" id="div-add-lead">
 														<div class="row">
 															<div class="col-sm-12">
-																<div class="form-group">
+																<!-- <div class="form-group">
 																	<div class="col-sm-6">
 																		<label for="companyname">Company Name</label>
 																	</div>
-																</div>
+																</div> -->
 																<div class="form-group">
+																	<label class="col-sm-12 control-label">Company Name</label>
 																	<div class="col-sm-6">
 																		<input type="text" name = "companyname" class="form-control"  id="companyname" value="<?php echo $lead_record->getCompanyname(); ?>" required autofocus='autofocus'>
 																	</div>
@@ -150,45 +151,52 @@
 																</div>
 															</div>
 														</div>
-														<div class="form-group">
-															<label for="email" class="col-sm-2 control-label">Position</label>
-															<div class="col-sm-4">
-																<select name = "position" class = "form-control">
-																	<?php
-																		$pos = $list_positions->get_all("positions");
-																		foreach ($pos as $p) :
-																			$position = new Position();
-																			$position->setId($p['id']);
-																			$position->setPosition($p['position']);
-																	?>
-																		<option value = "<?php echo $position->getId(); ?>"  <?php echo ($position->getId() == $lead_record->getPosition() ? "selected='selected'" : ""); ?> ><?php echo $position->getPosition(); ?></option>
-																	<?php endforeach; ?>
-																</select>
-															</div>
-															<label for="email" class="col-sm-1 control-label">SI Code</label>
-															<div class="col-sm-2">
-																<select name = "siccode" class = "form-control">
-																	<?php
-																		$sic = $list_siccode->get_all("siccode");
-																		foreach ($sic as $p) :
-																			$siccode = new SICode();
-																			$siccode->setId($p['id']);
-																			$siccode->setDescription($p['description']);
-
-																	?>
-																		<option value = "<?php echo $siccode->getId(); ?>" <?php echo ($siccode->getId() == $lead_record->getSiccode() ? "selected='selected'" : ""); ?>><?php echo $siccode->getDescription(); ?></option>
-																	<?php endforeach; ?>
-																</select>
-															</div>
-															<label for="email" class="col-sm-1 control-label">Email</label>
-															<div class="col-sm-2">
-																<input type="text" name = "email" class="form-control"  id="email" value="<?php echo $lead_record->getEmail(); ?>" required>
+														<div class="row">
+															<div class="col-sm-12">
+																<div class="form-group">
+																	<label class="col-sm-12 control-label">Contact Person Details</label>
+																	<div class="col-sm-4">
+																		<select name = "position" id = "position" class = "form-control" required>
+																			<option>Choose A Position</option>
+																			<?php
+																				$pos = $list_positions->get_all("positions");
+																				foreach ($pos as $p) :
+																					$position = new Position();
+																					$position->setId($p['id']);
+																					$position->setPosition($p['position']);
+																			?>
+																				<option value = "<?php echo $position->getId(); ?>"  <?php echo ($position->getId() == $lead_record->getPosition() ? "selected='selected'" : ""); ?> ><?php echo $position->getPosition(); ?></option>
+																			<?php endforeach; ?>
+																		</select>
+																	</div>
+																	<div class="col-sm-4">
+																		<select name = "siccode" class = "form-control" required>
+																			<option>Choose a SI Code</option>
+																			<?php
+																				$sic = $list_siccode->get_all("siccode");
+																				foreach ($sic as $p) :
+																					$siccode = new SICode();
+																					$siccode->setId($p['id']);
+																					$siccode->setDescription($p['description']);
+																			?>
+																				<option value = "<?php echo $siccode->getId(); ?>" <?php echo ($siccode->getId() == $lead_record->getSiccode() ? "selected='selected'" : ""); ?>><?php echo $siccode->getDescription(); ?></option>
+																			<?php endforeach; ?>
+																		</select>
+																	</div>
+																	<div class="col-sm-4">
+																		<input type="text" name = "email" class="form-control"  id="email" placeholder = "Email" value="<?php echo $lead_record->getEmail(); ?>" required>
+																	</div>
+																</div>
 															</div>
 														</div>
-														<div class="form-group">
-															<label for="address" class="col-sm-2 control-label">Address</label>
-															<div class="col-sm-10">
-																<input type="text" name = "address" class="form-control"  id="address" value="<?php echo $lead_record->getAddress(); ?>" required>
+														<div class="row">
+															<div class="col-sm-12">
+																<div class="form-group">
+																	<label for="address" class="col-sm-2 control-label">Address</label>
+																	<div class="col-sm-10">
+																		<input type="text" name = "address" class="form-control"  id="address" value="<?php echo $lead_record->getAddress(); ?>" required>
+																	</div>
+																</div>
 															</div>
 														</div>
 														<div class="row">
