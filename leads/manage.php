@@ -280,12 +280,7 @@
 																		echo '<a href = "../calendar/specific_event.php?id='.$lead_record->getId().'" class = "btn btn-secondary">Join Event</a>';
 																?>
 																<button type="submit" name = "create_lead" class="btn btn-info"><?php echo $submit_caption; ?></button>
-																<?php
-																	if($form_state == 2)
-																	{
-																		echo "<a href='../process/lead_manage.php?id={$lead_record->getId()}&p=form&del' class='btn btn-warning' onclick='return confirm(\"Are you sure you want to delete this record?\")'>Delete</a>";
-																	}
-																?>
+																
 															</div>
 														</div>
 													</div><!--end .card-body -->

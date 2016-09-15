@@ -87,6 +87,12 @@
 																			<i class="fa fa-edit"></i> Edit
 																		</span>
 																	</a>
+																	 <a href="../process/lead_manage.php?id='.$d.'&p=list&del" 
+																	 onclick="return confirm(\'Are you sure you want to delete this record?\')" >
+											                            <span class="label label-inverse" style = "color:black;">
+											                                <i class="fa fa-remove"></i> Delete
+											                            </span>
+											                        </a>
 																</td>
 															</tr>
 														<?php endforeach; ?>
