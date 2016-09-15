@@ -59,6 +59,7 @@
 												<a class="btn btn-success btn-block" href="manage.php" name="btnAddUser" id="btnAddUser">Create Calendar Events</a>
 											</div>
 										</div>
+										<br />
 										<div class="col-lg-offset-0 col-md-12">
 											<div class = "row" >
 												<table class = "display responsive nowrap" id = "event-tbl">
@@ -70,7 +71,7 @@
 													</thead>
 													<tbody>
 														<?php foreach ($event_data as $e ) : ?>
-														<?php 
+														<?php
 															$events = new CalendarEvents();
 															$events->setEvent_name($e['event_name']);
 															$events->setStart_date(date('Y-m-d' , $e['start_date']));
@@ -87,7 +88,7 @@
 																			<i class="fa fa-edit"></i> Edit
 																		</span>
 																	</a>
-																	 <a href="../process/lead_manage.php?id='.$d.'&p=list&del" 
+																	 <a href="../process/lead_manage.php?id='.$d.'&p=list&del"
 																	 onclick="return confirm(\'Are you sure you want to delete this record?\')" >
 											                            <span class="label label-inverse" style = "color:black;">
 											                                <i class="fa fa-remove"></i> Delete

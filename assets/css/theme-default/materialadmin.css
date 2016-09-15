@@ -2669,10 +2669,11 @@ legend.text-right:after {
 }
 label {
   font-weight: 400;
+  font-size: 16px;
 }
 .form-group > label,
 .form-group .control-label {
-  font-size: 14px;
+  font-size: 13px;
   opacity: 0.5;
   margin-bottom: 0;
 }
