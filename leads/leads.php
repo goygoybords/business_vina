@@ -1,6 +1,9 @@
 <?php
 	session_start();
-	ob_start();
+	if($_SESSION['isLogin'] != true){
+		header("location: ../index.php");
+		exit;
+	}
 
 	include '../include/start.html';
 	require('../include/header.php');
@@ -27,6 +30,21 @@
 								<header><i class="fa fa-fw fa-users"></i> Leads</header>
 							</div><!--end .card-head -->
 							<div class="col-lg-offset-0 col-md-12">
+								<?php
+								if(isset($_GET['msg']))
+								{
+									$msg = $_GET['msg'];
+									if($msg == 'deleted')
+										$error = 'Record Successfully Deleted';
+									else if($msg == 'prev_deleted')
+										$error = 'Record was deleted previously';
+									else if($msg == 'none')
+										$error = 'Sorry, the record selected does not exist.';
+									echo '<span>'.$error.'</span>';
+								}
+							?>
+							</div>
+							<div class="col-lg-offset-0 col-md-12">
 								<div class="card-body style-default-bright">
 									<div class="card-body">
 										<div class="row">
@@ -34,24 +52,24 @@
 												<a class="btn btn-success btn-block" href="manage.php" name="btnAddLead" id="btnAddLead">ADD NEW LEAD</a>
 											</div>
 										</div>
+										<br />
+										<div class="col-lg-offset-0 col-md-12">
+											<div class = "row" >
+												<table class = "display responsive nowrap" id = "lead-tbl">
+													<thead>
+														<th>ID</th>
+														<th>Company Name</th>
+														<th>Contact Person</th>
+														<th>Position</th>
+														<th>SI Code</th>
+														<th>Address</th>
+														<th>Action</th>
+													</thead>
+												</table>
+											</div>
+										</div>
 									</div><!--end .card -->
 								</div><!--end .col -->
-
-								<div class="col-lg-offset-0 col-md-12">
-									<div class = "row" >
-										<table class = "table table-hover" id = "lead-tbl">
-											<thead>
-												<th>ID</th>
-												<th>Company Name</th>
-												<th>Contact Person</th>
-												<th>Position</th>
-												<th>SI Code</th>
-												<th>Address</th>
-												<th>Action</th>
-											</thead>
-										</table>
-									</div>
-								</div>
 							</div>
 						</div><!--end .card -->
 					</div>
@@ -70,10 +88,11 @@
 <script type="text/javascript">
 	$(document).ready(function()
 	{
-	    $('#lead-tbl').DataTable( 
+	    $('#lead-tbl').DataTable(
 	    {
 			"bProcessing": true,
 			"bServerSide": true,
+				"responsive": true,
 	        "sPaginationType": "full_numbers",
 	        "order": [0,'desc'],
 	            "ajax":{

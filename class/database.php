@@ -26,9 +26,10 @@
  			{
  				$columnString = implode(',', array_keys($data));
 	 			$valueString = implode(',', array_fill(0, count($data), '?'));
-	 			$sql = "INSERT INTO {$table} ({$columnString}) VALUES ({$valueString}) ";
+	 			$sql = "INSERT INTO {$table} (id, {$columnString}) VALUES (DEFAULT, {$valueString}) ";
 	 			$cmd = $this->db->prepare($sql);
 	 			$result = $cmd->execute(array_values($data));
+	 			$result = $this->db->lastInsertId();
 	 			return $result;
  			}
  			catch(Exception $e)

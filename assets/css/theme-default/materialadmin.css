@@ -2669,17 +2669,18 @@ legend.text-right:after {
 }
 label {
   font-weight: 400;
+  font-size: 16px;
 }
 .form-group > label,
 .form-group .control-label {
-  font-size: 12px;
+  font-size: 13px;
   opacity: 0.5;
   margin-bottom: 0;
 }
 .form .form-group > label,
 .form-inline .form-group > label {
   position: absolute;
-  top: 0;
+  top: -3px;
   left: 0;
 }
 .form-control-static {
@@ -2691,7 +2692,8 @@ label {
   bottom: 0;
 }
 .form-control {
-  padding: 0;
+  padding-left: 5px;
+  padding-right: 5px;
   height: 32px;
 /* border-left: none;
    border-right: none;
@@ -2700,7 +2702,7 @@ label {
   border-bottom-color: rgba(12, 12, 12, 0.12);
   background: transparent;
   color: #0c0c0c;
-  font-size: 16px;
+  font-size: 14px;
   -webkit-box-shadow: none;
   box-shadow: none;
 }
@@ -2742,15 +2744,15 @@ fieldset[disabled] .form-control ~ .form-control-line:after {
   display: none;
 }
 textarea.form-control {
-  padding: 4px 0 4px 0;  
+  padding: 4px 0 4px 0;
   max-height: inherit;
-  max-width: 100%;    
+  max-width: 100%;
   min-width: inherit;
 }
-textarea.autosize {  
+textarea.autosize {
   max-height: inherit;
-  max-width: 100%;    
-  min-width: inherit;  
+  max-width: 100%;
+  min-width: inherit;
 }
 .form .form-group,
 .form-inline .form-group {
@@ -2796,7 +2798,7 @@ textarea.autosize {
   opacity: 0.5;
 }
 .form-group .form-control:focus {
-  
+
 }
 .form-group .form-control:focus ~ label {
   color: #0aa89e;
@@ -3006,7 +3008,7 @@ fieldset[disabled] .form-inverse .form-group .form-control {
   background: #ffffff;
   color: #313534 !important;
 }
-.has-warning .help-block {  
+.has-warning .help-block {
   color: #ff9800;
   opacity: 1;
 }

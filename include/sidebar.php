@@ -24,25 +24,44 @@
 						<span class="title">Leads</span>
 					</a>
 				</li>
-				<li>
-					<a href="../calendar/calendar.php">
+				<li class="gui-folder">
+					<a>
 						<div class="gui-icon"><i class="fa fa-calendar"></i></div>
 						<span class="title">Calendar</span>
 					</a>
-				</li>
-				<li>
-					<a href="../user/user.php">
+					<!--start submenu -->
+					<ul>
+						<li>
+							<a href="../calendar/calendar.php">
+								<span class="title">Calendar</span>
+							</a>
+						</li>
+						<li>
+							<a href="../calendar/calendar_events.php">
+								<span class="title">Calendar Events</span>
+							</a>
+						</li>
+
+					</ul><!--end /submenu -->
+				</li><!--end /menu-li -->
+				
+				<?php if($_SESSION['user_type'] == 2): ?>
+				<li class="gui-folder">
+					<a>
 						<div class="gui-icon"><i class="fa fa-users"></i></div>
-						<span class="title">User Accounts</span>
-					</a>
-				</li>
-				<li>
-					<a href="">
-						<div class="gui-icon"><i class="fa fa-user"></i></div>
 						<span class="title">Admin Modules</span>
 					</a>
-				</li>
+					<!--start submenu -->
+					<ul>
+						<li>
+							<a href="../user/user.php">
+								<span class="title">User Accounts</span>
+							</a>
+						</li>
 
+					</ul><!--end /submenu -->
+				</li><!--end /menu-li -->
+				<?php endif; ?>
 				<li>
 					<a href="../logout.php">
 						<div class="gui-icon"><i class="fa fa-sign-out"></i></div>
