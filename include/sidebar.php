@@ -44,6 +44,15 @@
 
 					</ul><!--end /submenu -->
 				</li><!--end /menu-li -->
+
+				<li>
+					<a href="../report/report.php">
+						<div class="gui-icon"><i class="fa fa-file-excel-o" aria-hidden="true"></i></div>
+						<span class="title">Report</span>
+					</a>
+				</li>
+				
+
 				
 				<?php if($_SESSION['user_type'] == 2): ?>
 				<li class="gui-folder">
