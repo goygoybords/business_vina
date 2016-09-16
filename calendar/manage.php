@@ -1,5 +1,9 @@
 <?php
 	session_start();
+	if($_SESSION['isLogin'] != true){
+		header("location: ../index.php");
+		exit;
+	}
 	include '../include/start.html';
 	require('../include/header.php');
 
@@ -7,7 +11,7 @@
 	require '../class/calendar_events.php';
 	require '../model/calendar_events_model.php';
 
-	
+
 	$event_id = (isset($_GET["id"]) ? $_GET["id"] : "");
 	$events = new CalendarEvents();
 	$events_model = new Calendar_Events_Model(new Database());
@@ -34,7 +38,7 @@
 						$events->setEvent_name($l['event_name']);
 						$events->setStart_date(date('m/d/Y', $l['start_date']));
 						$events->setEnd_date(date('m/d/Y', $l['end_date']));
-						$events->setStatus($l['status']);		
+						$events->setStatus($l['status']);
 					}
 
 					if($events->getStatus() == 1)
@@ -88,17 +92,17 @@
 														<div class="form-group">
 															<label for="eventname" class="col-sm-2 control-label">Event Name</label>
 															<div class="col-sm-10">
-																<input type="text" name = "eventname" class="form-control"  id="eventname" 
+																<input type="text" name = "eventname" class="form-control"  id="eventname"
 																value="<?php echo $events->getEvent_name(); ?>" required autofocus='autofocus'>
 															</div>
 														</div>
-														
+
 														<div class="form-group">
 															<label for="start_date" class="col-sm-2 control-label">Start Date</label>
 															<div class="col-sm-10">
 																<div class="input-group date" data-provide="datepicker">
 																	<div class="input-group-content">
-																		<input class="form-control static" name="start_date" id="datepicker" 
+																		<input class="form-control static" name="start_date" id="datepicker"
 																		value="<?php echo $events->getStart_date(); ?>" type="text">
 																	</div>
 																	<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -111,7 +115,7 @@
 															<div class="col-sm-10">
 																<div class="input-group date" data-provide="datepicker">
 																	<div class="input-group-content">
-																		<input class="form-control static" name="end_date" id="datepicker" 
+																		<input class="form-control static" name="end_date" id="datepicker"
 																		value="<?php echo $events->getEnd_date(); ?>" type="text">
 																	</div>
 																	<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -122,7 +126,7 @@
 														<br />
 														<div class="row">
 															<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-right">
-																<?php 
+																<?php
 																	if($form_state == 1)
 																		$txt_name = "create_event";
 																	else if($form_state == 2)
@@ -132,7 +136,7 @@
 																<?php
 																	if($form_state == 2)
 																	{
-																		echo "<button type='submit' name = 'delete_event' 
+																		echo "<button type='submit' name = 'delete_event'
 																		class='btn btn-warning' >Delete</button>";
 																	}
 																?>

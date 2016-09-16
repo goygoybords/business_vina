@@ -1,17 +1,21 @@
 <?php
 	session_start();
+	if($_SESSION['isLogin'] != true){
+		header("location: ../index.php");
+		exit;
+	}
 	include '../include/start.html';
 	require('../include/header.php');
 
 	require '../class/database.php';
 	require '../class/lead.php';
 	require '../class/calendar_events.php';
-	
+
 
 	require '../model/lead_model.php';
 	require '../model/calendar_events_model.php';
 
-	
+
 	$customer_id = (isset($_GET["id"]) ? $_GET["id"] : "");
 	$event_id = (isset($_GET["event"]) ? $_GET["event"] : "");
 
@@ -38,10 +42,10 @@
 		$where = " id = ? AND status = ? ";
 		$params = array($customer_id, 1);
 		$company = $lead_model->get_by_id($table, $fields, $where, $params);
-		foreach ($company as $c ) 
+		foreach ($company as $c )
 		{
 			$leads->setId($customer_id);
-			$leads->setCompanyname($c['companyname']);			
+			$leads->setCompanyname($c['companyname']);
 		}
 	}
 	if($event_id && $customer_id )
@@ -53,7 +57,7 @@
 		$params = array($event_id, 2);
 		$events_data = $events_model->get_all($table, $fields, $where, $params);
 
-		foreach ($events_data as $d ) 
+		foreach ($events_data as $d )
 		{
 			$events->setEvent_name($d['event_name']);
 		}
@@ -63,10 +67,10 @@
 		$where = " id = ? AND status = ? ";
 		$params = array($customer_id, 1);
 		$company = $lead_model->get_by_id($table, $fields, $where, $params);
-		foreach ($company as $c ) 
+		foreach ($company as $c )
 		{
 			$leads->setId($customer_id);
-			$leads->setCompanyname($c['companyname']);			
+			$leads->setCompanyname($c['companyname']);
 		}
 
 	}
@@ -103,7 +107,7 @@
 														<div class="form-group">
 															<label for="Company" class="col-sm-2 control-label">Company</label>
 															<div class="col-sm-10">
-																<input type="text" name = "lead" class="form-control"  id="lead" 
+																<input type="text" name = "lead" class="form-control"  id="lead"
 																value="<?php echo $leads->getCompanyname(); ?>" disabled autofocus='autofocus'>
 															</div>
 														</div>
@@ -114,28 +118,30 @@
 																<?php if(!$event_id) { ?>
 																<select name = "event" class = "form-control" required>
 																	<option value = "">Choose An Event</option>
-																	<?php 
+																	<?php
 																		foreach ($events_data as $l):
-																		
+
 																			$events->setId($l['id']);
-																			$events->setEvent_name($l['event_name']);	
+																			$events->setEvent_name($l['event_name']);
 																	?>
 																		<option value = "<?php echo $events->getId(); ?>" <?php ?> > <?php echo $events->getEvent_name(); ?></option>
 																		<?php endforeach; ?>
 																</select>
 																<?php } else { ?>
-																<input type="text" name = "event" class="form-control"  id="event" 
+																<input type="text" name = "event" class="form-control"  id="event"
 																value="<?php echo $events->getEvent_name(); ?>" disabled autofocus='autofocus'>
 																<?php } ?>
 															</div>
 														</div>
-														
+
 
 														<br />
 														<div class="row">
 															<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-right">
-																<?php if($event_id) 
-																	$disabled = "disabled"; 
+																<?php
+																$disabled = "";
+																if($event_id)
+																	$disabled = "disabled";
 																?>
 																<button type="submit" name = "join_event" <?php echo $disabled; ?> class="btn btn-info"><?php echo $submit_caption; ?></button>
 															</div>
