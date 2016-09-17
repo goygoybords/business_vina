@@ -55,7 +55,7 @@
 										<br />
 										<div class="col-lg-offset-0 col-md-12">
 											<div class = "row" >
-												<table class = "display responsive nowrap" id = "lead-tbl">
+												<table class = "table display responsive nowrap" id = "lead-tbl">
 													<thead>
 														<th>ID</th>
 														<th>Company Name</th>
@@ -65,6 +65,17 @@
 														<th>Address</th>
 														<th>Action</th>
 													</thead>
+													<tfoot>
+														<tr>
+															<td><input type="text" data-column="0"  class="search-input-text"></td>
+															<td><input type="text" data-column="1"  class="search-input-text"></td>
+															<td><input type="text" data-column="2"  class="search-input-text"></td>
+															<td><input type="text" data-column="3"  class="search-input-text"></td>
+															<td><input type="text" data-column="4"  class="search-input-text"></td>
+															<td><input type="text" data-column="5"  class="search-input-text"></td>
+													
+														</tr>
+													</tfoot>
 												</table>
 											</div>
 										</div>
@@ -88,7 +99,7 @@
 <script type="text/javascript">
 	$(document).ready(function()
 	{
-	    $('#lead-tbl').DataTable(
+	    var dataTable = $('#lead-tbl').DataTable(
 	    {
 			"bProcessing": true,
 			"bServerSide": true,
@@ -99,6 +110,15 @@
 	                url :"../process/lead_list2.php", // json datasource
 	                type: "get",  // method  , by default get
 	            }
+
+
 	    } );
+	    $("#employee-grid_filter").css("display","none");
+
+	    $('.search-input-text').on( 'keyup click', function () {   // for text boxes
+					var i =$(this).attr('data-column');  // getting column index
+					var v =$(this).val();  // getting search input value
+					dataTable.columns(i).search(v).draw();
+				} );
 	} );
 </script>
