@@ -123,6 +123,7 @@
 										<div class="row">
 											<div class="col-sm-8">
 												<div class="form-group floating-label">
+													<input type = "hidden" name = "id" value = "<?php echo $lead_id; ?>">
 													<input type="text" name = "companyname" class="form-control"  id="companyname" value="<?php echo $lead_record->getCompanyname(); ?>" required autofocus='autofocus'>
 													<label for="companyname">Company Name</label>
 												</div>
