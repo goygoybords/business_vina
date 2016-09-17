@@ -52,25 +52,27 @@
 								);
 			$result = $lead_model->updateLead($table, $fields, $where, $params);
 
+			// $lead_phones = $phone_model->get_phones_by_leadid($leads->getId());
 
-			$lead_phones = $phone_model->get_phones_by_leadid($leads->getId());
-			foreach($lead_phones as $lp)
-			{
-				$lead_phone = new Phone();
-				$lead_phone->setId($lp[0]); //id
-				$lead_phone->setNumber('');
-				$lead_phone->setPhoneTypeId($lp['phonetypeid']);
-				$lead_phone->setLeadId($lp['leadid']);
+			// foreach($lead_phones as $lp)
+			// {
+			// 	echo $lp['number']." ";
+			// 	die();
+			// 	$lead_phone = new Phone();
+			// 	$lead_phone->setId($lp[0]); //id
+			// 	$lead_phone->setNumber('');
+			// 	$lead_phone->setPhoneTypeId($lp['phonetypeid']);
+			// 	$lead_phone->setLeadId($lp['leadid']);
 
-				$fields = array('number');
-				$where  = " WHERE id = ? ";
-				$params = array(
-											$lead_phone->getNumber(),
-											$lead_phone->getId()
-											);
+			// 	$fields = array('number');
+			// 	$where  = " WHERE id = ? ";
+			// 	$params = array(
+			// 								$lead_phone->getNumber(),
+			// 								$lead_phone->getId()
+			// 								);
 
-				$resultEmptyPhones = $phone_model->updatePhone("phones", $fields, $where, $params);
-			}
+			// 	$resultEmptyPhones = $phone_model->updatePhone("phones", $fields, $where, $params);
+			// }
 
 			for($i=0; $i<count($phones); $i++)
 			{
