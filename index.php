@@ -16,7 +16,7 @@
 							<form class="form floating-label" action="process/login_process.php" accept-charset="utf-8" method="post">
 								<div class="form-group">
 									<input type="email" class="form-control" id="email" name="email" required>
-									<label for="email">Username or Email</label>
+									<label for="email">Email</label>
 								</div>
 								<div class="form-group">
 									<input type="password" class="form-control" id="password" name="password" required>
@@ -24,13 +24,13 @@
 								</div>
 								<br/>
 								<div class="row">
-									<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 text-left">
+									<!-- <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 text-left">
 										<div class="checkbox checkbox-inline checkbox-styled">
 											<label>
 												<input type="checkbox"> <span>Remember me</span>
 											</label>
 										</div>
-									</div><!--end .col -->
+									</div><!end .col --> 
 									<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 text-right">
 										<button class="btn btn-primary btn-raised btn-block" type="submit" name="login">Login</button>
 									</div><!--end .col -->
