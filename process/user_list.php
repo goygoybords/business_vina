@@ -19,18 +19,6 @@
  */
 
 // DB table to use
-require '../class/database.php';
-    require '../class/user.php';
-
-    require '../model/user_model.php';
-
-    $list = new User_Model(new Database());
-        $table = 'users';
-        $fields = array('id','firstname' , 'lastname' , 'usertypeid' ,'email');
-        $where = "status = ?";
-        $params = array(1);
-    $users = $list->queryUser($table, $fields, $where, $params);
-
 
 $table = 'users';
 
