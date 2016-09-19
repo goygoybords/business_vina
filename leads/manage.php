@@ -15,6 +15,7 @@
 	require '../class/phones.php';
 	require '../class/phonetypes.php';
 	require '../class/lead.php';
+	require '../class/Note.php';
 
 	require '../model/position_model.php';
 	require '../model/sicode_model.php';
@@ -22,6 +23,7 @@
 	require '../model/phones_model.php';
 	require '../model/phonetypes_model.php';
 	require '../model/lead_model.php';
+	require '../model/note_model.php';
 
 	$list_positions = new Position_Model(new Database());
 	$list_siccode = new SICode_Model(new Database());
@@ -29,10 +31,12 @@
 	$list_phones = new Phone_Model(new Database());
 	$list_phonetypes = new PhoneTypes_Model(new Database());
 	$lead_model = new Lead_Model(new Database());
+	$list_note = new Note_Model(new Database());
 
 	$lead_id = (isset($_GET["id"]) ? $_GET["id"] : "");
 
 	$lead_record = new Leads();
+	$note_record = new Note();
 	$lead_phones = null;
 	$phone_types = $list_phonetypes->get_all("phonetypes");
 
@@ -73,7 +77,18 @@
 						$lead_record->setDatelastupdated($l['datelastupdated']);
 						$lead_record->setStatus($l['status']);
 					}
-
+					$table = 'notes';
+					$fields = array('details');
+					$where = " leadid = ? ";
+					$params = array($lead_id);
+					$notes = $lead_model->get_by_id($table, $fields, $where, $params);
+					if(count($notes) > 0)
+					{
+						foreach ($notes as $n )
+						{
+							$note_record->setDetails($n['details']);
+						}
+					}
 					if($lead_record->getStatus() == 1)
 					{
 						$lead_phones = $list_phones->get_phones_by_leadid($lead_record->getId());
@@ -276,6 +291,18 @@
 										<?php endforeach; ?>
 										</div>
 										<br />
+										<div class="form-group">
+											<label><b>Notes</b></label>
+										</div>
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="form-group floating-label">
+													<textarea class ="form-control" name = "notes" id = "notes" rows = "5"><?php echo $note_record->getDetails();?></textarea>
+													<label class="notes">NOTES</label>
+												</div>
+											</div>
+										</div>
+										<br/>
 										<div class="row">
 											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-right">
 
@@ -287,7 +314,6 @@
 
 											</div>
 										</div>
-
 											<?php
 											if(isset($_GET['msg']))
 											{
@@ -305,7 +331,6 @@
 												echo '<span>'.$error.'</span>';
 											}
 										?>
-
 									</div><!--end .card-body -->
 								</div><!--end .card -->
 							</form>

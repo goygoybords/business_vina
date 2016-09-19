@@ -26,7 +26,8 @@
 		{
 			foreach ($login as $l ) 
 			{
-				$_SESSION['firstname'] = $l['firstname'];
+				$_SESSION['id'] = $l['id'];
+ 				$_SESSION['firstname'] = $l['firstname'];
 				$_SESSION['lastname'] = $l['lastname'];
 				$_SESSION['user_type'] = $l['usertypeid'];
 				$_SESSION['isLogin'] = true;
