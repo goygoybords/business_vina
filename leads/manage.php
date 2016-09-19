@@ -256,6 +256,22 @@
 											</div>
 										</div>
 										<br />
+
+										<div class="form-group">
+											<label><b>CAMPAIGN</b></label>
+										</div>
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="form-group floating-label">
+													<select name = "campaign" class = "form-control" id = "campaign" required>
+														<option></option>
+													</select>
+													<label class="campaign">Campaign</label>
+												</div>
+											</div>
+										</div>
+										<br/>
+
 										<div class="form-group">
 											<label><b>CONTACT NUMBERS</b></label>
 										</div>

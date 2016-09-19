@@ -26,6 +26,25 @@
 				</li>
 				<li class="gui-folder">
 					<a>
+						<div class="gui-icon"><i class="fa fa-list-alt"></i></div>
+						<span class="title">Campaign</span>
+					</a>
+					<ul>
+						<li>
+							<a href="../campaign/campaign.php">
+								<span class="title">Campaign</span>
+							</a>
+						</li>
+						<li>
+							<a href="../campaign/campaign_type.php">
+								<span class="title">Campaign Type</span>
+							</a>
+						</li>
+					</ul><!--end /submenu -->
+				</li><!--end /menu-li -->
+				
+				<li class="gui-folder">
+					<a>
 						<div class="gui-icon"><i class="fa fa-calendar"></i></div>
 						<span class="title">Calendar</span>
 					</a>
