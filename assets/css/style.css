@@ -55,11 +55,11 @@ div#msg_inf {
 
 #spacer{
 	margin-top: 20px;
-	
+
 }
 
 #profile-info{
-    margin-top: 12px;    
+    margin-top: 12px;
     color: darkgray;
 }
 
@@ -69,6 +69,6 @@ div#msg_inf {
 
 #div-add-user{
     margin-left: auto;
-    margin-right: auto;    
+    margin-right: auto;
 }
 /*#listcus tbody tr>td:last-child{text-align: center;}*/

@@ -9,7 +9,7 @@
 			</div>
 			<div class="expanded">
 				<a href="../search/search.php">
-					<span class="text-lg text-bold text-primary ">KhoSystem</span>
+					<span class="text-lg text-bold text-primary ">Vina Business System</span>
 				</a>
 			</div>
 		</div>
@@ -18,23 +18,78 @@
 			<!-- BEGIN MAIN MENU -->
 			<ul id="main-menu" class="gui-controls">
 
-				<!-- BEGIN DASHBOARD -->
-				<!-- <li>
-					<a href="../search/search.php" >
-						<div class="gui-icon"><i class="md md-search"></i></div>
-						<span class="title">Search</span>
-					</a>
-				</li> -->
-				<!--<end /menu-li -->
-
-				<!-- BEGIN EMAIL -->
 				<li>
-					<!--<a href="../../html/customer/customerTab.php" class="active">-->
-					<a href="../user/user.php">
-						<div class="gui-icon"><i class="fa fa-users"></i></div>
-						<span class="title">User Accounts</span>
+					<a href="../leads/leads.php">
+						<div class="gui-icon"><i class="fa fa-list-alt"></i></div>
+						<span class="title">Leads</span>
 					</a>
 				</li>
+				<li class="gui-folder">
+					<a>
+						<div class="gui-icon"><i class="fa fa-list-alt"></i></div>
+						<span class="title">Campaign</span>
+					</a>
+					<ul>
+						<li>
+							<a href="../campaign/campaign.php">
+								<span class="title">Campaign</span>
+							</a>
+						</li>
+						<li>
+							<a href="../campaign/campaign_type.php">
+								<span class="title">Campaign Type</span>
+							</a>
+						</li>
+					</ul><!--end /submenu -->
+				</li><!--end /menu-li -->
+				
+				<li class="gui-folder">
+					<a>
+						<div class="gui-icon"><i class="fa fa-calendar"></i></div>
+						<span class="title">Calendar</span>
+					</a>
+					<!--start submenu -->
+					<ul>
+						<li>
+							<a href="../calendar/calendar.php">
+								<span class="title">Calendar</span>
+							</a>
+						</li>
+						<li>
+							<a href="../calendar/calendar_events.php">
+								<span class="title">Calendar Events</span>
+							</a>
+						</li>
+
+					</ul><!--end /submenu -->
+				</li><!--end /menu-li -->
+
+				<li>
+					<a href="../report/report.php">
+						<div class="gui-icon"><i class="fa fa-file-excel-o" aria-hidden="true"></i></div>
+						<span class="title">Report</span>
+					</a>
+				</li>
+				
+
+				
+				<?php if($_SESSION['user_type'] == 2): ?>
+				<li class="gui-folder">
+					<a>
+						<div class="gui-icon"><i class="fa fa-users"></i></div>
+						<span class="title">Admin Modules</span>
+					</a>
+					<!--start submenu -->
+					<ul>
+						<li>
+							<a href="../user/user.php">
+								<span class="title">User Accounts</span>
+							</a>
+						</li>
+
+					</ul><!--end /submenu -->
+				</li><!--end /menu-li -->
+				<?php endif; ?>
 				<li>
 					<a href="../logout.php">
 						<div class="gui-icon"><i class="fa fa-sign-out"></i></div>
