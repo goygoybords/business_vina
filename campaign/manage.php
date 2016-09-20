@@ -115,6 +115,9 @@
 										<div class="row">
 											<div class="col-sm-4">
 												<div class="form-group floating-label">
+													<?php if($form_state == 2): ?>
+														<input type = "hidden" name = "id" value = "<?php echo $campaign_id; ?>">
+													<?php endif; ?>
 													<input type="text" name = "title" class="form-control" id="title"  value = "<?php echo $campaign_record->getTitle(); ?>" required >
 													<label for="title">Title</label>
 												</div>
@@ -159,9 +162,10 @@
 
 											<div class="col-sm-4">
 												<div class="form-group floating-label">
-													<input type="text" name = "cost_per_lead" class="form-control"  id="cost_per_lead" value = "<?php echo $campaign_record->getCost_per_lead(); ?>" required>
+													<input type="text" name = "cost_per_lead" class="form-control dollar-mask"  id="cost_per_lead" value = "<?php echo $campaign_record->getCost_per_lead(); ?>" required>
 													<label for="cost_per_lead">Cost Per Lead</label>
 												</div>
+									
 											</div>
 										</div>
 															

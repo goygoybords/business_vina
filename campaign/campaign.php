@@ -96,7 +96,7 @@
 										                                <i class="fa fa-edit"></i> Edit
 										                            </span>
 										                        </a> &nbsp;
-										                        <a href="../process/campaign_manage.php?id=<?php echo $campaign->getId(); ?>" onclick="return confirm(\'Are you sure you want to delete this record?\')" >
+										                        <a href="../process/campaign_manage.php?id=<?php echo $campaign->getId(); ?>&del" onclick="return confirm(\'Are you sure you want to delete this record?\')" >
 										                            <span class="label label-inverse" style = "color:black;">
 										                                <i class="fa fa-remove"></i> Delete
 										                            </span>
