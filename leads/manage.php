@@ -15,6 +15,7 @@
 	require '../class/phones.php';
 	require '../class/phonetypes.php';
 	require '../class/lead.php';
+	require '../class/Note.php';
 
 	require '../model/position_model.php';
 	require '../model/sicode_model.php';
@@ -22,6 +23,7 @@
 	require '../model/phones_model.php';
 	require '../model/phonetypes_model.php';
 	require '../model/lead_model.php';
+	require '../model/note_model.php';
 
 	$list_positions = new Position_Model(new Database());
 	$list_siccode = new SICode_Model(new Database());
@@ -29,10 +31,13 @@
 	$list_phones = new Phone_Model(new Database());
 	$list_phonetypes = new PhoneTypes_Model(new Database());
 	$lead_model = new Lead_Model(new Database());
+	$list_note = new Note_Model(new Database());
 
 	$lead_id = (isset($_GET["id"]) ? $_GET["id"] : "");
+	$note_id = (isset($_GET["note"]) ? $_GET["note"] : "");
 
 	$lead_record = new Leads();
+	$note_record = new Note();
 	$lead_phones = null;
 	$phone_types = $list_phonetypes->get_all("phonetypes");
 
@@ -73,7 +78,20 @@
 						$lead_record->setDatelastupdated($l['datelastupdated']);
 						$lead_record->setStatus($l['status']);
 					}
+					if($note_id)
+					{
+						$table = 'notes';
+						$fields = array('*');
+						$where = " id = ? ";
+						$params = array($note_id);
+						$notes = $lead_model->get_by_id($table, $fields, $where, $params);
 
+						foreach ($notes as $n ) 
+						{
+							$note_record->setDetails($n['details']);
+						}
+					}
+					
 					if($lead_record->getStatus() == 1)
 					{
 						$lead_phones = $list_phones->get_phones_by_leadid($lead_record->getId());
@@ -238,6 +256,22 @@
 											</div>
 										</div>
 										<br />
+
+										<div class="form-group">
+											<label><b>CAMPAIGN</b></label>
+										</div>
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="form-group floating-label">
+													<select name = "campaign" class = "form-control" id = "campaign" required>
+														<option></option>
+													</select>
+													<label class="campaign">Campaign</label>
+												</div>
+											</div>
+										</div>
+										<br/>
+
 										<div class="form-group">
 											<label><b>CONTACT NUMBERS</b></label>
 										</div>
@@ -276,6 +310,68 @@
 										<?php endforeach; ?>
 										</div>
 										<br />
+										<div class="form-group">
+											<label><b>Notes</b></label>
+										</div>
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="form-group floating-label">
+													<?php if($note_id) :?>
+														<input type = "hidden" name = "add_update" value = "2">
+														<input type = "hidden" name = "note_id" value = "<?php echo $note_id; ?>">
+														<textarea class ="form-control" name = "notes" id = "notes" rows = "5"><?php echo $note_record->getDetails(); ?></textarea>
+													<?php else: ?>
+														<input type = "hidden" name = "add_update" value = "1">
+														<textarea class ="form-control" name = "notes" id = "notes" rows = "5"></textarea>
+													<?php endif; ?>			
+													<label class="notes">NOTES</label>
+
+												</div>
+											</div>
+										</div>
+										<br/>
+
+										<?php if($lead_id): ?>
+										<div class="form-group">
+											<label><b>Note List</b></label>
+										</div>
+
+										<div class="row">
+											<div class="col-lg-offset-0 col-md-12">
+												<div class = "row" >
+													<table class = "table display responsive nowrap" id = "note-tbl">
+														<?php 
+															$table = 'notes';
+															$fields = array('*');
+															$where = " leadid = ? ";
+															$params = array($lead_id);
+															$notes = $lead_model->get_by_id($table, $fields, $where, $params);
+														?>
+														<thead>
+															<th>Details</th>
+															<th>Action</th>
+														</thead>
+														<tbody>
+															<?php foreach ($notes as $n ): ?>
+															<tr>
+																<td><?php echo $n['details']; ?></td>
+																<td>
+																	<a href="manage.php?id=<?php echo $lead_id; ?>&note=<?php echo $n['id']; ?>" >
+											                            <span class="label label-inverse" style = "color:black;">
+											                                <i class="fa fa-edit"></i> Edit
+											                            </span>
+											                        </a>
+											                    </td>
+															</tr>
+															<?php endforeach; ?>
+														</tbody>	
+													</table>
+												</div>
+											</div>
+										</div>
+										<br/>
+										<?php endif; ?>
+
 										<div class="row">
 											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-right">
 
@@ -287,7 +383,6 @@
 
 											</div>
 										</div>
-
 											<?php
 											if(isset($_GET['msg']))
 											{
@@ -305,7 +400,6 @@
 												echo '<span>'.$error.'</span>';
 											}
 										?>
-
 									</div><!--end .card-body -->
 								</div><!--end .card -->
 							</form>
@@ -321,5 +415,23 @@
 <!-- END BASE -->
 <?php
 	include '../include/sidebar.php';
-	include '../include/end.html';
+	include '../include/end.php';
 ?>
+
+<script type="text/javascript">
+	$(document).ready(function()
+	{
+	    dataTable = $('#note-tbl').DataTable(
+	    {
+			// "bProcessing": true,
+			// "bServerSide": true,
+			// 	"responsive": true,
+	  //       "sPaginationType": "full_numbers",
+	  //       "order": [0,'desc'],
+	  //           "ajax":{
+	  //               url :"../process/note_list.php", // json datasource
+	  //               type: "get",  // method  , by default get
+	  //           }
+	    } );
+	} );
+</script>

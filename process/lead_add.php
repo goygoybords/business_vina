@@ -1,15 +1,20 @@
 <?php
+	session_start();
 	require '../class/database.php';
 	require '../class/lead.php';
 	require '../class/phones.php';
+	require '../class/note.php';
 	require '../model/phones_model.php';
 	require '../model/lead_model.php';
+	require '../model/note_model.php';
 
 
 	$leads = new Leads();
 	$lead_model = new Lead_Model(new Database());
 	$phone = new Phone();
 	$phone_model = new Phone_Model(new Database());
+	$note = new Note();
+	$note_model = new Note_Model(new Database());
 
 	extract($_POST);
 	if(isset($_POST['create_lead']))
@@ -62,6 +67,21 @@
 							];
 			$phone_result = $phone_model->createPhone('phones', $data);
 		}
+
+		$data = null;
+		$note->setLeadid($result);
+		$note->setDetails($notes);
+		$note->setUserid( $_SESSION['id'] );
+		$note->setDatecreated(strtotime(date('Y-m-d')));
+		$note->setStatus(1);
+		$data = [
+					'leadid' => $note->getLeadid() ,
+					'details'  => $note->getDetails()   ,
+					'userid'     => $note->getUserid()      ,
+					'datecreated'  => $note->getDatecreated()   ,
+					'status' => $note->getStatus() 
+				];
+		$note_result = $note_model->createNote('notes', $data);
 
 		header("location: ../leads/manage.php?msg=inserted");
 	}

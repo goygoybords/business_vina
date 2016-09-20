@@ -1,15 +1,22 @@
 <?php
+	session_start();
 	require '../class/database.php';
 	require '../class/lead.php';
 	require '../class/phones.php';
+	require '../class/note.php';
+
 	require '../model/lead_model.php';
 	require '../model/phones_model.php';
+	require '../model/note_model.php';
 
 	$leads = new Leads();
 	$lead_model = new Lead_Model(new Database());
 
 	$phone = new Phone();
 	$phone_model = new Phone_Model(new Database());
+
+	$note = new Note();
+	$note_model = new Note_Model(new Database());
 
 	if(isset($_POST['create_lead']))
 	{
@@ -32,6 +39,7 @@
 		$table  = "leads";
 		if(isset($_POST['create_lead']))
 		{
+		
 			$leads->setStatus(1);
 			$fields = array('companyname' ,'position' ,'firstname' , 'middlename' , 'lastname', 'email', 'siccode', 'address', 'city', 'zip', 'state', 'datelastupdated');
 			$where  = "WHERE id = ?";
@@ -91,6 +99,37 @@
 
 				$resultUpdatePhones = $phone_model->updatePhone("phones", $fields, $where, $params);
 			}
+			// note update part
+			if($add_update == 1)
+			{
+				$data = null;
+				$note->setLeadid($id);
+				$note->setDetails($notes);
+				$note->setUserid( $_SESSION['id'] );
+				$note->setDatecreated(strtotime(date('Y-m-d')));
+				$note->setStatus(1);
+				$data = [
+							'leadid' => $note->getLeadid() ,
+							'details'  => $note->getDetails()   ,
+							'userid'     => $note->getUserid()      ,
+							'datecreated'  => $note->getDatecreated()   ,
+							'status' => $note->getStatus() 
+						];
+				$note_result = $note_model->createNote('notes', $data);
+
+			}
+			else if($add_update == 2)
+			{
+				$note->setId($note_id);
+				$note->setLeadid($id);
+				$note->setDetails($notes);
+				$fields = array('details');
+				$where  = "WHERE id = ? AND leadid = ?";
+				$params = array($note->getDetails(), $note->getId(), $note->getLeadid());
+				$result_note = $note_model->updateNote("notes", $fields, $where, $params);
+
+			}
+			
 			header("location: ../leads/manage.php?id=".$leads->getId()."&msg=updated");
 		}
 	}

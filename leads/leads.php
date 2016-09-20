@@ -67,13 +67,13 @@
 													</thead>
 													<tfoot>
 														<tr>
-															<td><input type="text" data-column="0"  class="search-input-text"></td>
-															<td><input type="text" data-column="1"  class="search-input-text"></td>
-															<td><input type="text" data-column="2"  class="search-input-text"></td>
-															<td><input type="text" data-column="3"  class="search-input-text"></td>
-															<td><input type="text" data-column="4"  class="search-input-text"></td>
-															<td><input type="text" data-column="5"  class="search-input-text"></td>
-													
+															<td><input type="text" data-column="0"  placeholder = "Search ID" class="search-input-text"></td>
+															<td><input type="text" data-column="1"  placeholder = "Search Company" class="search-input-text"></td>
+															<td><input type="text" data-column="2"  placeholder = "Search Name" class="search-input-text"></td>
+															<td><input type="text" data-column="3"  placeholder = "Search Position" class="search-input-text"></td>
+															<td><input type="text" data-column="4"  placeholder = "Search SI Code" class="search-input-text"></td>
+															<td><input type="text" data-column="5"  placeholder = "Search Address" class="search-input-text"></td>
+															<td></td>
 														</tr>
 													</tfoot>
 												</table>
