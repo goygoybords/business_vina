@@ -43,7 +43,6 @@
 		$table  = "leads";
 		if(isset($_POST['create_lead']))
 		{
-		
 			$leads->setStatus(1);
 			$fields = array('companyname' ,'position' ,'firstname' , 'middlename' , 'lastname', 'email', 'siccode', 'address', 'city', 'zip', 'state', 'datelastupdated');
 			$where  = "WHERE id = ?";
@@ -104,7 +103,7 @@
 				$resultUpdatePhones = $phone_model->updatePhone("phones", $fields, $where, $params);
 			}
 			// campaign part
-			if($add_update2 == 1)
+			if($detail_update == 1)
 			{
 				$data = null;
 				$campaign_detail->setLeadid($id);
@@ -121,14 +120,14 @@
 				$campaign_detail_model->createDetails('campaign_details', $data);
 
 			}
-			else if($add_update2 == 2)
+			else if($detail_update == 2)
 			{
-				$campaign_detail->setLeadid($note_id);
+				$campaign_detail->setLeadid($id);
 				$campaign_detail->setCampaign_id($campaign);
 				$fields = array('campaign_id');
 				$where  = "WHERE leadid = ?";
 				$params = array($campaign_detail->getCampaign_id(), $campaign_detail->getLeadid());
-				$campaign_detail_model->updateNote("campaign_details", $fields, $where, $params);
+				$campaign_detail_model->updateDetails("campaign_details", $fields, $where, $params);
 
 			}
 

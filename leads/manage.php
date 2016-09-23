@@ -105,7 +105,6 @@
 					$where = " leadid = ? ";
 					$params = array($lead_id);
 					$detail = $list_campaign_detail->get_all($table, $fields, $where, $params);
-					print_r($detail);
 					if(count($detail) > 0 )
 					{
 						foreach ($detail as $d ) 
@@ -117,7 +116,6 @@
 					else
 					{
 						$campaign_det = new Campaign();
-						//$campaign_det->setId("");
 					}
 					
 					
@@ -293,9 +291,9 @@
 											<div class="col-sm-12">
 												<div class="form-group floating-label">
 													<?php if(count($detail) > 0) :?>
-														<input type = "hidden" name = "add_update2" value = "2">
+														<input type = "hidden" name = "detail_update" value = "2">
 													<?php else: ?>
-														<input type = "hidden" name = "add_update2" value = "1">
+														<input type = "hidden" name = "detail_update" value = "1">
 													<?php endif; ?>
 
 													<select name = "campaign" class = "form-control" id = "campaign">
@@ -314,6 +312,25 @@
 														<?php endforeach; ?>
 													</select>
 													<label class="campaign">Campaign</label>
+												</div>
+											</div>
+										</div>
+										<br/>
+
+										<div class="form-group">
+											<label><b>EVENT</b></label>
+										</div>
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="form-group floating-label">
+												
+
+													<select name = "events" class = "form-control" id = "events">
+														
+														<option></option>
+													 
+													</select>
+													<label class="events">Events</label>
 												</div>
 											</div>
 										</div>
@@ -376,52 +393,65 @@
 												</div>
 											</div>
 										</div>
-										<br/>
 
 										<?php if($lead_id): ?>
-										<div class="form-group">
-											<label><b>Note List</b></label>
-										</div>
-
 										<div class="row">
 											<div class="col-lg-offset-0 col-md-12">
 												<div class = "row" >
-													<table class = "table display responsive nowrap" id = "note-tbl">
-														<?php 
-															$table = 'notes';
-															$fields = array('*');
-															$where = " leadid = ? ";
-															$params = array($lead_id);
-															$notes = $lead_model->get_by_id($table, $fields, $where, $params);
-														?>
-														<thead>
-															<th>Date Noted</th>
-															<th>Details</th>
-															<th>Action</th>
-														</thead>
-														<tbody>
-															<?php 
-																foreach ($notes as $n ): 
-																$note_record = new Note();
-																$note_record->setId($n['id']);
-																$note_record->setDetails($n['details']);
-																$note_record->setDatecreated(date('Y-m-d', $n['datecreated']) );
+													<div class="card-body" id="tabsinfo" >
+														<div class="col-md-12">
+																<div class="card">
+																<div class="card-head">
+																	<ul class="nav nav-tabs" data-toggle="tabs">
+																		<li class="active"><a href="#note">Note List</a></li>
+																		<li><a href="#event">Event List</a></li>
+												
+																	</ul>
+																</div>   
+																<div class="card-body tab-content">
+																	<div class="tab-pane active" id="note">
+																		<table class = "table display responsive nowrap" id = "note-tbl">
+																			<?php 
+																				$table = 'notes';
+																				$fields = array('*');
+																				$where = " leadid = ? ";
+																				$params = array($lead_id);
+																				$notes = $lead_model->get_by_id($table, $fields, $where, $params);
+																			?>
+																			<thead>
+																				<th>Date Noted</th>
+																				<th>Details</th>
+																				<th>Action</th>
+																			</thead>
+																			<tbody>
+																				<?php 
+																					foreach ($notes as $n ): 
+																					$note_record = new Note();
+																					$note_record->setId($n['id']);
+																					$note_record->setDetails($n['details']);
+																					$note_record->setDatecreated(date('Y-m-d', $n['datecreated']) );
 
-															?>
-															<tr>
-																<td><?php echo $note_record->getDatecreated(); ?></td>
-																<td><?php echo $note_record->getDetails(); ?></td>
-																<td>
-																	<a href="manage.php?id=<?php echo $lead_id; ?>&note=<?php echo $note_record->getId(); ?>" >
-											                            <span class="label label-inverse" style = "color:black;">
-											                                <i class="fa fa-edit"></i> Edit
-											                            </span>
-											                        </a>
-											                    </td>
-															</tr>
-															<?php endforeach; ?>
-														</tbody>	
-													</table>
+																				?>
+																				<tr>
+																					<td><?php echo $note_record->getDatecreated(); ?></td>
+																					<td><?php echo $note_record->getDetails(); ?></td>
+																					<td>
+																						<a href="manage.php?id=<?php echo $lead_id; ?>&note=<?php echo $note_record->getId(); ?>" >
+																                            <span class="label label-inverse" style = "color:black;">
+																                                <i class="fa fa-edit"></i> Edit
+																                            </span>
+																                        </a>
+																                    </td>
+																				</tr>
+																				<?php endforeach; ?>
+																			</tbody>	
+																		</table>
+																	</div>
+																	<div class="tab-pane" id="event"><?php echo "okay2"; ?></div>
+																</div>
+															</div>
+														</div>
+													</div><!-- end tabs -->
 												</div>
 											</div>
 										</div>
@@ -431,10 +461,10 @@
 										<div class="row">
 											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-right">
 
-												<?php
+											<!-- 	<?php
 													if($form_state == 2)
 														echo '<a href = "../calendar/specific_event.php?id='.$lead_record->getId().'" class = "btn btn-secondary">Join Event</a>';
-												?>
+												?> -->
 												<button type="submit" name = "create_lead" class="btn btn-info"><?php echo $submit_caption; ?></button>
 
 											</div>
@@ -460,6 +490,9 @@
 								</div><!--end .card -->
 							</form>
 						</div><!--end .card -->
+
+
+						
 
 					</div>
 				</div>
