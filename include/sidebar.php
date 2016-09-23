@@ -57,6 +57,11 @@
 						</li>
 						<li>
 							<a href="../calendar/calendar_events.php">
+								<span class="title">Create Events</span>
+							</a>
+						</li>
+						<li>
+							<a href="../calendar/upcoming_events.php">
 								<span class="title">Calendar Events</span>
 							</a>
 						</li>

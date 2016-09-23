@@ -28,16 +28,6 @@
             $this->event_name = $event_name;
         }
 
-        public function getLead_id()
-        {
-            return $this->lead_id;
-        }
-
-        public function setLead_id($lead_id)
-        {
-            $this->lead_id = $lead_id;
-        }
-
         public function getStart_date()
         {
             return $this->start_date;

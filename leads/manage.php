@@ -17,6 +17,9 @@
 	require '../class/lead.php';
 	require '../class/Note.php';
 	require '../class/campaign.php';
+	require '../class/calendar_events.php';
+	require '../class/calendar_details.php';
+
 
 	require '../model/position_model.php';
 	require '../model/sicode_model.php';
@@ -28,9 +31,11 @@
 
 	require '../model/campaign_model.php';
 	require '../model/campaign_details_model.php';
+	require '../model/calendar_events_model.php';
+	require '../model/calendar_details_model.php';
 
+	
 	$list_campaign = new Campaign_Model(new Database());
-
 	$list_positions = new Position_Model(new Database());
 	$list_siccode = new SICode_Model(new Database());
 	$list_state = new State_Model(new Database());
@@ -38,14 +43,21 @@
 	$list_phonetypes = new PhoneTypes_Model(new Database());
 	$lead_model = new Lead_Model(new Database());
 	$list_note = new Note_Model(new Database());
+	$list_events = new Calendar_Events_Model(new Database());
 
 	$list_campaign_detail = new Campaign_Details_Model(new Database());
+	$list_calendar_detail = new Calendar_Details_Model(new Database());
 
 	$lead_id = (isset($_GET["id"]) ? $_GET["id"] : "");
 	$note_id = (isset($_GET["note"]) ? $_GET["note"] : "");
+	$event_id = (isset($_GET["event"]) ? $_GET["event"] : "");
+
 
 	$lead_record = new Leads();
 	$note_record = new Note();
+	$campaign_det = new Campaign();
+	$event = new CalendarEvents();
+	$calendar_det = new CalendarDetails();
 	$lead_phones = null;
 	$phone_types = $list_phonetypes->get_all("phonetypes");
 
@@ -53,7 +65,8 @@
 	$form_header = "Add New Lead";
 	$submit_caption = "Create Lead";
 	$submit_url = "../process/lead_add.php";
-
+	$detail =0;
+	$cal_detail = 0;
 	$msg = (isset($_GET["msg"]) ? $_GET["msg"] : "");
 	if($lead_id)
 	{
@@ -116,6 +129,27 @@
 					else
 					{
 						$campaign_det = new Campaign();
+					}
+					
+					if($event_id)
+					{
+						$table = 'calendar_events_details';
+						$fields = array('*');
+						$where = " leadid = ? ";
+						$params = array($lead_id);
+						$cal_detail = $list_calendar_detail->get_all($table, $fields, $where, $params);
+						if(count($cal_detail) > 0 )
+						{
+							foreach ($cal_detail as $d ) 
+							{
+								$calendar_det = new CalendarDetails();
+								$calendar_det->setCalendar_event_id($d['calendar_event_id']);
+							}
+						}
+						else
+						{
+							$calendar_det = new CalendarEvents();
+						}
 					}
 					
 					
@@ -323,12 +357,22 @@
 										<div class="row">
 											<div class="col-sm-12">
 												<div class="form-group floating-label">
-												
-
+													<?php if($event_id) :?>
+														<input type = "hidden" name = "event_update" value = "2">
+													<?php else: ?>
+														<input type = "hidden" name = "event_update" value = "1">
+													<?php endif; ?>
 													<select name = "events" class = "form-control" id = "events">
-														
 														<option></option>
-													 
+														<?php $event_list = $list_events->get_all('calendar_events', array('id', 'event_name') ,'status = ?', array(1) ); ?>
+														<?php foreach ($event_list as $e ) : ?>
+														<?php 
+															$event = new CalendarEvents();
+															$event->setId($e['id']);
+															$event->setEvent_name($e['event_name']);
+														?>
+														<option value = "<?php echo $event->getId(); ?>" <?php echo ($calendar_det->getCalendar_event_id() == $event->getId() ? "selected='selected'" : ""); ?> ><?php echo $event->getEvent_name(); ?></option>
+													 	<?php endforeach; ?>
 													</select>
 													<label class="events">Events</label>
 												</div>
@@ -447,7 +491,44 @@
 																			</tbody>	
 																		</table>
 																	</div>
-																	<div class="tab-pane" id="event"><?php echo "okay2"; ?></div>
+																	<div class="tab-pane" id="event">
+																		<table class = "table display responsive nowrap" id = "event-tbl">
+																			<?php 
+																				$table = 'calendar_events_details';
+																				$fields = array('*');
+																				$where = " leadid = ? ";
+																				$params = array($lead_id);
+																				$cal_detail = $list_calendar_detail->get_all($table, $fields, $where, $params);
+																			?>
+																			<thead>
+																				<th>Date</th>
+																				<th>Event</th>
+																				<th>Action</th>
+																			</thead>
+																			<tbody>
+																				<?php 
+																					foreach ($cal_detail as $n ): 
+																					$calendar_det = new CalendarDetails();
+																					$calendar_det->setId($n['id']);
+																					$calendar_det->setCalendar_event_id($n['calendar_event_id']);
+																					$calendar_det->setDatecreated(date('Y-m-d', $n['datecreated']) );
+
+																				?>
+																				<tr>
+																					<td><?php echo $calendar_det->getDatecreated(); ?></td>
+																					<td><?php echo $calendar_det->getCalendar_event_id(); ?></td>
+																					<td>
+																						<a href="manage.php?id=<?php echo $lead_id; ?>&event=<?php echo $calendar_det->getId(); ?>" >
+																                            <span class="label label-inverse" style = "color:black;">
+																                                <i class="fa fa-edit"></i> Edit
+																                            </span>
+																                        </a>
+																                    </td>
+																				</tr>
+																				<?php endforeach; ?>
+																			</tbody>	
+																		</table>
+																	</div>
 																</div>
 															</div>
 														</div>
@@ -512,15 +593,17 @@
 	{
 	    dataTable = $('#note-tbl').DataTable(
 	    {
-			// "bProcessing": true,
-			// "bServerSide": true,
-			// 	"responsive": true,
-	  //       "sPaginationType": "full_numbers",
-	  //       "order": [0,'desc'],
-	  //           "ajax":{
-	  //               url :"../process/note_list.php", // json datasource
-	  //               type: "get",  // method  , by default get
-	  //           }
+			"responsive": true,
+	        "order": [0,'desc'],
+
+	    } );
+
+
+	    dataTable = $('#event-tbl').DataTable(
+	    {
+	    	"responsive": true,
+	        "order": [0,'desc'],
+			
 	    } );
 	} );
 </script>

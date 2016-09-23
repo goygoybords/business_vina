@@ -5,11 +5,16 @@
 	require '../class/phones.php';
 	require '../class/note.php';
 	require '../class/campaign_details.php';
+	require '../class/calendar_details.php';
 
 	require '../model/lead_model.php';
 	require '../model/phones_model.php';
 	require '../model/note_model.php';
 	require '../model/campaign_details_model.php';
+	require '../model/calendar_details_model.php';
+
+
+
 
 	$leads = new Leads();
 	$lead_model = new Lead_Model(new Database());
@@ -22,6 +27,10 @@
 
 	$campaign_detail = new Campaign_Details();
 	$campaign_detail_model = new Campaign_Details_Model(new Database());
+
+	$calendar_details = new CalendarDetails();
+	$calendar_details_model = new Calendar_Details_Model(new Database());
+
 	if(isset($_POST['create_lead']))
 	{
 		extract($_POST);
@@ -132,6 +141,30 @@
 					$campaign_detail_model->updateDetails("campaign_details", $fields, $where, $params);
 				}
 
+			}
+
+			if($events != null)
+			{
+				if($event_update == 1)
+				{
+					$data = null;
+					$calendar_details->setLeadid($id);
+					$calendar_details->setCalendar_event_id(htmlentities($events));
+					$calendar_details->setDatecreated(strtotime(date('Y-m-d')));
+					$calendar_details->setStatus(1);
+
+					$data = [
+								'leadid' => $calendar_details->getLeadid() ,
+								'calendar_event_id'  => $calendar_details->getCalendar_event_id()   ,
+								'datecreated'  => $calendar_details->getDatecreated()   ,
+								'status' => $calendar_details->getStatus() 
+							];
+					$calendar_details_model->createDetail('calendar_events_details', $data);
+				}
+				// else if($event_update == 2)
+				// {
+
+				// }
 			}
 			
 
