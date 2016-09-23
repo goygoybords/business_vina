@@ -103,65 +103,70 @@
 				$resultUpdatePhones = $phone_model->updatePhone("phones", $fields, $where, $params);
 			}
 			// campaign part
-			if($detail_update == 1)
+			if($campaign != null)
 			{
-				$data = null;
-				$campaign_detail->setLeadid($id);
-				$campaign_detail->setCampaign_id(htmlentities($campaign));
-				$campaign_detail->setDatecreated(strtotime(date('Y-m-d')));
-				$campaign_detail->setStatus(1);
+				if($detail_update == 1)
+				{
+					$data = null;
+					$campaign_detail->setLeadid($id);
+					$campaign_detail->setCampaign_id(htmlentities($campaign));
+					$campaign_detail->setDatecreated(strtotime(date('Y-m-d')));
+					$campaign_detail->setStatus(1);
 
-				$data = [
-							'leadid' => $campaign_detail->getLeadid() ,
-							'campaign_id'  => $campaign_detail->getCampaign_id()   ,
-							'datecreated'  => $campaign_detail->getDatecreated()   ,
-							'status' => $campaign_detail->getStatus() 
-						];
-				$campaign_detail_model->createDetails('campaign_details', $data);
+					$data = [
+								'leadid' => $campaign_detail->getLeadid() ,
+								'campaign_id'  => $campaign_detail->getCampaign_id()   ,
+								'datecreated'  => $campaign_detail->getDatecreated()   ,
+								'status' => $campaign_detail->getStatus() 
+							];
+					$campaign_detail_model->createDetails('campaign_details', $data);
 
-			}
-			else if($detail_update == 2)
-			{
-				$campaign_detail->setLeadid($id);
-				$campaign_detail->setCampaign_id($campaign);
-				$fields = array('campaign_id');
-				$where  = "WHERE leadid = ?";
-				$params = array($campaign_detail->getCampaign_id(), $campaign_detail->getLeadid());
-				$campaign_detail_model->updateDetails("campaign_details", $fields, $where, $params);
-
-			}
-
-			// note update part
-			if($add_update == 1)
-			{
-				$data = null;
-				$note->setLeadid($id);
-				$note->setDetails($notes);
-				$note->setUserid( $_SESSION['id'] );
-				$note->setDatecreated(strtotime(date('Y-m-d')));
-				$note->setStatus(1);
-				$data = [
-							'leadid' => $note->getLeadid() ,
-							'details'  => $note->getDetails()   ,
-							'userid'     => $note->getUserid()      ,
-							'datecreated'  => $note->getDatecreated()   ,
-							'status' => $note->getStatus() 
-						];
-				$note_result = $note_model->createNote('notes', $data);
-
-			}
-			else if($add_update == 2)
-			{
-				$note->setId($note_id);
-				$note->setLeadid($id);
-				$note->setDetails($notes);
-				$fields = array('details');
-				$where  = "WHERE id = ? AND leadid = ?";
-				$params = array($note->getDetails(), $note->getId(), $note->getLeadid());
-				$result_note = $note_model->updateNote("notes", $fields, $where, $params);
+				}
+				else if($detail_update == 2)
+				{
+					$campaign_detail->setLeadid($id);
+					$campaign_detail->setCampaign_id($campaign);
+					$fields = array('campaign_id');
+					$where  = "WHERE leadid = ?";
+					$params = array($campaign_detail->getCampaign_id(), $campaign_detail->getLeadid());
+					$campaign_detail_model->updateDetails("campaign_details", $fields, $where, $params);
+				}
 
 			}
 			
+
+			if($notes != null)
+			{
+				// note update part
+				if($add_update == 1)
+				{
+					$data = null;
+					$note->setLeadid($id);
+					$note->setDetails($notes);
+					$note->setUserid( $_SESSION['id'] );
+					$note->setDatecreated(strtotime(date('Y-m-d')));
+					$note->setStatus(1);
+					$data = [
+								'leadid' => $note->getLeadid() ,
+								'details'  => $note->getDetails()   ,
+								'userid'     => $note->getUserid()      ,
+								'datecreated'  => $note->getDatecreated()   ,
+								'status' => $note->getStatus() 
+							];
+					$note_result = $note_model->createNote('notes', $data);
+
+				}
+				else if($add_update == 2)
+				{
+					$note->setId($note_id);
+					$note->setLeadid($id);
+					$note->setDetails($notes);
+					$fields = array('details');
+					$where  = "WHERE id = ? AND leadid = ?";
+					$params = array($note->getDetails(), $note->getId(), $note->getLeadid());
+					$result_note = $note_model->updateNote("notes", $fields, $where, $params);
+				}
+			}
 			header("location: ../leads/manage.php?id=".$leads->getId()."&msg=updated");
 		}
 	}
