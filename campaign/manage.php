@@ -60,7 +60,12 @@
 						$campaign_record->setStatus($l['status']);
 						
 					}
-					
+
+					$table = 'campaign';
+					$fields = array('*');
+					$where = " id = ? ";
+					$params = array($campaign_id);
+					$campaign_list = $list_campaign->get_all($table, $fields, $where, $params);
 					
 					if($campaign_record->getStatus() == 1)
 					{

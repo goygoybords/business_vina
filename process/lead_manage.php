@@ -4,10 +4,12 @@
 	require '../class/lead.php';
 	require '../class/phones.php';
 	require '../class/note.php';
+	require '../class/campaign_details.php';
 
 	require '../model/lead_model.php';
 	require '../model/phones_model.php';
 	require '../model/note_model.php';
+	require '../model/campaign_details_model.php';
 
 	$leads = new Leads();
 	$lead_model = new Lead_Model(new Database());
@@ -18,6 +20,8 @@
 	$note = new Note();
 	$note_model = new Note_Model(new Database());
 
+	$campaign_detail = new Campaign_Details();
+	$campaign_detail_model = new Campaign_Details_Model(new Database());
 	if(isset($_POST['create_lead']))
 	{
 		extract($_POST);
@@ -99,6 +103,35 @@
 
 				$resultUpdatePhones = $phone_model->updatePhone("phones", $fields, $where, $params);
 			}
+			// campaign part
+			if($add_update2 == 1)
+			{
+				$data = null;
+				$campaign_detail->setLeadid($id);
+				$campaign_detail->setCampaign_id(htmlentities($campaign));
+				$campaign_detail->setDatecreated(strtotime(date('Y-m-d')));
+				$campaign_detail->setStatus(1);
+
+				$data = [
+							'leadid' => $campaign_detail->getLeadid() ,
+							'campaign_id'  => $campaign_detail->getCampaign_id()   ,
+							'datecreated'  => $campaign_detail->getDatecreated()   ,
+							'status' => $campaign_detail->getStatus() 
+						];
+				$campaign_detail_model->createDetails('campaign_details', $data);
+
+			}
+			else if($add_update2 == 2)
+			{
+				$campaign_detail->setLeadid($note_id);
+				$campaign_detail->setCampaign_id($campaign);
+				$fields = array('campaign_id');
+				$where  = "WHERE leadid = ?";
+				$params = array($campaign_detail->getCampaign_id(), $campaign_detail->getLeadid());
+				$campaign_detail_model->updateNote("campaign_details", $fields, $where, $params);
+
+			}
+
 			// note update part
 			if($add_update == 1)
 			{

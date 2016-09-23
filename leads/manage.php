@@ -16,6 +16,7 @@
 	require '../class/phonetypes.php';
 	require '../class/lead.php';
 	require '../class/Note.php';
+	require '../class/campaign.php';
 
 	require '../model/position_model.php';
 	require '../model/sicode_model.php';
@@ -25,6 +26,11 @@
 	require '../model/lead_model.php';
 	require '../model/note_model.php';
 
+	require '../model/campaign_model.php';
+	require '../model/campaign_details_model.php';
+
+	$list_campaign = new Campaign_Model(new Database());
+
 	$list_positions = new Position_Model(new Database());
 	$list_siccode = new SICode_Model(new Database());
 	$list_state = new State_Model(new Database());
@@ -32,6 +38,8 @@
 	$list_phonetypes = new PhoneTypes_Model(new Database());
 	$lead_model = new Lead_Model(new Database());
 	$list_note = new Note_Model(new Database());
+
+	$list_campaign_detail = new Campaign_Details_Model(new Database());
 
 	$lead_id = (isset($_GET["id"]) ? $_GET["id"] : "");
 	$note_id = (isset($_GET["note"]) ? $_GET["note"] : "");
@@ -91,6 +99,27 @@
 							$note_record->setDetails($n['details']);
 						}
 					}
+
+					$table = 'campaign_details';
+					$fields = array('*');
+					$where = " leadid = ? ";
+					$params = array($lead_id);
+					$detail = $list_campaign_detail->get_all($table, $fields, $where, $params);
+					print_r($detail);
+					if(count($detail) > 0 )
+					{
+						foreach ($detail as $d ) 
+						{
+							$campaign_det = new Campaign();
+							$campaign_det->setId($d['campaign_id']);
+						}
+					}
+					else
+					{
+						$campaign_det = new Campaign();
+						//$campaign_det->setId("");
+					}
+					
 					
 					if($lead_record->getStatus() == 1)
 					{
@@ -234,7 +263,7 @@
 															$state->setId($s['id']);
 															$state->setCode($s['code']);
 														?>
-															<option value = "<?php echo $state->getId(); ?>" <?php echo ($state->getId() == $lead_record->getState() ? "selected='selected'" : ""); ?>><?php echo $state->getCode(); ?></option>
+															<option value = "<?php echo $state->getId(); ?>" <?php echo ($state->getId() == $lead_record->getState() ? "selected='selected'" : ""); ?> ><?php echo $state->getCode(); ?></option>
 														<?php endforeach; ?>
 													</select>
 													<label class="state">State</label>
@@ -263,8 +292,26 @@
 										<div class="row">
 											<div class="col-sm-12">
 												<div class="form-group floating-label">
-													<select name = "campaign" class = "form-control" id = "campaign" required>
+													<?php if(count($detail) > 0) :?>
+														<input type = "hidden" name = "add_update2" value = "2">
+													<?php else: ?>
+														<input type = "hidden" name = "add_update2" value = "1">
+													<?php endif; ?>
+
+													<select name = "campaign" class = "form-control" id = "campaign">
+														
 														<option></option>
+														<?php $campaigns = $list_campaign->get_all('campaign' , array('id' , 'title') , 'status = ?' , array(1) );  
+														foreach ($campaigns as $s ): ?>
+														<?php
+															$campaign = new Campaign();
+															$campaign->setId($s['id']);
+															$campaign->setTitle($s['title']);
+
+														?>
+														
+														<option value = "<?php echo $campaign->getId(); ?>" <?php echo ($campaign_det->getId() == $campaign->getId() ? "selected='selected'" : ""); ?> ><?php echo $campaign->getTitle(); ?></option>
+														<?php endforeach; ?>
 													</select>
 													<label class="campaign">Campaign</label>
 												</div>
@@ -348,15 +395,24 @@
 															$notes = $lead_model->get_by_id($table, $fields, $where, $params);
 														?>
 														<thead>
+															<th>Date Noted</th>
 															<th>Details</th>
 															<th>Action</th>
 														</thead>
 														<tbody>
-															<?php foreach ($notes as $n ): ?>
+															<?php 
+																foreach ($notes as $n ): 
+																$note_record = new Note();
+																$note_record->setId($n['id']);
+																$note_record->setDetails($n['details']);
+																$note_record->setDatecreated(date('Y-m-d', $n['datecreated']) );
+
+															?>
 															<tr>
-																<td><?php echo $n['details']; ?></td>
+																<td><?php echo $note_record->getDatecreated(); ?></td>
+																<td><?php echo $note_record->getDetails(); ?></td>
 																<td>
-																	<a href="manage.php?id=<?php echo $lead_id; ?>&note=<?php echo $n['id']; ?>" >
+																	<a href="manage.php?id=<?php echo $lead_id; ?>&note=<?php echo $note_record->getId(); ?>" >
 											                            <span class="label label-inverse" style = "color:black;">
 											                                <i class="fa fa-edit"></i> Edit
 											                            </span>
