@@ -57,11 +57,11 @@
 							<div class="col-lg-offset-0 col-md-12">
 								<div class="card-body style-default-bright">
 									<div class="card-body">
-										<div class="row">
+										<!-- <div class="row">
 											<div class="col-xs-12 col-sm-3 col-md-3 col-lg-2">
 												<a class="btn btn-success btn-block" href="manage.php" name="btnAddUser" id="btnAddUser">Create Calendar Events</a>
 											</div>
-										</div>
+										</div> -->
 										<br />
 										<div class="col-lg-offset-0 col-md-12">
 											<div class = "row" >
@@ -91,7 +91,7 @@
 																<td><?php echo $events->getStart_date(); ?></td>
 																<td><?php echo $events->getEnd_date();  ?></td>
 																<td>
-																	<a href="manage.php?id=<?php echo $events->getId(); ?>" >
+																	<a href="../process/events_manage.php?id=<?php echo $events->getId(); ?>" >
 																		<span class="label label-inverse" style = "color:black;">
 																			<i class="fa fa-edit"></i> Finish
 																		</span>
