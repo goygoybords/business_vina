@@ -304,7 +304,6 @@
 													<label for="siccode">SI Code</label>
 												</div>
 											</div>
-											
 										</div>
 										<br />
 										<div class="form-group">
