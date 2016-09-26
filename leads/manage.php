@@ -18,7 +18,7 @@
 	require '../class/Note.php';
 	require '../class/campaign.php';
 	require '../class/calendar_events.php';
-	require '../class/calendar_details.php';
+
 
 
 	require '../model/position_model.php';
@@ -29,10 +29,11 @@
 	require '../model/lead_model.php';
 	require '../model/note_model.php';
 
+
 	require '../model/campaign_model.php';
 	require '../model/campaign_details_model.php';
 	require '../model/calendar_events_model.php';
-	require '../model/calendar_details_model.php';
+	
 
 	
 	$list_campaign = new Campaign_Model(new Database());
@@ -46,7 +47,7 @@
 	$list_events = new Calendar_Events_Model(new Database());
 
 	$list_campaign_detail = new Campaign_Details_Model(new Database());
-	$list_calendar_detail = new Calendar_Details_Model(new Database());
+	
 
 	$lead_id = (isset($_GET["id"]) ? $_GET["id"] : "");
 	$note_id = (isset($_GET["note"]) ? $_GET["note"] : "");
@@ -56,8 +57,8 @@
 	$lead_record = new Leads();
 	$note_record = new Note();
 	$campaign_det = new Campaign();
-	$event = new CalendarEvents();
-	$calendar_det = new CalendarDetails();
+	$calendar_det = new CalendarEvents();
+	
 	$lead_phones = null;
 	$phone_types = $list_phonetypes->get_all("phonetypes");
 
@@ -133,17 +134,20 @@
 					
 					if($event_id)
 					{
-						$table = 'calendar_events_details';
+						$table = 'calendar_events';
 						$fields = array('*');
-						$where = " leadid = ? ";
-						$params = array($lead_id);
-						$cal_detail = $list_calendar_detail->get_all($table, $fields, $where, $params);
+						$where = " id = ? ";
+						$params = array($event_id);
+						$cal_detail = $list_events->get_all($table, $fields, $where, $params);
 						if(count($cal_detail) > 0 )
 						{
 							foreach ($cal_detail as $d ) 
 							{
-								$calendar_det = new CalendarDetails();
-								$calendar_det->setCalendar_event_id($d['calendar_event_id']);
+								$calendar_det = new CalendarEvents();
+								$calendar_det->setId($d['id']);
+								$calendar_det->setEvent_name($d['event_name']);
+								$calendar_det->setStart_date(date('m/d/Y', $d['start_date']));
+								$calendar_det->setEnd_date(date('m/d/Y', $d['end_date']));
 							}
 						}
 						else
@@ -319,68 +323,6 @@
 										<br />
 
 										<div class="form-group">
-											<label><b>CAMPAIGN</b></label>
-										</div>
-										<div class="row">
-											<div class="col-sm-12">
-												<div class="form-group floating-label">
-													<?php if(count($detail) > 0) :?>
-														<input type = "hidden" name = "detail_update" value = "2">
-													<?php else: ?>
-														<input type = "hidden" name = "detail_update" value = "1">
-													<?php endif; ?>
-
-													<select name = "campaign" class = "form-control" id = "campaign">
-														
-														<option></option>
-														<?php $campaigns = $list_campaign->get_all('campaign' , array('id' , 'title') , 'status = ?' , array(1) );  
-														foreach ($campaigns as $s ): ?>
-														<?php
-															$campaign = new Campaign();
-															$campaign->setId($s['id']);
-															$campaign->setTitle($s['title']);
-
-														?>
-														
-														<option value = "<?php echo $campaign->getId(); ?>" <?php echo ($campaign_det->getId() == $campaign->getId() ? "selected='selected'" : ""); ?> ><?php echo $campaign->getTitle(); ?></option>
-														<?php endforeach; ?>
-													</select>
-													<label class="campaign">Campaign</label>
-												</div>
-											</div>
-										</div>
-										<br/>
-
-										<div class="form-group">
-											<label><b>EVENT</b></label>
-										</div>
-										<div class="row">
-											<div class="col-sm-12">
-												<div class="form-group floating-label">
-													<?php if($event_id) :?>
-														<input type = "hidden" name = "event_update" value = "2">
-													<?php else: ?>
-														<input type = "hidden" name = "event_update" value = "1">
-													<?php endif; ?>
-													<select name = "events" class = "form-control" id = "events">
-														<option></option>
-														<?php $event_list = $list_events->get_all('calendar_events', array('id', 'event_name') ,'status = ?', array(1) ); ?>
-														<?php foreach ($event_list as $e ) : ?>
-														<?php 
-															$event = new CalendarEvents();
-															$event->setId($e['id']);
-															$event->setEvent_name($e['event_name']);
-														?>
-														<option value = "<?php echo $event->getId(); ?>" <?php echo ($calendar_det->getCalendar_event_id() == $event->getId() ? "selected='selected'" : ""); ?> ><?php echo $event->getEvent_name(); ?></option>
-													 	<?php endforeach; ?>
-													</select>
-													<label class="events">Events</label>
-												</div>
-											</div>
-										</div>
-										<br/>
-
-										<div class="form-group">
 											<label><b>CONTACT NUMBERS</b></label>
 										</div>
 										<div class="row">
@@ -418,22 +360,124 @@
 										<?php endforeach; ?>
 										</div>
 										<br />
+
 										<div class="form-group">
-											<label><b>Notes</b></label>
+											<label><b>CAMPAIGN</b></label>
 										</div>
 										<div class="row">
 											<div class="col-sm-12">
 												<div class="form-group floating-label">
-													<?php if($note_id) :?>
-														<input type = "hidden" name = "add_update" value = "2">
-														<input type = "hidden" name = "note_id" value = "<?php echo $note_id; ?>">
-														<textarea class ="form-control" name = "notes" id = "notes" rows = "5"><?php echo $note_record->getDetails(); ?></textarea>
+													<?php if(count($detail) > 0) :?>
+														<input type = "hidden" name = "detail_update" value = "2">
 													<?php else: ?>
-														<input type = "hidden" name = "add_update" value = "1">
-														<textarea class ="form-control" name = "notes" id = "notes" rows = "5"></textarea>
-													<?php endif; ?>			
-													<label class="notes">NOTES</label>
+														<input type = "hidden" name = "detail_update" value = "1">
+													<?php endif; ?>
 
+													<select name = "campaign" class = "form-control" id = "campaign">
+														
+														<option></option>
+														<?php $campaigns = $list_campaign->get_all('campaign' , array('id' , 'title') , 'status = ?' , array(1) );  
+														foreach ($campaigns as $s ): ?>
+														<?php
+															$campaign = new Campaign();
+															$campaign->setId($s['id']);
+															$campaign->setTitle($s['title']);
+
+														?>
+														<option value = "<?php echo $campaign->getId(); ?>" <?php echo ($campaign_det->getId() == $campaign->getId() ? "selected='selected'" : ""); ?> ><?php echo $campaign->getTitle(); ?></option>
+														<?php endforeach; ?>
+													</select>
+													<label class="campaign">Campaign</label>
+												</div>
+											</div>
+										</div>
+										<br/>
+										<?php 
+											if($form_state == 2 && $event_id ) 
+												$style = "display:block";
+											else if($form_state == 2 )
+												$style = "display:none";
+											else
+												$style = "display:block";
+										?>
+										<div id = "event_div" style = "<?php echo $style; ?>">
+											<div class="form-group">
+												<label><b>EVENT</b></label>
+											</div>
+											<div class="row">
+												<div class="col-sm-4">
+													<div class="form-group floating-label">
+														<?php if($event_id) :?>
+															<input type = "hidden" name = "event_update" value = "2">
+															<input type = "hidden" name = "event_id" value = "<?php echo $event_id; ?>">
+
+														<?php else: ?>
+															<input type = "hidden" name = "event_update" value = "1">
+														<?php endif; ?>
+														<input type="text" name = "eventname" class="form-control" id="eventname" value = "<?php echo $calendar_det->getEvent_name(); ?>">
+														<label class="eventname">Event Name</label>
+													</div>
+												</div>
+
+												<div class="col-sm-4">
+													<div class="form-group floating-label">
+														<label for="start_date" class="col-sm-2 control-label">Start Date</label>
+														<div class="col-sm-10">
+															<div class="input-group date" data-provide="datepicker">
+																<div class="input-group-content">
+																	<input class="form-control static" name="start_date" id="datepicker"
+																	 type="text" value = "<?php echo $calendar_det->getStart_date(); ?>">
+																</div>
+																<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+															</div>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-sm-4">
+													<div class="form-group floating-label">
+														<label for="end_date" class="col-sm-2 control-label">End Date</label>
+														<div class="col-sm-10">
+															<div class="input-group date" data-provide="datepicker">
+																<div class="input-group-content">
+																	<input class="form-control static" name="end_date" id="datepicker"
+																	 type="text" value = "<?php echo $calendar_det->getEnd_date(); ?>">
+																</div>
+																<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<br/>
+
+										<?php 
+											if($form_state == 2 && $note_id ) 
+												$style = "display:block";
+											else if($form_state == 2 )
+												$style = "display:none";
+											else
+												$style = "display:block";
+										?>
+										<div style = "<?php echo $style; ?>" id = "note_div">
+											<div class="form-group">
+												<label><b>Notes</b></label>
+											</div>
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="form-group floating-label">
+														<?php if($note_id) :?>
+															<input type = "hidden" name = "add_update" value = "2">
+															<input type = "hidden" name = "note_id" value = "<?php echo $note_id; ?>">
+															<textarea class ="form-control" name = "notes" id = "notes" rows = "5"><?php echo $note_record->getDetails(); ?></textarea>
+														<?php else: ?>
+															<input type = "hidden" name = "add_update" value = "1">
+															<textarea class ="form-control" name = "notes" id = "notes" rows = "5"></textarea>
+														<?php endif; ?>			
+														<label class="notes">NOTES</label>
+
+													</div>
 												</div>
 											</div>
 										</div>
@@ -455,6 +499,7 @@
 																<div class="card-body tab-content">
 																	<div class="tab-pane active" id="note">
 																		<table class = "table display responsive nowrap" id = "note-tbl">
+																			<div><button id = "add_note">Add Note</button></div>
 																			<?php 
 																				$table = 'notes';
 																				$fields = array('*');
@@ -493,30 +538,35 @@
 																	</div>
 																	<div class="tab-pane" id="event">
 																		<table class = "table display responsive nowrap" id = "event-tbl">
+																			<div><button id = "add_event">Add Event</button></div>
 																			<?php 
-																				$table = 'calendar_events_details';
+																				$table = 'calendar_events';
 																				$fields = array('*');
 																				$where = " leadid = ? ";
 																				$params = array($lead_id);
-																				$cal_detail = $list_calendar_detail->get_all($table, $fields, $where, $params);
+																				$cal_detail = $list_events->get_all($table, $fields, $where, $params);
 																			?>
 																			<thead>
 																				<th>Date</th>
 																				<th>Event</th>
+																				<th>Timeframe</th>
 																				<th>Action</th>
 																			</thead>
 																			<tbody>
 																				<?php 
 																					foreach ($cal_detail as $n ): 
-																					$calendar_det = new CalendarDetails();
+																					$calendar_det = new CalendarEvents();
 																					$calendar_det->setId($n['id']);
-																					$calendar_det->setCalendar_event_id($n['calendar_event_id']);
-																					$calendar_det->setDatecreated(date('Y-m-d', $n['datecreated']) );
+																					$calendar_det->setEvent_name($n['event_name']);
+																					$calendar_det->setStart_date(date('Y/m/d', $n['start_date']) );
+																					$calendar_det->setEnd_date(date('Y/m/d', $n['end_date']) );
+																					$calendar_det->setDatecreated(date('Y/m/d', $n['datecreated']) );
 
 																				?>
 																				<tr>
 																					<td><?php echo $calendar_det->getDatecreated(); ?></td>
-																					<td><?php echo $calendar_det->getCalendar_event_id(); ?></td>
+																					<td><?php echo $calendar_det->getEvent_name(); ?></td>
+																					<td><?php echo $calendar_det->getStart_date()." - ".$calendar_det->getEnd_date(); ?></td>
 																					<td>
 																						<a href="manage.php?id=<?php echo $lead_id; ?>&event=<?php echo $calendar_det->getId(); ?>" >
 																                            <span class="label label-inverse" style = "color:black;">
@@ -605,5 +655,18 @@
 	        "order": [0,'desc'],
 			
 	    } );
+
+	    $("#add_note").click(function(e){
+	    	e.preventDefault();
+		    $("#note_div").show();
+		});
+
+		 $("#add_event").click(function(e){
+	    	e.preventDefault();
+		    $("#event_div").show();
+		});
+
+
+		
 	} );
 </script>

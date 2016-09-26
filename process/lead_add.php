@@ -5,10 +5,13 @@
 	require '../class/phones.php';
 	require '../class/note.php';
 	require '../class/campaign_details.php';
+	require '../class/calendar_events.php';
+
 	require '../model/phones_model.php';
 	require '../model/lead_model.php';
 	require '../model/note_model.php';
 	require '../model/campaign_details_model.php';
+	require '../model/calendar_events_model.php';
 
 
 	$leads = new Leads();
@@ -19,6 +22,9 @@
 	$note_model = new Note_Model(new Database());
 	$campaign_details = new Campaign_Details();
 	$campaign_details_model = new Campaign_Details_Model(new Database());
+	
+	$calendar_event = new CalendarEvents();
+	$calendar_model = new Calendar_Events_Model(new Database());
 
 	extract($_POST);
 	if(isset($_POST['create_lead']))
@@ -86,6 +92,29 @@
 							];
 			$phone_result = $phone_model->createPhone('phones', $data);
 		}
+		if($eventname != null)
+		{
+			$data = null;
+			$start_date  = date('Y-m-d', strtotime($start_date));
+			$end_date    = date('Y-m-d', strtotime($end_date));
+			$calendar_event->setLeadid($result);
+			$calendar_event->setEvent_name(htmlentities($eventname));
+			$calendar_event->setStart_date(strtotime($start_date));
+			$calendar_event->setEnd_date(strtotime($end_date));
+			$calendar_event->setDatecreated(strtotime(date('Y-m-d')));
+			$calendar_event->setStatus(1);
+
+			$data = [
+						'leadid' => $calendar_event->getLeadid() ,
+						'event_name'  => $calendar_event->getEvent_name()   ,
+						'start_date' => $calendar_event->getStart_date() ,
+						'end_date' => $calendar_event->getEnd_date() ,
+						'datecreated'  => $calendar_event->getDatecreated()   ,
+						'status' => $calendar_event->getStatus() 
+					];
+			$calendar_model->createEvent('calendar_events', $data);
+		}
+
 		if($notes != null)
 		{
 			$data = null;

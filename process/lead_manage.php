@@ -5,15 +5,13 @@
 	require '../class/phones.php';
 	require '../class/note.php';
 	require '../class/campaign_details.php';
-	require '../class/calendar_details.php';
+	require '../class/calendar_events.php';
 
 	require '../model/lead_model.php';
 	require '../model/phones_model.php';
 	require '../model/note_model.php';
 	require '../model/campaign_details_model.php';
-	require '../model/calendar_details_model.php';
-
-
+	require '../model/calendar_events_model.php';
 
 
 	$leads = new Leads();
@@ -28,8 +26,8 @@
 	$campaign_detail = new Campaign_Details();
 	$campaign_detail_model = new Campaign_Details_Model(new Database());
 
-	$calendar_details = new CalendarDetails();
-	$calendar_details_model = new Calendar_Details_Model(new Database());
+	$calendar_event = new CalendarEvents();
+	$calendar_model = new Calendar_Events_Model(new Database());
 
 	if(isset($_POST['create_lead']))
 	{
@@ -143,28 +141,47 @@
 
 			}
 
-			if($events != null)
+			if($eventname != null)
 			{
 				if($event_update == 1)
 				{
 					$data = null;
-					$calendar_details->setLeadid($id);
-					$calendar_details->setCalendar_event_id(htmlentities($events));
-					$calendar_details->setDatecreated(strtotime(date('Y-m-d')));
-					$calendar_details->setStatus(1);
+					$start_date  = date('Y-m-d', strtotime($start_date));
+					$end_date    = date('Y-m-d', strtotime($end_date));
+					$calendar_event->setLeadid($id);
+					$calendar_event->setEvent_name(htmlentities($eventname));
+					$calendar_event->setStart_date(strtotime($start_date));
+					$calendar_event->setEnd_date(strtotime($end_date));
+					$calendar_event->setDatecreated(strtotime(date('Y-m-d')));
+					$calendar_event->setStatus(1);
 
 					$data = [
-								'leadid' => $calendar_details->getLeadid() ,
-								'calendar_event_id'  => $calendar_details->getCalendar_event_id()   ,
-								'datecreated'  => $calendar_details->getDatecreated()   ,
-								'status' => $calendar_details->getStatus() 
+								'leadid' => $calendar_event->getLeadid() ,
+								'event_name'  => $calendar_event->getEvent_name()   ,
+								'start_date' => $calendar_event->getStart_date() ,
+								'end_date' => $calendar_event->getEnd_date() ,
+								'datecreated'  => $calendar_event->getDatecreated()   ,
+								'status' => $calendar_event->getStatus() 
 							];
-					$calendar_details_model->createDetail('calendar_events_details', $data);
+					$calendar_model->createEvent('calendar_events', $data);
 				}
-				// else if($event_update == 2)
-				// {
+				else if($event_update == 2)
+				{
+					$start_date  = date('Y-m-d', strtotime($start_date));
+					$end_date    = date('Y-m-d', strtotime($end_date));
 
-				// }
+					$calendar_event->setId($event_id);
+					$calendar_event->setEvent_name(htmlentities($eventname));
+					$calendar_event->setStart_date(strtotime($start_date));
+					$calendar_event->setEnd_date(strtotime($end_date));
+
+					$fields = array('event_name', 'start_date' , 'end_date');
+					$where  = "WHERE id = ?";
+					$params = array($calendar_event->getEvent_name(), $calendar_event->getStart_date(), 
+									$calendar_event->getEnd_date() , $calendar_event->getId()
+									);
+					$calendar_model->updateEvent("calendar_events", $fields, $where, $params);
+				}
 			}
 			
 

@@ -32,7 +32,7 @@
 				$_SESSION['user_type'] = $l['usertypeid'];
 				$_SESSION['isLogin'] = true;
 				$user_model->updateUser("users", array('datelastlogin'), "WHERE id = ?" , array($user->getDatelastlogin() , $l['id']));
-				header("location: ../dashboard/main.php");
+				header("location: ../calendar/upcoming_events.php");
 			}
 		}
 		else
