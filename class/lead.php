@@ -4,6 +4,7 @@
 		private $id;
 		private $companyname;
         private $position;
+        private $lead_type;
 		private $firstname;
 		private $middlename;
 		private $lastname;
@@ -17,6 +18,7 @@
 		private $status;
 		private $datecreated;
 		private $datelastupdated;
+        private $user;
 
         public function getId()
         {
@@ -28,6 +30,15 @@
             $this->id = $id;
         }
 
+        public function getLeadType()
+        {
+            return $this->lead_type;
+        }
+
+        public function setLeadType($lead_type)
+        {
+            $this->lead_type = $lead_type;
+        }
         public function getCompanyname()
         {
             return $this->companyname;
@@ -176,6 +187,16 @@
         public function setDatelastupdated($datelastupdated)
         {
             $this->datelastupdated = $datelastupdated;
+        }
+
+        public function getUser()
+        {
+            return $this->user;
+        }
+
+        public function setUser($user)
+        {
+            $this->user = $user;
         }
 
     }

@@ -29,6 +29,7 @@
 	extract($_POST);
 	if(isset($_POST['create_lead']))
 	{
+		$leads->setLeadType(htmlentities($lead_type));
 		$leads->setCompanyname(htmlentities($companyname));
 		$leads->setFirstname(htmlentities($firstname));
 		$leads->setMiddlename(htmlentities($middlename));
@@ -41,9 +42,11 @@
 		$leads->setState(htmlentities($state));
 		$leads->setZip(htmlentities($zip));
 		$leads->setDatecreated(strtotime(date('Y-m-d')));
+		$leads->setUser($_SESSION['id']);
 		$leads->setStatus(1);
 
 		$data = [
+					'lead_type' => $leads->getLeadType(),
 					'companyname' => $leads->getCompanyname() ,
 					'position'  => $leads->getPosition()   ,
 					'firstname'     => $leads->getFirstname()      ,
@@ -56,6 +59,7 @@
 					'zip' => $leads->getZip() ,
 					'state' => $leads->getState() ,
 					'datecreated' => $leads->getDatecreated() ,
+					'user' => $leads->getUser(),
 					'status' => $leads->getStatus() ,
 				];
 

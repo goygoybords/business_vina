@@ -36,6 +36,7 @@
 		$leads->setCompanyname(htmlentities($companyname));
 		$leads->setFirstname(htmlentities($firstname));
 		$leads->setMiddlename(htmlentities($middlename));
+		$leads->setLeadType(htmlentities($lead_type));
 		$leads->setLastname(htmlentities($lastname));
 		$leads->setPosition(htmlentities($position));
 		$leads->setSiccode(htmlentities($siccode));
@@ -51,11 +52,12 @@
 		if(isset($_POST['create_lead']))
 		{
 			$leads->setStatus(1);
-			$fields = array('companyname' ,'position' ,'firstname' , 'middlename' , 'lastname', 'email', 'siccode', 'address', 'city', 'zip', 'state', 'datelastupdated');
+			$fields = array('companyname' ,'position' ,'lead_type','firstname' , 'middlename' , 'lastname', 'email', 'siccode', 'address', 'city', 'zip', 'state', 'datelastupdated');
 			$where  = "WHERE id = ?";
 			$params = array(
 									$leads->getCompanyname(),
 									$leads->getPosition(),
+									$leads->getLeadType(),
 									$leads->getFirstname(),
 									$leads->getMiddlename(),
 									$leads->getLastname(),

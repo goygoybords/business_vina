@@ -18,6 +18,8 @@
 	require '../class/Note.php';
 	require '../class/campaign.php';
 	require '../class/calendar_events.php';
+	require '../class/lead_types.php';
+	require '../class/user.php';
 
 
 
@@ -28,6 +30,8 @@
 	require '../model/phonetypes_model.php';
 	require '../model/lead_model.php';
 	require '../model/note_model.php';
+	require '../model/lead_type_model.php';
+	require '../model/user_model.php';
 
 
 	require '../model/campaign_model.php';
@@ -47,18 +51,21 @@
 	$list_events = new Calendar_Events_Model(new Database());
 
 	$list_campaign_detail = new Campaign_Details_Model(new Database());
+	$list_types = new Lead_Type_Model(new Database());
+	$user_model = new User_Model(new Database());
 	
 
 	$lead_id = (isset($_GET["id"]) ? $_GET["id"] : "");
 	$note_id = (isset($_GET["note"]) ? $_GET["note"] : "");
 	$event_id = (isset($_GET["event"]) ? $_GET["event"] : "");
 
-
 	$lead_record = new Leads();
 	$note_record = new Note();
 	$campaign_det = new Campaign();
 	$calendar_det = new CalendarEvents();
-	
+	$type_det = new LeadTypes();
+	$user_record = new User();
+
 	$lead_phones = null;
 	$phone_types = $list_phonetypes->get_all("phonetypes");
 
@@ -85,6 +92,7 @@
 					{
 						$lead_record->setId($l['id']);
 						$lead_record->setCompanyname($l['companyname']);
+						$lead_record->setLeadType($l['lead_type']);
 						$lead_record->setPosition($l['position']);
 						$lead_record->setFirstname($l['firstname']);
 						$lead_record->setMiddlename($l['middlename']);
@@ -98,6 +106,7 @@
 						$lead_record->setState($l['state']);
 						$lead_record->setDatecreated($l['datecreated']);
 						$lead_record->setDatelastupdated($l['datelastupdated']);
+						$lead_record->setUser($l['user']);
 						$lead_record->setStatus($l['status']);
 					}
 					if($note_id)
@@ -204,34 +213,102 @@
 								<div class="">
 									<div class="card-body">
 										<div class="row">
-											<div class="col-sm-8">
+											<div class="col-sm-4">
+												<div class="form-group floating-label">
+													<select name = "lead_type" class = "form-control" id = "lead_type">
+														<option></option>
+														<?php $lead_types = $list_types->get_all('lead_type' , array('id' , 'description') , 'status = ?' , array(1) );  
+														foreach ($lead_types as $s ): ?>
+														<?php
+															$type_det = new LeadTypes();
+															$type_det->setId($s['id']);
+															$type_det->setDescription($s['description']);
+
+														?>
+														<option value = "<?php echo $type_det->getId(); ?>" <?php echo ($lead_record->getLeadType() == $type_det->getId() ? "selected='selected'" : ""); ?> ><?php echo $type_det->getDescription(); ?></option>
+														<?php endforeach; ?>
+													</select>
+													<label class="lead_type">Lead Type</label>
+												</div>
+											</div>
+
+											<div class="col-sm-4">
+												<div class="form-group floating-label">
+													<?php if(count($detail) > 0) :?>
+														<input type = "hidden" name = "detail_update" value = "2">
+													<?php else: ?>
+														<input type = "hidden" name = "detail_update" value = "1">
+													<?php endif; ?>
+
+													<select name = "campaign" class = "form-control" id = "campaign">
+														
+														<option></option>
+														<?php $campaigns = $list_campaign->get_all('campaign' , array('id' , 'title') , 'status = ?' , array(1) );  
+														foreach ($campaigns as $s ): ?>
+														<?php
+															$campaign = new Campaign();
+															$campaign->setId($s['id']);
+															$campaign->setTitle($s['title']);
+
+														?>
+														<option value = "<?php echo $campaign->getId(); ?>" <?php echo ($campaign_det->getId() == $campaign->getId() ? "selected='selected'" : ""); ?> ><?php echo $campaign->getTitle(); ?></option>
+														<?php endforeach; ?>
+													</select>
+													<label class="campaign">Campaign</label>
+												</div>
+											</div>
+											<?php if($form_state == 2): ?>
+											<div class="col-sm-4">
+												<div class="form-group floating-label">
+													<?php 
+														$user = $user_model->checkUser('users' , array('firstname, lastname') , 'id = ?' , array($lead_record->getUser() ));
+														foreach ($user as $u ) 
+														{
+															$user_record->setFirstname($u['firstname']);
+															$user_record->setLastname($u['lastname']);
+														}
+													?>
+													<input type = "text" name = "user" class = "form-control" 
+													value = "<?php echo $user_record->getFirstname()." ".$user_record->getLastname();?>" disabled = "disabled">
+										
+													<label class="user">User</label>
+												</div>
+											</div>
+											<?php endif; ?>
+										</div>
+										<br/>
+
+										<div class="row">
+											<div class="col-sm-6">
 												<div class="form-group floating-label">
 													<input type = "hidden" name = "id" value = "<?php echo $lead_id; ?>">
 													<input type="text" name = "companyname" class="form-control"  id="companyname" value="<?php echo $lead_record->getCompanyname(); ?>" required autofocus='autofocus'>
 													<label for="companyname">Company Name</label>
 												</div>
 											</div>
-											<div class="col-sm-4">
+											<div class="col-sm-6">
+
 												<div class="form-group floating-label">
-													<select name = "position" id = "position" class = "form-control" required>
-													<option></option>
-													<?php
-														$pos = $list_positions->get_all("positions");
-														foreach ($pos as $p) :
-															$position = new Position();
-															$position->setId($p['id']);
-															$position->setPosition($p['position']);
-													?>
-														<option value = "<?php echo $position->getId(); ?>"  <?php echo ($position->getId() == $lead_record->getPosition() ? "selected='selected'" : ""); ?> ><?php echo $position->getPosition(); ?></option>
-													<?php endforeach; ?>
+													<select name = "siccode" class = "form-control" required>
+														<option></option>
+														<?php
+															$sic = $list_siccode->get_all("siccode");
+															foreach ($sic as $p) :
+																$siccode = new SICode();
+																$siccode->setId($p['id']);
+																$siccode->setDescription($p['description']);
+														?>
+															<option value = "<?php echo $siccode->getId(); ?>" <?php echo ($siccode->getId() == $lead_record->getSiccode() ? "selected='selected'" : ""); ?>><?php echo $siccode->getDescription(); ?></option>
+														<?php endforeach; ?>
 													</select>
-													<label for="position">Position</label>
+													<label for="siccode">SI Code</label>
 												</div>
 											</div>
+											
 										</div>
 										<br />
 										<div class="form-group">
-											<label><b>CONTACT PERSON</b></label>
+											<label><b>CONTACT INFORMATION</b></label>
 										</div>
 										<div class="row">
 											<div class="col-sm-4">
@@ -256,29 +333,71 @@
 											</div>
 										</div>
 										<div class="row">
-											<div class="col-sm-8">
+											<div class="col-sm-6">
 												<div class="form-group floating-label">
-													<select name = "siccode" class = "form-control" required>
-														<option></option>
-														<?php
-															$sic = $list_siccode->get_all("siccode");
-															foreach ($sic as $p) :
-																$siccode = new SICode();
-																$siccode->setId($p['id']);
-																$siccode->setDescription($p['description']);
-														?>
-															<option value = "<?php echo $siccode->getId(); ?>" <?php echo ($siccode->getId() == $lead_record->getSiccode() ? "selected='selected'" : ""); ?>><?php echo $siccode->getDescription(); ?></option>
-														<?php endforeach; ?>
+													<select name = "position" id = "position" class = "form-control" required>
+													<option></option>
+													<?php
+														$pos = $list_positions->get_all("positions");
+														foreach ($pos as $p) :
+															$position = new Position();
+															$position->setId($p['id']);
+															$position->setPosition($p['position']);
+													?>
+														<option value = "<?php echo $position->getId(); ?>"  <?php echo ($position->getId() == $lead_record->getPosition() ? "selected='selected'" : ""); ?> ><?php echo $position->getPosition(); ?></option>
+													<?php endforeach; ?>
 													</select>
-													<label for="siccode">SI Code</label>
+													<label for="position">Position</label>
 												</div>
 											</div>
-											<div class="col-sm-4">
+											
+											<div class="col-sm-6">
 												<div class="form-group floating-label">
 													<input type="text" name = "email" class="form-control"  id="email" value="<?php echo $lead_record->getEmail(); ?>" required>
 													<label for="position">Email</label>
 												</div>
 											</div>
+										</div>
+
+										<div class="row">
+										<?php
+											foreach ($phone_types as $pt) :
+												$phone_type = new PhoneTypes();
+												$phone_type->setId($pt['id']);
+												$phone_type->setType($pt['type']);
+										?>
+										<div class="col-sm-3">
+												<div class="form-group floating-label">
+													<input type="text" name = "phones[]" class="form-control" value="<?php
+														if($form_state == 2)
+														{
+															foreach($lead_phones as $lp)
+															{
+																$lead_phone = new Phone();
+																$lead_phone->setId($lp['id']);
+																$lead_phone->setNumber($lp['number']);
+																$lead_phone->setPhoneTypeId($lp['phonetypeid']);
+																$lead_phone->setLeadId($lp['leadid']);
+
+																if($lead_phone->getPhoneTypeId() == $phone_type->getId())
+																{
+																	echo $lead_phone->getNumber();
+																	break;
+																}
+															}
+														}
+													 ?>" maxlength="20" />
+													<input type="hidden" name="phonetypes[]" value="<?php echo $phone_type->getId(); ?>" />
+													<label><?php echo $phone_type->getType(); ?></label>
+												</div>
+										</div>
+										<?php endforeach; ?>
+										</div>
+
+										
+										<br/>
+										<div class="form-group">
+											<label><b>ADDRESS INFORMATION</b></label>
 										</div>
 										<div class="row">
 											<div class="col-sm-12">
@@ -322,76 +441,7 @@
 										</div>
 										<br />
 
-										<div class="form-group">
-											<label><b>CONTACT NUMBERS</b></label>
-										</div>
-										<div class="row">
-										<?php
-											foreach ($phone_types as $pt) :
-												$phone_type = new PhoneTypes();
-												$phone_type->setId($pt['id']);
-												$phone_type->setType($pt['type']);
-										?>
-										<div class="col-sm-3">
-												<div class="form-group floating-label">
-													<input type="text" name = "phones[]" class="form-control" value="<?php
-														if($form_state == 2)
-														{
-															foreach($lead_phones as $lp)
-															{
-																$lead_phone = new Phone();
-																$lead_phone->setId($lp['id']);
-																$lead_phone->setNumber($lp['number']);
-																$lead_phone->setPhoneTypeId($lp['phonetypeid']);
-																$lead_phone->setLeadId($lp['leadid']);
-
-																if($lead_phone->getPhoneTypeId() == $phone_type->getId())
-																{
-																	echo $lead_phone->getNumber();
-																	break;
-																}
-															}
-														}
-													 ?>" maxlength="20" />
-													<input type="hidden" name="phonetypes[]" value="<?php echo $phone_type->getId(); ?>" />
-													<label><?php echo $phone_type->getType(); ?></label>
-												</div>
-										</div>
-										<?php endforeach; ?>
-										</div>
-										<br />
-
-										<div class="form-group">
-											<label><b>CAMPAIGN</b></label>
-										</div>
-										<div class="row">
-											<div class="col-sm-12">
-												<div class="form-group floating-label">
-													<?php if(count($detail) > 0) :?>
-														<input type = "hidden" name = "detail_update" value = "2">
-													<?php else: ?>
-														<input type = "hidden" name = "detail_update" value = "1">
-													<?php endif; ?>
-
-													<select name = "campaign" class = "form-control" id = "campaign">
-														
-														<option></option>
-														<?php $campaigns = $list_campaign->get_all('campaign' , array('id' , 'title') , 'status = ?' , array(1) );  
-														foreach ($campaigns as $s ): ?>
-														<?php
-															$campaign = new Campaign();
-															$campaign->setId($s['id']);
-															$campaign->setTitle($s['title']);
-
-														?>
-														<option value = "<?php echo $campaign->getId(); ?>" <?php echo ($campaign_det->getId() == $campaign->getId() ? "selected='selected'" : ""); ?> ><?php echo $campaign->getTitle(); ?></option>
-														<?php endforeach; ?>
-													</select>
-													<label class="campaign">Campaign</label>
-												</div>
-											</div>
-										</div>
-										<br/>
+										
 										<?php 
 											if($form_state == 2 && $event_id ) 
 												$style = "display:block";
