@@ -14,7 +14,7 @@
 	require '../model/calendar_events_model.php';
 	require '../model/position_model.php';
 	require '../model/sicode_model.php';
-
+	require '../model/lead_type_model.php';
 
 	$leads = new Leads();
 	$lead_model = new Lead_Model(new Database());
@@ -30,6 +30,9 @@
 	$sic_model = new SICode_Model(new Database());
 
 	$position_model = new Position_Model(new Database());
+	$lead_type_model = new Lead_Type_Model(new Database());
+
+
 	extract($_POST);
 	if(isset($_POST['create_lead']))
 	{
@@ -42,6 +45,11 @@
 		{
 			$data = [ 'description' => $new_sicode ];
 			$siccode = $sic_model->createPosition('siccode' , $data);
+		}
+		if($new_leadtype != null)
+		{
+			$data = [ 'description' => $new_leadtype ];
+			$lead_type = $lead_type_model->createType('lead_type', $data);
 		}
 		$data = null;
 		$leads->setLeadType(htmlentities($lead_type));
