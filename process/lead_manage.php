@@ -4,10 +4,16 @@
 	require '../class/lead.php';
 	require '../class/phones.php';
 	require '../class/note.php';
+	require '../class/campaign_details.php';
+	require '../class/calendar_events.php';
 
 	require '../model/lead_model.php';
 	require '../model/phones_model.php';
 	require '../model/note_model.php';
+	require '../model/campaign_details_model.php';
+	require '../model/calendar_events_model.php';
+	require '../model/position_model.php';
+
 
 	$leads = new Leads();
 	$lead_model = new Lead_Model(new Database());
@@ -18,13 +24,31 @@
 	$note = new Note();
 	$note_model = new Note_Model(new Database());
 
+	$campaign_detail = new Campaign_Details();
+	$campaign_detail_model = new Campaign_Details_Model(new Database());
+
+	$calendar_event = new CalendarEvents();
+	$calendar_model = new Calendar_Events_Model(new Database());
+	$position_model = new Position_Model(new Database());
+
 	if(isset($_POST['create_lead']))
 	{
 		extract($_POST);
+		if($new_position != null)
+		{
+			$data = [ 'position' => $new_position ];
+			$position = $position_model->createPosition('positions' , $data);
+		}
+		if($new_sicode != null)
+		{
+			$data = [ 'description' => $new_sicode ];
+			$siccode = $sic_model->createPosition('siccode' , $data);
+		}
 		$leads->setId(htmlentities($id));
 		$leads->setCompanyname(htmlentities($companyname));
 		$leads->setFirstname(htmlentities($firstname));
 		$leads->setMiddlename(htmlentities($middlename));
+		$leads->setLeadType(htmlentities($lead_type));
 		$leads->setLastname(htmlentities($lastname));
 		$leads->setPosition(htmlentities($position));
 		$leads->setSiccode(htmlentities($siccode));
@@ -33,19 +57,21 @@
 		$leads->setCity(htmlentities($city));
 		$leads->setState(htmlentities($state));
 		$leads->setZip(htmlentities($zip));
+		$leads->setLeadStatus(htmlentities($lead_status));
 		$leads->setDatelastupdated(strtotime(date('Y-m-d')));
-		$leads->setStatus(1);
+		
 
 		$table  = "leads";
 		if(isset($_POST['create_lead']))
 		{
-		
 			$leads->setStatus(1);
-			$fields = array('companyname' ,'position' ,'firstname' , 'middlename' , 'lastname', 'email', 'siccode', 'address', 'city', 'zip', 'state', 'datelastupdated');
+			$fields = array('companyname' ,'position' ,'lead_type','firstname' , 'middlename' , 'lastname', 'email', 'siccode', 'address', 'city', 'zip', 
+				'state', 'lead_status' ,'datelastupdated');
 			$where  = "WHERE id = ?";
 			$params = array(
 									$leads->getCompanyname(),
 									$leads->getPosition(),
+									$leads->getLeadType(),
 									$leads->getFirstname(),
 									$leads->getMiddlename(),
 									$leads->getLastname(),
@@ -54,7 +80,8 @@
 									$leads->getAddress(),
 									$leads->getCity(),
 									$leads->getZip(),
-									$leads->getStatus(),
+									$leads->getState(),
+									$leads->getLeadStatus(),
 									$leads->getDatelastupdated(),
 									$leads->getId()
 								);
@@ -99,37 +126,114 @@
 
 				$resultUpdatePhones = $phone_model->updatePhone("phones", $fields, $where, $params);
 			}
-			// note update part
-			if($add_update == 1)
+			// campaign part
+			if($campaign != null)
 			{
-				$data = null;
-				$note->setLeadid($id);
-				$note->setDetails($notes);
-				$note->setUserid( $_SESSION['id'] );
-				$note->setDatecreated(strtotime(date('Y-m-d')));
-				$note->setStatus(1);
-				$data = [
-							'leadid' => $note->getLeadid() ,
-							'details'  => $note->getDetails()   ,
-							'userid'     => $note->getUserid()      ,
-							'datecreated'  => $note->getDatecreated()   ,
-							'status' => $note->getStatus() 
-						];
-				$note_result = $note_model->createNote('notes', $data);
+				if($detail_update == 1)
+				{
+					$data = null;
+					$campaign_detail->setLeadid($id);
+					$campaign_detail->setCampaign_id(htmlentities($campaign));
+					$campaign_detail->setDatecreated(strtotime(date('Y-m-d')));
+					$campaign_detail->setStatus(1);
+
+					$data = [
+								'leadid' => $campaign_detail->getLeadid() ,
+								'campaign_id'  => $campaign_detail->getCampaign_id()   ,
+								'datecreated'  => $campaign_detail->getDatecreated()   ,
+								'status' => $campaign_detail->getStatus() 
+							];
+					$campaign_detail_model->createDetails('campaign_details', $data);
+
+				}
+				else if($detail_update == 2)
+				{
+					$campaign_detail->setLeadid($id);
+					$campaign_detail->setCampaign_id($campaign);
+					$fields = array('campaign_id');
+					$where  = "WHERE leadid = ?";
+					$params = array($campaign_detail->getCampaign_id(), $campaign_detail->getLeadid());
+					$campaign_detail_model->updateDetails("campaign_details", $fields, $where, $params);
+				}
 
 			}
-			else if($add_update == 2)
-			{
-				$note->setId($note_id);
-				$note->setLeadid($id);
-				$note->setDetails($notes);
-				$fields = array('details');
-				$where  = "WHERE id = ? AND leadid = ?";
-				$params = array($note->getDetails(), $note->getId(), $note->getLeadid());
-				$result_note = $note_model->updateNote("notes", $fields, $where, $params);
 
+			if($eventname != null)
+			{
+				if($event_update == 1)
+				{
+					$data = null;
+					$start_date  = date('Y-m-d', strtotime($start_date));
+					$end_date    = date('Y-m-d', strtotime($end_date));
+					$calendar_event->setLeadid($id);
+					$calendar_event->setEvent_name(htmlentities($eventname));
+					$calendar_event->setStart_date(strtotime($start_date));
+					$calendar_event->setEnd_date(strtotime($end_date));
+					$calendar_event->setDatecreated(strtotime(date('Y-m-d')));
+					$calendar_event->setStatus(1);
+
+					$data = [
+								'leadid' => $calendar_event->getLeadid() ,
+								'event_name'  => $calendar_event->getEvent_name()   ,
+								'start_date' => $calendar_event->getStart_date() ,
+								'end_date' => $calendar_event->getEnd_date() ,
+								'datecreated'  => $calendar_event->getDatecreated()   ,
+								'status' => $calendar_event->getStatus() 
+							];
+					$calendar_model->createEvent('calendar_events', $data);
+				}
+				else if($event_update == 2)
+				{
+					$start_date  = date('Y-m-d', strtotime($start_date));
+					$end_date    = date('Y-m-d', strtotime($end_date));
+
+					$calendar_event->setId($event_id);
+					$calendar_event->setEvent_name(htmlentities($eventname));
+					$calendar_event->setStart_date(strtotime($start_date));
+					$calendar_event->setEnd_date(strtotime($end_date));
+
+					$fields = array('event_name', 'start_date' , 'end_date');
+					$where  = "WHERE id = ?";
+					$params = array($calendar_event->getEvent_name(), $calendar_event->getStart_date(), 
+									$calendar_event->getEnd_date() , $calendar_event->getId()
+									);
+					$calendar_model->updateEvent("calendar_events", $fields, $where, $params);
+				}
 			}
 			
+
+			if($notes != null)
+			{
+				// note update part
+				if($add_update == 1)
+				{
+					$data = null;
+					$note->setLeadid($id);
+					$note->setDetails($notes);
+					$note->setUserid( $_SESSION['id'] );
+					$note->setDatecreated(strtotime(date('Y-m-d')));
+					$note->setStatus(1);
+					$data = [
+								'leadid' => $note->getLeadid() ,
+								'details'  => $note->getDetails()   ,
+								'userid'     => $note->getUserid()      ,
+								'datecreated'  => $note->getDatecreated()   ,
+								'status' => $note->getStatus() 
+							];
+					$note_result = $note_model->createNote('notes', $data);
+
+				}
+				else if($add_update == 2)
+				{
+					$note->setId($note_id);
+					$note->setLeadid($id);
+					$note->setDetails($notes);
+					$fields = array('details');
+					$where  = "WHERE id = ? AND leadid = ?";
+					$params = array($note->getDetails(), $note->getId(), $note->getLeadid());
+					$result_note = $note_model->updateNote("notes", $fields, $where, $params);
+				}
+			}
 			header("location: ../leads/manage.php?id=".$leads->getId()."&msg=updated");
 		}
 	}

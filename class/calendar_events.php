@@ -3,9 +3,10 @@
 	{
 		private $id;
         private $event_name;
-        private $lead_id;
+        private $leadid;
         private $start_date;
         private $end_date;
+        private $datecreated;
         private $status;
 
 
@@ -18,6 +19,16 @@
             $this->id = $id;
         }
 
+        public function getLeadid()
+        {
+            return $this->leadid;
+        }
+
+        public function setLeadid($leadid)
+        {
+            $this->leadid = $leadid;
+        }
+
         public function getEvent_name()
         {
             return $this->event_name;
@@ -26,16 +37,6 @@
         public function setEvent_name($event_name)
         {
             $this->event_name = $event_name;
-        }
-
-        public function getLead_id()
-        {
-            return $this->lead_id;
-        }
-
-        public function setLead_id($lead_id)
-        {
-            $this->lead_id = $lead_id;
         }
 
         public function getStart_date()
@@ -56,6 +57,16 @@
         public function setEnd_date($end_date)
         {
             $this->end_date = $end_date;
+        }
+
+        public function getDatecreated()
+        {
+            return $this->datecreated;
+        }
+
+        public function setDatecreated($datecreated)
+        {
+            $this->datecreated = $datecreated;
         }
 
         public function getStatus()

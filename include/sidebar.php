@@ -55,9 +55,14 @@
 								<span class="title">Calendar</span>
 							</a>
 						</li>
-						<li>
+					<!-- 	<li>
 							<a href="../calendar/calendar_events.php">
-								<span class="title">Calendar Events</span>
+								<span class="title">Create Events</span>
+							</a>
+						</li> -->
+						<li>
+							<a href="../calendar/upcoming_events.php">
+								<span class="title">Upcoming Events</span>
 							</a>
 						</li>
 

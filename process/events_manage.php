@@ -82,4 +82,18 @@
 		header("location: ../calendar/specific_event.php?id=".$events->setLead_id()."&msg=joined");
 	}
 	
+	if(isset($_GET['id']))
+	{
+		$events->setId($_GET['id']);
+		$events->setStatus(0);
+		$fields = array('status');
+		$where  = "WHERE id = ?";
+		$params = array(
+								$events->getStatus(),
+								$events->getId()
+							);
+		$result = $events_model->updateEvent($table, $fields, $where, $params);
+		header("location: ../calendar/upcoming_events.php");
+	}
+
 ?>
