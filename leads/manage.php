@@ -310,21 +310,32 @@
 												</div>
 											</div>
 											<div class="col-sm-6">
-
-												<div class="form-group floating-label">
-													<select name = "siccode" class = "form-control" required>
-														<option></option>
-														<?php
-															$sic = $list_siccode->get_all("siccode");
-															foreach ($sic as $p) :
-																$siccode = new SICode();
-																$siccode->setId($p['id']);
-																$siccode->setDescription($p['description']);
-														?>
-															<option value = "<?php echo $siccode->getId(); ?>" <?php echo ($siccode->getId() == $lead_record->getSiccode() ? "selected='selected'" : ""); ?>><?php echo $siccode->getDescription(); ?></option>
-														<?php endforeach; ?>
-													</select>
-													<label for="siccode">SI Code</label>
+												<div id = "sicode1">
+													<div class="form-group floating-label">
+														<select name = "siccode" class = "form-control" id = "siccode" required>
+															<option></option>
+															<?php
+																$sic = $list_siccode->get_all("siccode");
+																foreach ($sic as $p) :
+																	$siccode = new SICode();
+																	$siccode->setId($p['id']);
+																	$siccode->setDescription($p['description']);
+															?>
+																<option value = "<?php echo $siccode->getId(); ?>" <?php echo ($siccode->getId() == $lead_record->getSiccode() ? "selected='selected'" : ""); ?>><?php echo $siccode->getDescription(); ?></option>
+														
+															<?php endforeach; ?>
+															<option value = "add_new">Add New SI Code</option>
+														</select>
+														<label for="siccode">SI Code</label>
+													</div>
+												</div>
+												<div id = "sicode2">
+													<div class="col-sm-8">
+														<div class="form-group floating-label">
+															<input type "text" name = "new_sicode" id = "new_sicode" class = "form-control">
+															<label for="new_sicode">SI Code</label>
+														</div>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -828,7 +839,20 @@
 		    $("#event_div").show();
 		});
 
-		 $("#position2").hide();
+
+		$("#sicode2").hide();
+		$( "#siccode" ).change(function() 
+		 {
+		  	var selected = $("#siccode").val();
+		  	if(selected == "add_new")
+		  	{
+		  		$("#sicode1").hide();
+		  		$("#sicode2").show();
+		  		
+		  	}
+		});
+
+
 		$( "#position" ).change(function() 
 		 {
 		  	var selected = $("#position").val();

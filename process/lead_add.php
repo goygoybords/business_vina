@@ -13,6 +13,7 @@
 	require '../model/campaign_details_model.php';
 	require '../model/calendar_events_model.php';
 	require '../model/position_model.php';
+	require '../model/sicode_model.php';
 
 
 	$leads = new Leads();
@@ -26,6 +27,7 @@
 	
 	$calendar_event = new CalendarEvents();
 	$calendar_model = new Calendar_Events_Model(new Database());
+	$sic_model = new SICode_Model(new Database());
 
 	$position_model = new Position_Model(new Database());
 	extract($_POST);
@@ -33,9 +35,13 @@
 	{
 		if($new_position != null)
 		{
-			echo $new_position;
 			$data = [ 'position' => $new_position ];
 			$position = $position_model->createPosition('positions' , $data);
+		}
+		if($new_sicode != null)
+		{
+			$data = [ 'description' => $new_sicode ];
+			$siccode = $sic_model->createPosition('siccode' , $data);
 		}
 		$data = null;
 		$leads->setLeadType(htmlentities($lead_type));

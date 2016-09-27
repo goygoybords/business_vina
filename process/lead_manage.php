@@ -39,6 +39,11 @@
 			$data = [ 'position' => $new_position ];
 			$position = $position_model->createPosition('positions' , $data);
 		}
+		if($new_sicode != null)
+		{
+			$data = [ 'description' => $new_sicode ];
+			$siccode = $sic_model->createPosition('siccode' , $data);
+		}
 		$leads->setId(htmlentities($id));
 		$leads->setCompanyname(htmlentities($companyname));
 		$leads->setFirstname(htmlentities($firstname));
