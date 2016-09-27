@@ -12,6 +12,7 @@
 	require '../model/note_model.php';
 	require '../model/campaign_details_model.php';
 	require '../model/calendar_events_model.php';
+	require '../model/position_model.php';
 
 
 	$leads = new Leads();
@@ -28,10 +29,16 @@
 
 	$calendar_event = new CalendarEvents();
 	$calendar_model = new Calendar_Events_Model(new Database());
+	$position_model = new Position_Model(new Database());
 
 	if(isset($_POST['create_lead']))
 	{
 		extract($_POST);
+		if($new_position != null)
+		{
+			$data = [ 'position' => $new_position ];
+			$position = $position_model->createPosition('positions' , $data);
+		}
 		$leads->setId(htmlentities($id));
 		$leads->setCompanyname(htmlentities($companyname));
 		$leads->setFirstname(htmlentities($firstname));
@@ -45,14 +52,16 @@
 		$leads->setCity(htmlentities($city));
 		$leads->setState(htmlentities($state));
 		$leads->setZip(htmlentities($zip));
+		$leads->setLeadStatus(htmlentities($lead_status));
 		$leads->setDatelastupdated(strtotime(date('Y-m-d')));
-		$leads->setStatus(1);
+		
 
 		$table  = "leads";
 		if(isset($_POST['create_lead']))
 		{
 			$leads->setStatus(1);
-			$fields = array('companyname' ,'position' ,'lead_type','firstname' , 'middlename' , 'lastname', 'email', 'siccode', 'address', 'city', 'zip', 'state', 'datelastupdated');
+			$fields = array('companyname' ,'position' ,'lead_type','firstname' , 'middlename' , 'lastname', 'email', 'siccode', 'address', 'city', 'zip', 
+				'state', 'lead_status' ,'datelastupdated');
 			$where  = "WHERE id = ?";
 			$params = array(
 									$leads->getCompanyname(),
@@ -66,7 +75,8 @@
 									$leads->getAddress(),
 									$leads->getCity(),
 									$leads->getZip(),
-									$leads->getStatus(),
+									$leads->getState(),
+									$leads->getLeadStatus(),
 									$leads->getDatelastupdated(),
 									$leads->getId()
 								);

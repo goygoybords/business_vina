@@ -19,6 +19,7 @@
 		private $datecreated;
 		private $datelastupdated;
         private $user;
+        private $lead_status;
 
         public function getId()
         {
@@ -199,6 +200,19 @@
             $this->user = $user;
         }
 
+        public function getLeadStatus()
+        {
+            return $this->lead_status;
+        }
+
+        public function setLeadStatus($lead_status)
+        {
+            $this->lead_status = $lead_status;
+        }
+
+
+
+        
     }
 
 ?>

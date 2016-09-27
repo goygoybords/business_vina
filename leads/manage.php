@@ -20,7 +20,7 @@
 	require '../class/calendar_events.php';
 	require '../class/lead_types.php';
 	require '../class/user.php';
-
+	require '../class/lead_status.php';
 
 
 	require '../model/position_model.php';
@@ -37,6 +37,7 @@
 	require '../model/campaign_model.php';
 	require '../model/campaign_details_model.php';
 	require '../model/calendar_events_model.php';
+	require '../model/lead_status_model.php';
 	
 
 	
@@ -53,7 +54,7 @@
 	$list_campaign_detail = new Campaign_Details_Model(new Database());
 	$list_types = new Lead_Type_Model(new Database());
 	$user_model = new User_Model(new Database());
-	
+	$list_status_model = new Lead_Status_Model(new Database());
 
 	$lead_id = (isset($_GET["id"]) ? $_GET["id"] : "");
 	$note_id = (isset($_GET["note"]) ? $_GET["note"] : "");
@@ -107,6 +108,7 @@
 						$lead_record->setDatecreated($l['datecreated']);
 						$lead_record->setDatelastupdated($l['datelastupdated']);
 						$lead_record->setUser($l['user']);
+						$lead_record->setLeadStatus($l['lead_status']);
 						$lead_record->setStatus($l['status']);
 					}
 					if($note_id)
@@ -257,6 +259,27 @@
 													<label class="campaign">Campaign</label>
 												</div>
 											</div>
+											<div class="col-sm-4">
+												<div class="form-group floating-label">
+													<select name = "lead_status" class = "form-control" id = "lead_status">
+														<option></option>
+														<?php $lead_status = $list_status_model->get_all('lead_status' , array('id' , 'description') , 'status = ?' , array(1) );  
+														foreach ($lead_status as $s ): ?>
+														<?php
+															$lead_status = new LeadStatus();
+															$lead_status->setId($s['id']);
+															$lead_status->setDescription($s['description']);
+
+														?>
+														<option value = "<?php echo $lead_status->getId(); ?>" <?php echo ($lead_record->getLeadStatus() == $lead_status->getId() ? "selected='selected'" : ""); ?> >
+															<?php echo $lead_status->getDescription(); ?>
+														</option>
+														<?php endforeach; ?>
+													</select>
+													<label class="lead_status">Lead Status</label>
+												</div>
+											</div>
+
 											<?php if($form_state == 2): ?>
 											<div class="col-sm-4">
 												<div class="form-group floating-label">
@@ -313,25 +336,26 @@
 											<div class="col-sm-4">
 												<div class="form-group floating-label">
 													<input type="text" name = "firstname" class="form-control" id="firstname" value="<?php echo $lead_record->getFirstname(); ?>" required >
-													<label for="firstname">Firstname</label>
+													<label for="firstname">First Name</label>
 												</div>
 											</div>
 
 											<div class="col-sm-4">
 												<div class="form-group floating-label">
 													<input type="text" name = "middlename" class="form-control" id="middlename" value="<?php echo $lead_record->getMiddlename(); ?>" required >
-													<label for="middlename">Middlename</label>
+													<label for="middlename">Middle Name</label>
 												</div>
 											</div>
 
 											<div class="col-sm-4">
 												<div class="form-group floating-label">
 													<input type="text" name = "lastname" class="form-control" id="lastname" value="<?php echo $lead_record->getLastname(); ?>" required >
-													<label for="lastname">Lastname</label>
+													<label for="lastname">Last Name</label>
 												</div>
 											</div>
 										</div>
 										<div class="row">
+											<div id = "position1">
 											<div class="col-sm-6">
 												<div class="form-group floating-label">
 													<select name = "position" id = "position" class = "form-control" required>
@@ -345,17 +369,29 @@
 													?>
 														<option value = "<?php echo $position->getId(); ?>"  <?php echo ($position->getId() == $lead_record->getPosition() ? "selected='selected'" : ""); ?> ><?php echo $position->getPosition(); ?></option>
 													<?php endforeach; ?>
+														<option value = "add_new">Add New Position</option>
 													</select>
 													<label for="position">Position</label>
 												</div>
 											</div>
+											</div>
 											
+											<div id = "position2">
+												<div class="col-sm-6">
+													<div class="form-group floating-label">
+														<input type "text" name = "new_position" class = "form-control">
+														<label for="position">Position</label>
+													</div>
+												</div>
+											</div>
+												
 											<div class="col-sm-6">
 												<div class="form-group floating-label">
 													<input type="text" name = "email" class="form-control"  id="email" value="<?php echo $lead_record->getEmail(); ?>" required>
 													<label for="position">Email</label>
 												</div>
 											</div>
+											
 										</div>
 
 										<div class="row">
@@ -440,76 +476,60 @@
 										</div>
 										<br />
 
-										
-										<?php 
-											if($form_state == 2 && $event_id ) 
-												$style = "display:block";
-											else if($form_state == 2 )
-												$style = "display:none";
-											else
-												$style = "display:block";
-										?>
-										<div id = "event_div" style = "<?php echo $style; ?>">
-											<div class="form-group">
-												<label><b>EVENT</b></label>
-											</div>
-											<div class="row">
-												<div class="col-sm-4">
-													<div class="form-group floating-label">
-														<?php if($event_id) :?>
-															<input type = "hidden" name = "event_update" value = "2">
-															<input type = "hidden" name = "event_id" value = "<?php echo $event_id; ?>">
+										<?php if($form_state == 1): ?>
+								
+										<div class="form-group">
+											<label><b>EVENT</b></label>
+										</div>
+										<div class="row">
+											<div class="col-sm-4">
+												<div class="form-group floating-label">
+													<?php if($event_id) :?>
+														<input type = "hidden" name = "event_update" value = "2">
+														<input type = "hidden" name = "event_id" value = "<?php echo $event_id; ?>">
 
-														<?php else: ?>
-															<input type = "hidden" name = "event_update" value = "1">
-														<?php endif; ?>
-														<input type="text" name = "eventname" class="form-control" id="eventname" value = "<?php echo $calendar_det->getEvent_name(); ?>">
-														<label class="eventname">Event Name</label>
-													</div>
+													<?php else: ?>
+														<input type = "hidden" name = "event_update" value = "1">
+													<?php endif; ?>
+													<input type="text" name = "eventname" class="form-control" id="eventname" value = "<?php echo $calendar_det->getEvent_name(); ?>">
+													<label class="eventname">Event Name</label>
 												</div>
+											</div>
 
-												<div class="col-sm-4">
-													<div class="form-group floating-label">
-														<label for="start_date" class="col-sm-2 control-label">Start Date</label>
-														<div class="col-sm-10">
-															<div class="input-group date" data-provide="datepicker">
-																<div class="input-group-content">
-																	<input class="form-control static" name="start_date" id="datepicker"
-																	 type="text" value = "<?php echo $calendar_det->getStart_date(); ?>">
-																</div>
-																<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+											<div class="col-sm-4">
+												<div class="form-group floating-label">
+													<label for="start_date" class="col-sm-2 control-label">Start Date</label>
+													<div class="col-sm-10">
+														<div class="input-group date" data-provide="datepicker">
+															<div class="input-group-content">
+																<input class="form-control static" name="start_date" id="datepicker"
+																 type="text" value = "<?php echo $calendar_det->getStart_date(); ?>">
 															</div>
+															<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 														</div>
 													</div>
 												</div>
+											</div>
 
-												<div class="col-sm-4">
-													<div class="form-group floating-label">
-														<label for="end_date" class="col-sm-2 control-label">End Date</label>
-														<div class="col-sm-10">
-															<div class="input-group date" data-provide="datepicker">
-																<div class="input-group-content">
-																	<input class="form-control static" name="end_date" id="datepicker"
-																	 type="text" value = "<?php echo $calendar_det->getEnd_date(); ?>">
-																</div>
-																<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+											<div class="col-sm-4">
+												<div class="form-group floating-label">
+													<label for="end_date" class="col-sm-2 control-label">End Date</label>
+													<div class="col-sm-10">
+														<div class="input-group date" data-provide="datepicker">
+															<div class="input-group-content">
+																<input class="form-control static" name="end_date" id="datepicker"
+																 type="text" value = "<?php echo $calendar_det->getEnd_date(); ?>">
 															</div>
+															<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
 										<br/>
+										<?php endif; ?>
 
-										<?php 
-											if($form_state == 2 && $note_id ) 
-												$style = "display:block";
-											else if($form_state == 2 )
-												$style = "display:none";
-											else
-												$style = "display:block";
-										?>
-										<div style = "<?php echo $style; ?>" id = "note_div">
+										<?php  if($form_state == 1): ?>
 											<div class="form-group">
 												<label><b>Notes</b></label>
 											</div>
@@ -529,7 +549,7 @@
 													</div>
 												</div>
 											</div>
-										</div>
+										<?php endif; ?>
 
 										<?php if($lead_id): ?>
 										<div class="row">
@@ -541,7 +561,7 @@
 																<div class="card-head">
 																	<ul class="nav nav-tabs" data-toggle="tabs">
 																		<li class="active"><a href="#note">Note List</a></li>
-																		<li><a href="#event">Event List</a></li>
+																		<li ><a href="#event">Event List</a></li>
 												
 																	</ul>
 																</div>   
@@ -584,6 +604,37 @@
 																				<?php endforeach; ?>
 																			</tbody>	
 																		</table>
+																		<?php 
+																		if($form_state == 2):
+																			if($form_state == 2 && $note_id ) 
+																				$style = "display:block";
+																			else if($form_state == 2 )
+																				$style = "display:none";
+																			else
+																				$style = "display:block";
+																		?>
+																		<div style = "<?php echo $style; ?>" id = "note_div">
+																			<div class="form-group">
+																				<label><b>Notes</b></label>
+																			</div>
+																			<div class="row">
+																				<div class="col-sm-12">
+																					<div class="form-group floating-label">
+																						<?php if($note_id) :?>
+																							<input type = "hidden" name = "add_update" value = "2">
+																							<input type = "hidden" name = "note_id" value = "<?php echo $note_id; ?>">
+																							<textarea class ="form-control" name = "notes" id = "notes" rows = "5"><?php echo $note_record->getDetails(); ?></textarea>
+																						<?php else: ?>
+																							<input type = "hidden" name = "add_update" value = "1">
+																							<textarea class ="form-control" name = "notes" id = "notes" rows = "5"></textarea>
+																						<?php endif; ?>			
+																						<label class="notes">NOTES</label>
+
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																		<?php endif;?>
 																	</div>
 																	<div class="tab-pane" id="event">
 																		<table class = "table display responsive nowrap" id = "event-tbl">
@@ -627,6 +678,67 @@
 																				<?php endforeach; ?>
 																			</tbody>	
 																		</table>
+																		<?php if($form_state == 2): ?>
+																		<?php 
+																			if($form_state == 2 && $event_id ) 
+																				$style = "display:block";
+																			else if($form_state == 2 )
+																				$style = "display:none";
+																			else
+																				$style = "display:block";
+																		?>
+																		<div id = "event_div" style = "<?php echo $style; ?>">
+																			<div class="form-group">
+																				<label><b>EVENT</b></label>
+																			</div>
+																			<div class="row">
+																				<div class="col-sm-4">
+																					<div class="form-group floating-label">
+																						<?php if($event_id) :?>
+																							<input type = "hidden" name = "event_update" value = "2">
+																							<input type = "hidden" name = "event_id" value = "<?php echo $event_id; ?>">
+
+																						<?php else: ?>
+																							<input type = "hidden" name = "event_update" value = "1">
+																						<?php endif; ?>
+																						<input type="text" name = "eventname" class="form-control" id="eventname" value = "<?php echo $calendar_det->getEvent_name(); ?>">
+																						<label class="eventname">Event Name</label>
+																					</div>
+																				</div>
+
+																				<div class="col-sm-4">
+																					<div class="form-group floating-label">
+																						<label for="start_date" class="col-sm-4 control-label">Start Date</label>
+																						<div class="col-sm-10">
+																							<div class="input-group date" data-provide="datepicker">
+																								<div class="input-group-content">
+																									<input class="form-control static" name="start_date" id="datepicker"
+																									 type="text" value = "<?php echo $calendar_det->getStart_date(); ?>">
+																								</div>
+																								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+
+																				<div class="col-sm-4">
+																					<div class="form-group floating-label">
+																						<label for="end_date" class="col-sm-4 control-label">End Date</label>
+																						<div class="col-sm-10">
+																							<div class="input-group date" data-provide="datepicker">
+																								<div class="input-group-content">
+																									<input class="form-control static" name="end_date" id="datepicker"
+																									 type="text" value = "<?php echo $calendar_det->getEnd_date(); ?>">
+																								</div>
+																								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																		<?php endif;?>
+
 																	</div>
 																</div>
 															</div>
@@ -690,6 +802,7 @@
 <script type="text/javascript">
 	$(document).ready(function()
 	{
+
 	    dataTable = $('#note-tbl').DataTable(
 	    {
 			"responsive": true,
@@ -715,6 +828,18 @@
 		    $("#event_div").show();
 		});
 
+		 $("#position2").hide();
+		$( "#position" ).change(function() 
+		 {
+		  	var selected = $("#position").val();
+		  	if(selected == "add_new")
+		  	{
+		  		$("#position1").hide();
+		  		$("#position2").show();
+		  		
+		  	}
+		});
+		
 
 		
 	} );

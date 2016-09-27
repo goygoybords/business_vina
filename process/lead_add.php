@@ -12,6 +12,7 @@
 	require '../model/note_model.php';
 	require '../model/campaign_details_model.php';
 	require '../model/calendar_events_model.php';
+	require '../model/position_model.php';
 
 
 	$leads = new Leads();
@@ -26,9 +27,17 @@
 	$calendar_event = new CalendarEvents();
 	$calendar_model = new Calendar_Events_Model(new Database());
 
+	$position_model = new Position_Model(new Database());
 	extract($_POST);
 	if(isset($_POST['create_lead']))
 	{
+		if($new_position != null)
+		{
+			echo $new_position;
+			$data = [ 'position' => $new_position ];
+			$position = $position_model->createPosition('positions' , $data);
+		}
+		$data = null;
 		$leads->setLeadType(htmlentities($lead_type));
 		$leads->setCompanyname(htmlentities($companyname));
 		$leads->setFirstname(htmlentities($firstname));
@@ -43,6 +52,7 @@
 		$leads->setZip(htmlentities($zip));
 		$leads->setDatecreated(strtotime(date('Y-m-d')));
 		$leads->setUser($_SESSION['id']);
+		$leads->setLeadStatus(htmlentities($lead_status));
 		$leads->setStatus(1);
 
 		$data = [
@@ -60,6 +70,7 @@
 					'state' => $leads->getState() ,
 					'datecreated' => $leads->getDatecreated() ,
 					'user' => $leads->getUser(),
+					'lead_status' => $leads->getLeadStatus(),
 					'status' => $leads->getStatus() ,
 				];
 
@@ -136,8 +147,6 @@
 					];
 			$note_result = $note_model->createNote('notes', $data);
 		}
-		
-
 		header("location: ../leads/manage.php?msg=inserted");
 	}
 ?>
