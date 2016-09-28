@@ -17,7 +17,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Easy set variables
  */
-
+if(isset($_GET)):
 // DB table to use
 $table = 'leads';
 
@@ -68,14 +68,16 @@ $sql_details = array(
 
     // require( 'ssp.php' );
     require('ssp.customized.class.php' );
-    
+  
+    $name = $_GET['filter'];
     $joinQuery = "FROM leads l
                   JOIN positions p
                   ON l.position = p.id
                   JOIN siccode s
                   ON l.siccode = s.id ";
-    $extraWhere =  "l.status = 1" ;
+    $extraWhere = "l.companyname = '$name' AND l.status = 1" ;
     echo json_encode(
         SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere )
     );
 
+endif;

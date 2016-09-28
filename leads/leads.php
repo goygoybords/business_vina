@@ -56,6 +56,8 @@
 										<div class="col-lg-offset-0 col-md-12">
 											<div class = "row" >
 												<table class = "table display responsive nowrap" id = "lead-tbl">
+													<input type = "text" name = "filter" id = "filter">
+													<input type = "submit" id = "filteraction">
 													<thead>
 														<th>ID</th>
 														<th>Company Name</th>
@@ -110,9 +112,23 @@
 	                url :"../process/lead_list2.php", // json datasource
 	                type: "get",  // method  , by default get
 	            }
-
-
 	    } );
+
+	    $( "#filteraction" ).click(function() 
+		{
+			var filter = $("#filter").val();
+			$.ajax({
+			      type: "get",
+			      url :"../process/test.php", // json datasource
+			      // data: {filter: filter},
+			      success: function(data)
+			      {		
+			   		dataTable.ajax.url( "../process/test.php?filter="+filter).load();
+			      	console.log(data);	
+			      }
+			});
+		});
+
 	    $("#employee-grid_filter").css("display","none");
 
 	    $('.search-input-text').on( 'keyup click', function () {   // for text boxes

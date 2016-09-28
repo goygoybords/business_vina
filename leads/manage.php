@@ -713,7 +713,7 @@
 																							<input type = "hidden" name = "event_update" value = "1">
 																						<?php endif; ?>
 																						<input type="text" name = "eventname" class="form-control" id="eventname" value = "<?php echo $calendar_det->getEvent_name(); ?>">
-																						<label class="eventname">Event Name</label>
+																						<label class="eventname">Title</label>
 																					</div>
 																				</div>
 
@@ -953,10 +953,6 @@
 		  		
 		  	}
 		});
-
-
-
-
 		
 	} );
 </script>
