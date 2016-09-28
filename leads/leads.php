@@ -59,25 +59,28 @@
 													<input type = "text" name = "filter" id = "filter">
 													<input type = "submit" id = "filteraction">
 													<thead>
-														<th>ID</th>
-														<th>Company Name</th>
-														<th>Contact Person</th>
-														<th>Position</th>
-														<th>SI Code</th>
-														<th>Address</th>
+														<th>Date Added</th>
+														<th>Lead Status</th>
+														<th>Campaign</th>
+														<th>Businessname</th>
+														<th>First Name</th>
+														<th>Last Name</th>
+														<th>Phone</th>
+														<th>Email</th>
+														<th>User</th>
 														<th>Action</th>
 													</thead>
-													<tfoot>
+<!-- 													<tfoot>
 														<tr>
 															<td><input type="text" data-column="0"  placeholder = "Search ID" class="search-input-text"></td>
-															<td><input type="text" data-column="1"  placeholder = "Search Company" class="search-input-text"></td>
+															<td><input type="text" data-column="1"  placeholder = "Search Lead Status" class="search-input-text"></td>
 															<td><input type="text" data-column="2"  placeholder = "Search Name" class="search-input-text"></td>
 															<td><input type="text" data-column="3"  placeholder = "Search Position" class="search-input-text"></td>
 															<td><input type="text" data-column="4"  placeholder = "Search SI Code" class="search-input-text"></td>
 															<td><input type="text" data-column="5"  placeholder = "Search Address" class="search-input-text"></td>
 															<td></td>
 														</tr>
-													</tfoot>
+													</tfoot> -->
 												</table>
 											</div>
 										</div>
@@ -129,12 +132,12 @@
 			});
 		});
 
-	    $("#employee-grid_filter").css("display","none");
+	   //  $("#employee-grid_filter").css("display","none");
 
-	    $('.search-input-text').on( 'keyup click', function () {   // for text boxes
-					var i =$(this).attr('data-column');  // getting column index
-					var v =$(this).val();  // getting search input value
-					dataTable.columns(i).search(v).draw();
-				} );
+	   //  $('.search-input-text').on( 'keyup click', function () {   // for text boxes
+				// 	var i =$(this).attr('data-column');  // getting column index
+				// 	var v =$(this).val();  // getting search input value
+				// 	dataTable.columns(i).search(v).draw();
+				// } );
 	} );
 </script>

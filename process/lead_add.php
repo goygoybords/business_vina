@@ -62,6 +62,7 @@
 		$data = null;
 		$leads->setLeadType(htmlentities($lead_type));
 		$leads->setCompanyname(htmlentities($companyname));
+		$leads->setBusinessname(htmlentities($businessname));
 		$leads->setFirstname(htmlentities($firstname));
 		$leads->setMiddlename(htmlentities($middlename));
 		$leads->setLastname(htmlentities($lastname));
@@ -80,6 +81,7 @@
 		$data = [
 					'lead_type' => $leads->getLeadType(),
 					'companyname' => $leads->getCompanyname() ,
+					'businessname' => $leads->getBusinessname() ,
 					'position'  => $leads->getPosition()   ,
 					'firstname'     => $leads->getFirstname()      ,
 					'middlename'  => $leads->getMiddlename()   ,

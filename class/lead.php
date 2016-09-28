@@ -20,6 +20,17 @@
 		private $datelastupdated;
         private $user;
         private $lead_status;
+        private $businessname;
+
+        public function getBusinessname()
+        {
+            return $this->businessname;
+        }
+
+        public function setBusinessname($businessname)
+        {
+            $this->businessname = $businessname;
+        }
 
         public function getId()
         {

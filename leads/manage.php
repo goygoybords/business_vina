@@ -93,6 +93,7 @@
 					{
 						$lead_record->setId($l['id']);
 						$lead_record->setCompanyname($l['companyname']);
+						$lead_record->setBusinessname($l['businessname']);
 						$lead_record->setLeadType($l['lead_type']);
 						$lead_record->setPosition($l['position']);
 						$lead_record->setFirstname($l['firstname']);
@@ -229,7 +230,6 @@
 															$type_det = new LeadTypes();
 															$type_det->setId($s['id']);
 															$type_det->setDescription($s['description']);
-
 														?>
 														<option value = "<?php echo $type_det->getId(); ?>" <?php echo ($lead_record->getLeadType() == $type_det->getId() ? "selected='selected'" : ""); ?> ><?php echo $type_det->getDescription(); ?></option>
 														<?php endforeach; ?>
@@ -248,7 +248,6 @@
 												</div>
 											</div>
 											
-
 											<div class="col-sm-4">
 												<div class="form-group floating-label">
 													<?php if(count($detail) > 0) :?>
@@ -274,6 +273,7 @@
 													<label class="campaign">Campaign</label>
 												</div>
 											</div>
+
 											<div id = "lead_status1">
 												<div class="col-sm-4">
 													<div class="form-group floating-label">
@@ -337,6 +337,12 @@
 												</div>
 											</div>
 											<div class="col-sm-6">
+												<div class="form-group floating-label">
+													<input type="text" name = "businessname" class="form-control"  id="businessname" value="<?php echo $lead_record->getBusinessname(); ?>" required autofocus='autofocus'>
+													<label for="businessname">Business Name</label>
+												</div>
+											</div>
+											<div class="col-sm-6">
 												<div id = "sicode1">
 													<div class="form-group floating-label">
 														<select name = "siccode" class = "form-control" id = "siccode" required>
@@ -358,14 +364,14 @@
 													</div>
 												</div>
 												<div id = "sicode2">
-													<div class="col-sm-8">
-														<div class="form-group floating-label">
-															<input type "text" name = "new_sicode" id = "new_sicode" class = "form-control">
-															<label for="new_sicode">SI Code</label>
-														</div>
+													<div class="form-group floating-label">
+														<input type "text" name = "new_sicode" id = "new_sicode" class = "form-control">
+														<label for="new_sicode">SI Code</label>
 													</div>
 												</div>
 											</div>
+										
+											
 										</div>
 										<br />
 										<div class="form-group">

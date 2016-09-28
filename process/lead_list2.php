@@ -30,12 +30,15 @@ $primaryKey = 'id';
 // indexes
 $columns = array(
     array( 'db' => '`l`.`id`',          'dt' => 0, 'field' => 'id' ),
-    array( 'db' => '`l`.`companyname`', 'dt' => 1, 'field' => 'companyname' ),
+    array( 'db' => '`ls`.`description`', 'dt' => 1, 'field' => 'description' ),
     array( 'db' => '`l`.`firstname`',   'dt' => 2, 'field' => 'firstname' ),
     array( 'db' => '`p`.`position`',    'dt' => 3, 'field' => 'position' ),
     array( 'db' => '`s`.`description`', 'dt' => 4, 'field' => 'description' ),
     array( 'db' => '`l`.`address`',     'dt' => 5, 'field' => 'address' ),
-    array( 'db' => '`l`.`id`',          'dt' => 6, 'formatter' => function( $d, $row )
+    array( 'db' => '`l`.`address`',     'dt' => 6, 'field' => 'address' ),
+    array( 'db' => '`l`.`address`',     'dt' => 7, 'field' => 'address' ),
+    array( 'db' => '`l`.`address`',     'dt' => 8, 'field' => 'address' ),
+    array( 'db' => '`l`.`id`',          'dt' => 9, 'formatter' => function( $d, $row )
             {
                 return '<a href="manage.php?id='.$d.'" >
                             <span class="label label-inverse" style = "color:black;">
@@ -72,6 +75,8 @@ $sql_details = array(
     $joinQuery = "FROM leads l
                   JOIN positions p
                   ON l.position = p.id
+                  JOIN lead_status ls
+                  ON l.lead_status = ls.id
                   JOIN siccode s
                   ON l.siccode = s.id ";
     $extraWhere =  "l.status = 1" ;
