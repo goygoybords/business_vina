@@ -138,15 +138,19 @@
 			$calendar_event->setEvent_name(htmlentities($eventname));
 			$calendar_event->setStart_date(strtotime($start_date));
 			$calendar_event->setEnd_date(strtotime($end_date));
+			$calendar_event->setDescription(htmlentities($event_description));
 			$calendar_event->setDatecreated(strtotime(date('Y-m-d')));
+			$calendar_event->setUser($_SESSION['id']);
 			$calendar_event->setStatus(1);
 
 			$data = [
 						'leadid' => $calendar_event->getLeadid() ,
-						'event_name'  => $calendar_event->getEvent_name()   ,
+						'event_name'  => $calendar_event->getEvent_name()  ,
+						'description' => $calendar_event->getDescription(),
 						'start_date' => $calendar_event->getStart_date() ,
 						'end_date' => $calendar_event->getEnd_date() ,
 						'datecreated'  => $calendar_event->getDatecreated()   ,
+						'user_id' => $calendar_event->getUser(),
 						'status' => $calendar_event->getStatus() 
 					];
 			$calendar_model->createEvent('calendar_events', $data);

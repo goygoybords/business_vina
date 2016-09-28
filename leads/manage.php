@@ -157,6 +157,7 @@
 								$calendar_det = new CalendarEvents();
 								$calendar_det->setId($d['id']);
 								$calendar_det->setEvent_name($d['event_name']);
+								$calendar_det->setDescription($d['description']);
 								$calendar_det->setStart_date(date('m/d/Y', $d['start_date']));
 								$calendar_det->setEnd_date(date('m/d/Y', $d['end_date']));
 							}
@@ -531,7 +532,15 @@
 														<input type = "hidden" name = "event_update" value = "1">
 													<?php endif; ?>
 													<input type="text" name = "eventname" class="form-control" id="eventname" value = "<?php echo $calendar_det->getEvent_name(); ?>">
-													<label class="eventname">Event Name</label>
+													<label class="eventname">Title</label>
+												</div>
+											</div>
+
+											<div class="col-sm-4">
+												<div class="form-group floating-label">
+													<input type="text" name = "event_description" class="form-control" id="event_description" 
+													value = "<?php echo $calendar_det->getDescription(); ?>">
+													<label class="event_description">Description</label>
 												</div>
 											</div>
 
@@ -708,6 +717,14 @@
 																					</div>
 																				</div>
 
+																					<div class="col-sm-4">
+																						<div class="form-group floating-label">
+																							<input type="text" name = "event_description" class="form-control" id="event_description" 
+																							value = "<?php echo $calendar_det->getDescription(); ?>">
+																							<label class="event_description">Description</label>
+																						</div>
+																					</div>
+
 																				<div class="col-sm-4">
 																					<div class="form-group floating-label">
 																						<label for="start_date" class="col-sm-4 control-label">Start Date</label>
@@ -755,7 +772,9 @@
 																			<thead>
 																				<th>Date</th>
 																				<th>Event</th>
+																				<th>Description</th>
 																				<th>Timeframe</th>
+																				<th>User</th>
 																				<th>Action</th>
 																			</thead>
 																			<tbody>
@@ -764,15 +783,26 @@
 																					$calendar_det = new CalendarEvents();
 																					$calendar_det->setId($n['id']);
 																					$calendar_det->setEvent_name($n['event_name']);
+																					$calendar_det->setDescription($n['description']);
 																					$calendar_det->setStart_date(date('Y/m/d', $n['start_date']) );
 																					$calendar_det->setEnd_date(date('Y/m/d', $n['end_date']) );
 																					$calendar_det->setDatecreated(date('Y/m/d', $n['datecreated']) );
+																					$calendar_det->setUser($n['user_id']);
 
+																					$user_cal = $user_model->queryUser('users' , array('firstname' , 'lastname') , 'id = ?' , array($calendar_det->getUser()));
+																					foreach ($user as $c ) 
+																					{
+																						$user_record = new User();
+																						$user_record->setFirstname($c['firstname']);
+																						$user_record->setLastname($c['lastname']);
+																					}
 																				?>
 																				<tr>
 																					<td><?php echo $calendar_det->getDatecreated(); ?></td>
-																					<td><?php echo $calendar_det->getEvent_name(); ?></td>
+																					<td><?php echo $calendar_det->getEvent_name();  ?></td>
+																					<td><?php echo $calendar_det->getDescription(); ?></td>
 																					<td><?php echo $calendar_det->getStart_date()." - ".$calendar_det->getEnd_date(); ?></td>
+																					<td><?php echo $user_record->getFirstname()." ".$user_record->getLastname(); ?></td>
 																					<td>
 																						<a href="manage.php?id=<?php echo $lead_id; ?>&event=<?php echo $calendar_det->getId(); ?>" >
 																                            <span class="label label-inverse" style = "color:black;">

@@ -185,14 +185,18 @@
 					$calendar_event->setStart_date(strtotime($start_date));
 					$calendar_event->setEnd_date(strtotime($end_date));
 					$calendar_event->setDatecreated(strtotime(date('Y-m-d')));
+					$calendar_event->setDescription(htmlentities($event_description));
+					$calendar_event->setUser($_SESSION['id']);
 					$calendar_event->setStatus(1);
 
 					$data = [
 								'leadid' => $calendar_event->getLeadid() ,
 								'event_name'  => $calendar_event->getEvent_name()   ,
+								'description' => $calendar_event->getDescription(),
 								'start_date' => $calendar_event->getStart_date() ,
 								'end_date' => $calendar_event->getEnd_date() ,
 								'datecreated'  => $calendar_event->getDatecreated()   ,
+								'user_id' => $calendar_event->setUser($_SESSION['id']),
 								'status' => $calendar_event->getStatus() 
 							];
 					$calendar_model->createEvent('calendar_events', $data);
@@ -206,11 +210,12 @@
 					$calendar_event->setEvent_name(htmlentities($eventname));
 					$calendar_event->setStart_date(strtotime($start_date));
 					$calendar_event->setEnd_date(strtotime($end_date));
+					$calendar_event->setDescription(htmlentities($event_description));
 
-					$fields = array('event_name', 'start_date' , 'end_date');
+					$fields = array('event_name', 'start_date' , 'end_date' , 'description');
 					$where  = "WHERE id = ?";
 					$params = array($calendar_event->getEvent_name(), $calendar_event->getStart_date(), 
-									$calendar_event->getEnd_date() , $calendar_event->getId()
+									$calendar_event->getEnd_date() , $calendar_event->getDescription() , $calendar_event->getId()
 									);
 					$calendar_model->updateEvent("calendar_events", $fields, $where, $params);
 				}
