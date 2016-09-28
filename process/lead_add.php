@@ -15,6 +15,7 @@
 	require '../model/position_model.php';
 	require '../model/sicode_model.php';
 	require '../model/lead_type_model.php';
+	require '../model/lead_status_model.php';
 
 	$leads = new Leads();
 	$lead_model = new Lead_Model(new Database());
@@ -31,7 +32,7 @@
 
 	$position_model = new Position_Model(new Database());
 	$lead_type_model = new Lead_Type_Model(new Database());
-
+	$lead_status_model = new Lead_Status_Model(new Database());
 
 	extract($_POST);
 	if(isset($_POST['create_lead']))
@@ -46,10 +47,17 @@
 			$data = [ 'description' => $new_sicode ];
 			$siccode = $sic_model->createPosition('siccode' , $data);
 		}
+		
 		if($new_leadtype != null)
 		{
-			$data = [ 'description' => $new_leadtype ];
+			$data = [ 'description' => $new_leadtype  , 'status' => 1];
 			$lead_type = $lead_type_model->createType('lead_type', $data);
+		}
+		if($new_leadstatus != null)
+		{
+			$data = [ 'description' => $new_leadstatus , 'status' => 1];
+			$lead_status = $lead_status_model->createType('lead_status', $data);
+
 		}
 		$data = null;
 		$leads->setLeadType(htmlentities($lead_type));

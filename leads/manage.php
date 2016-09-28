@@ -300,7 +300,7 @@
 											<div id = "lead_status2">
 												<div class="col-sm-4">
 													<div class="form-group floating-label">
-														<input type = "text" name = "new_lead" class = "form-control">
+														<input type = "text" name = "new_leadstatus" class = "form-control">
 														<label class="lead_status">Lead Status</label>
 													</div>
 												</div>
