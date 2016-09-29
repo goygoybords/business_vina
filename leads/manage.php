@@ -157,6 +157,7 @@
 							{
 								$calendar_det = new CalendarEvents();
 								$calendar_det->setId($d['id']);
+								$calendar_det->setEventType($d['event_type']);
 								$calendar_det->setEvent_name($d['event_name']);
 								$calendar_det->setDescription($d['description']);
 								$calendar_det->setStart_date(date('m/d/Y', $d['start_date']));
@@ -530,6 +531,16 @@
 										<div class="row">
 											<div class="col-sm-4">
 												<div class="form-group floating-label">
+													<select name = "event_type" class = "form-control">
+														<option value = "1">Task</option>
+														<option value = "2">Appointment</option>
+													</select>
+													<label class="event_type">Event Type</label>
+												</div>
+											</div>
+
+											<div class="col-sm-4">
+												<div class="form-group floating-label">
 													<?php if($event_id) :?>
 														<input type = "hidden" name = "event_update" value = "2">
 														<input type = "hidden" name = "event_id" value = "<?php echo $event_id; ?>">
@@ -711,6 +722,15 @@
 																			<div class="row">
 																				<div class="col-sm-4">
 																					<div class="form-group floating-label">
+																						<select name = "event_type" class = "form-control">
+																							<option value = "1" <?php if($calendar_det->getEventType() == 1) echo "selected"; ?> >Task</option>
+																							<option value = "2" <?php if($calendar_det->getEventType() == 2) echo "selected"; ?> >Appointment</option>
+																						</select>
+																						<label class="event_type">Event Type</label>
+																					</div>
+																				</div>
+																				<div class="col-sm-4">
+																					<div class="form-group floating-label">
 																						<?php if($event_id) :?>
 																							<input type = "hidden" name = "event_update" value = "2">
 																							<input type = "hidden" name = "event_id" value = "<?php echo $event_id; ?>">
@@ -718,7 +738,8 @@
 																						<?php else: ?>
 																							<input type = "hidden" name = "event_update" value = "1">
 																						<?php endif; ?>
-																						<input type="text" name = "eventname" class="form-control" id="eventname" value = "<?php echo $calendar_det->getEvent_name(); ?>">
+																						<input type="text" name = "eventname" class="form-control" id="eventname" 
+																						value = "<?php echo $calendar_det->getEvent_name(); ?>">
 																						<label class="eventname">Title</label>
 																					</div>
 																				</div>

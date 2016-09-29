@@ -29,13 +29,22 @@ $primaryKey = 'id';
 // parameter represents the DataTables column identifier. In this case simple
 // indexes
 $columns = array(
-    array( 'db' => '`l`.`id`',          'dt' => 0, 'field' => 'id' ),
-    array( 'db' => '`l`.`companyname`', 'dt' => 1, 'field' => 'companyname' ),
-    array( 'db' => '`l`.`firstname`',   'dt' => 2, 'field' => 'firstname' ),
-    array( 'db' => '`p`.`position`',    'dt' => 3, 'field' => 'position' ),
-    array( 'db' => '`s`.`description`', 'dt' => 4, 'field' => 'description' ),
-    array( 'db' => '`l`.`address`',     'dt' => 5, 'field' => 'address' ),
-    array( 'db' => '`l`.`id`',          'dt' => 6, 'formatter' => function( $d, $row )
+    array( 'db' => '`l`.`datecreated`', 'dt' => 0, 'formatter' => function( $d, $row )
+            {
+                return date('Y-m-d', $d);
+            }, 'field' => 'datecreated' 
+        ),
+
+    array( 'db' => '`ls`.`description`',    'dt' => 1, 'field' => 'description' ),
+    array( 'db' => '`l`.`companyname`',     'dt' => 2, 'field' => 'companyname' ),
+    array( 'db' => '`c`.`title`',           'dt' => 3, 'field' => 'title' ),
+    array( 'db' => '`l`.`businessname`',    'dt' => 4, 'field' => 'businessname' ),
+    array( 'db' => '`l`.`firstname`',       'dt' => 5, 'field' => 'firstname' ),
+    array( 'db' => '`l`.`lastname`',        'dt' => 6, 'field' => 'lastname' ),
+    array( 'db' => '`p`.`number`',          'dt' => 7, 'field' => 'number' ),
+    array( 'db' => '`l`.`email`',           'dt' => 8, 'field' => 'email' ),
+    array( 'db' => '`u`.`first_name`',      'dt' => 9, 'field' => 'first_name' ),
+    array( 'db' => '`l`.`id`',              'dt' => 10, 'formatter' => function( $d, $row )
             {
                 return '<a href="manage.php?id='.$d.'" >
                             <span class="label label-inverse" style = "color:black;">
@@ -51,6 +60,7 @@ $columns = array(
             },
             'field' => 'id' )
     );
+
 
 // SQL server connection information
 $sql_details = array(
@@ -69,13 +79,20 @@ $sql_details = array(
     // require( 'ssp.php' );
     require('ssp.customized.class.php' );
   
-    $name = $_GET['filter'];
+   $name = $_GET['filter'];
     $joinQuery = "FROM leads l
-                  JOIN positions p
-                  ON l.position = p.id
-                  JOIN siccode s
-                  ON l.siccode = s.id ";
-    $extraWhere = "l.companyname = '$name' AND l.status = 1" ;
+                  JOIN lead_status ls
+                  ON l.lead_status = ls.id
+                  LEFT OUTER JOIN campaign_details cd 
+                  ON l.id = cd.leadid
+                  LEFT OUTER JOIN campaign c
+                  ON cd.campaign_id = c.id
+                  JOIN users u
+                  ON l.user = u.id
+                  LEFT JOIN phones p
+                  ON l.id = p.leadid
+                 ";
+    $extraWhere =  "l.companyname LIKE '$name%' AND p.phonetypeid = 1 AND l.status = 1" ;
     echo json_encode(
         SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere )
     );

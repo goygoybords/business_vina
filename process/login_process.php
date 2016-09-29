@@ -17,7 +17,7 @@
 		$user->setDatelastlogin(strtotime(date('Y-m-d')));
 
 		$table = "users";
-		$fields = array('id','firstname' , 'lastname', 'usertypeid');
+		$fields = array('id','first_name' , 'lastname', 'usertypeid');
 		$where = "email = ? AND password = ? AND status = 1";
 		$params = array($user->getEmail(), md5($user->getPassword()) );
 
@@ -27,7 +27,7 @@
 			foreach ($login as $l ) 
 			{
 				$_SESSION['id'] = $l['id'];
- 				$_SESSION['firstname'] = $l['firstname'];
+ 				$_SESSION['firstname'] = $l['first_name'];
 				$_SESSION['lastname'] = $l['lastname'];
 				$_SESSION['user_type'] = $l['usertypeid'];
 				$_SESSION['isLogin'] = true;

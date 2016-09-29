@@ -30,7 +30,7 @@ $primaryKey = 'id';
 // parameter represents the DataTables column identifier. In this case simple
 // indexes
 $columns = array(
-    array( 'db' => '`u`.`firstname`',   'dt' => 0, 'field' => 'firstname' ),
+    array( 'db' => '`u`.`first_name`',   'dt' => 0, 'field' => 'first_name' ),
     array( 'db' => '`u`.`lastname`',    'dt' => 1, 'field' => 'lastname' ),
     array( 'db' => '`ut`.`type`',       'dt' => 2, 'field' => 'type' ),
     array( 'db' => '`u`.`email`',       'dt' => 3, 'field' => 'email' ),

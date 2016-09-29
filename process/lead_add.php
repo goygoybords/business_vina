@@ -137,6 +137,7 @@
 			$start_date  = date('Y-m-d', strtotime($start_date));
 			$end_date    = date('Y-m-d', strtotime($end_date));
 			$calendar_event->setLeadid($result);
+			$calendar_event->setEventType(htmlentities($event_type));
 			$calendar_event->setEvent_name(htmlentities($eventname));
 			$calendar_event->setStart_date(strtotime($start_date));
 			$calendar_event->setEnd_date(strtotime($end_date));
@@ -147,6 +148,7 @@
 
 			$data = [
 						'leadid' => $calendar_event->getLeadid() ,
+						'event_type' => $calendar_event->getEventType(),
 						'event_name'  => $calendar_event->getEvent_name()  ,
 						'description' => $calendar_event->getDescription(),
 						'start_date' => $calendar_event->getStart_date() ,

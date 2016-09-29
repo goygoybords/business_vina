@@ -10,6 +10,17 @@
         private $status;
         private $description;
         private $user;
+        private $event_type;
+
+
+        public function getEventType()
+        {
+            return $this->event_type;
+        }
+        public function setEventType($event_type)
+        {
+            return $this->event_type = $event_type;
+        }
 
         public function getUser()
         {

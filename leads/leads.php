@@ -60,6 +60,7 @@
 													<input type = "submit" id = "filteraction">
 													<thead>
 														<th>Date Added</th>
+														<th>Company Name</th>
 														<th>Lead Status</th>
 														<th>Campaign</th>
 														<th>Businessname</th>
@@ -120,16 +121,19 @@
 	    $( "#filteraction" ).click(function() 
 		{
 			var filter = $("#filter").val();
-			$.ajax({
-			      type: "get",
-			      url :"../process/test.php", // json datasource
-			      // data: {filter: filter},
-			      success: function(data)
-			      {		
-			   		dataTable.ajax.url( "../process/test.php?filter="+filter).load();
-			      	console.log(data);	
-			      }
-			});
+			var data = dataTable.ajax.url( "../process/test.php?filter="+filter).load();
+
+			console.log(data);
+			// $.ajax({
+			//       type: "get",
+			//       url :"../process/test.php?filter="+filter, // json datasource
+			//       // data: {filter: filter},
+			//       success: function(data)
+			//       {		
+			//    		// dataTable.ajax.url( "../process/test.php?filter="+filter).load();
+			//      //  	console.log(data);	
+			//       }
+			// });
 		});
 
 	   //  $("#employee-grid_filter").css("display","none");
