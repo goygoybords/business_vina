@@ -103,8 +103,8 @@
 													</div>
 												</div>
 											</div>
-											<input type = "text" name = "filter" id = "filter">
-											<input type = "submit" id = "filteraction">
+											<!-- <input type = "text" name = "filter" id = "filter"> -->
+											<input type = "submit" id = "filteraction" value = "Search Filter" class = "btn btn-success">
 												<br/>
 												<br/>
 												<table class = "table display responsive nowrap" id = "lead-tbl">
@@ -174,7 +174,7 @@
 			var status   = $("#status_filter").val();
 			var campaign = $("#campaign_filter").val();
 			var user     = $("#user_filter").val();
-			var data = dataTable.ajax.url( "../process/lead_list2.php?status="+status+"&campaign="+campaign+"&user="+user+"&filter="+filter).load();
+			var data = dataTable.ajax.url( "../process/lead_list2.php?status="+status+"&campaign="+campaign+"&user="+user).load();
 			console.log(status + " " + campaign + " " + user);
 		});
 

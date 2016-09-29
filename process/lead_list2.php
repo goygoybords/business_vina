@@ -120,9 +120,6 @@ $sql_details = array(
          $extraWhere =  "p.phonetypeid = 1 AND l.status = 1" ;
     }
 
-
-
-    $name = $_GET['filter'];
     $joinQuery = "FROM leads l
                   JOIN lead_status ls
                   ON l.lead_status = ls.id
