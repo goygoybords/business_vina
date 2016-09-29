@@ -8,6 +8,20 @@
 	include '../include/start.html';
 	require('../include/header.php');
 
+	require '../class/database.php';
+	require '../model/lead_status_model.php';
+	require '../model/campaign_model.php';
+	require '../model/user_model.php';
+
+	$list_status_model = new Lead_Status_Model(new Database());
+	$campaign_model = new Campaign_Model(new Database());
+	$user_model = new User_Model(new Database());
+
+
+	$lead_status = $list_status_model->get_all('lead_status' , array('id' , 'description') , 'status = ?' , array(1) );  
+	$users = $user_model->queryUser('users' , array('id' , 'first_name') , 'status = ?' , array(1) ); 
+	$campaigns = $campaign_model->get_all('campaign' , array('id' , 'title') , 'status = ?' , array(1));
+															
 ?>
 <!-- BEGIN BASE-->
 <div id="base">
@@ -54,10 +68,46 @@
 										</div>
 										<br />
 										<div class="col-lg-offset-0 col-md-12">
-											<div class = "row" >
+											<div id = "filters">
+												<div class="row">
+													<div class="col-sm-4">
+														<div class="form-group floating-label">
+															<select name = "status_filter" id = "status_filter" class = "form-control">
+																<option>Status Filter</option>
+																<?php foreach ($lead_status as $s ): ?>
+																	<option value = "<?php echo $s['id']; ?>"><?php echo $s['description']; ?></option>
+																<?php endforeach; ?>
+															</select>
+											
+														</div>
+													</div>
+													<div class="col-sm-4">
+														<div class="form-group floating-label">
+															<select name = "campaign_filter" id = "campaign_filter" class = "form-control">
+																<option>Campaign Filter</option>
+																<?php foreach ($campaigns as $u): ?>
+																	<option value = "<?php echo $u['id']; ?>"><?php echo $u['title']; ?></option>
+																<?php endforeach;?>
+															</select>
+														</div>
+													</div>
+													<div class="col-sm-4">
+														<div class="form-group floating-label">
+															<select name = "user_filter" id = "user_filter" class = "form-control">
+																<option>User Filter</option>
+																<?php foreach ($users as $u): ?>
+																	<option value = "<?php echo $u['id']; ?>"><?php echo $u['first_name']; ?></option>
+																<?php endforeach;?>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+											<input type = "text" name = "filter" id = "filter">
+											<input type = "submit" id = "filteraction">
+												<br/>
+												<br/>
 												<table class = "table display responsive nowrap" id = "lead-tbl">
-													<input type = "text" name = "filter" id = "filter">
-													<input type = "submit" id = "filteraction">
 													<thead>
 														<th>Date Added</th>
 														<th>Company Name</th>
