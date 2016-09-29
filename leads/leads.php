@@ -73,7 +73,7 @@
 													<div class="col-sm-4">
 														<div class="form-group floating-label">
 															<select name = "status_filter" id = "status_filter" class = "form-control">
-																<option>Status Filter</option>
+																<option>Select Status Filter</option>
 																<?php foreach ($lead_status as $s ): ?>
 																	<option value = "<?php echo $s['id']; ?>"><?php echo $s['description']; ?></option>
 																<?php endforeach; ?>
@@ -84,7 +84,7 @@
 													<div class="col-sm-4">
 														<div class="form-group floating-label">
 															<select name = "campaign_filter" id = "campaign_filter" class = "form-control">
-																<option>Campaign Filter</option>
+																<option>Select Campaign Filter</option>
 																<?php foreach ($campaigns as $u): ?>
 																	<option value = "<?php echo $u['id']; ?>"><?php echo $u['title']; ?></option>
 																<?php endforeach;?>
@@ -94,7 +94,7 @@
 													<div class="col-sm-4">
 														<div class="form-group floating-label">
 															<select name = "user_filter" id = "user_filter" class = "form-control">
-																<option>User Filter</option>
+																<option>Select User Filter</option>
 																<?php foreach ($users as $u): ?>
 																	<option value = "<?php echo $u['id']; ?>"><?php echo $u['first_name']; ?></option>
 																<?php endforeach;?>
@@ -163,17 +163,19 @@
 	        "sPaginationType": "full_numbers",
 	        "order": [0,'desc'],
 	            "ajax":{
-	                url :"../process/lead_list2.php", // json datasource
+	                url :"../process/lead_list1.php", // json datasource
 	                type: "get",  // method  , by default get
 	            }
 	    } );
 
 	    $( "#filteraction" ).click(function() 
 		{
-			var filter = $("#filter").val();
-			var data = dataTable.ajax.url( "../process/test.php?filter="+filter).load();
-
-			console.log(data);
+			var filter   = $("#filter").val();
+			var status   = $("#status_filter").val();
+			var campaign = $("#campaign_filter").val();
+			var user     = $("#user_filter").val();
+			var data = dataTable.ajax.url( "../process/lead_list2.php?status="+status+"&campaign="+campaign+"&user="+user+"&filter="+filter).load();
+			console.log(status + " " + campaign + " " + user);
 		});
 
 	   //  $("#employee-grid_filter").css("display","none");

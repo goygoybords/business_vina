@@ -17,7 +17,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Easy set variables
  */
-
+if(isset($_GET)):
 // DB table to use
 $table = 'leads';
 
@@ -35,8 +35,9 @@ $columns = array(
             }, 'field' => 'datecreated' 
         ),
 
-    array( 'db' => '`ls`.`description`',   'dt' => 1, 'field' => 'description' ),
-    array( 'db' => '`l`.`companyname`',    'dt' => 2, 'field' => 'companyname' ),
+    array( 'db' => '`l`.`companyname`',    'dt' => 1, 'field' => 'companyname' ),
+    array( 'db' => '`ls`.`description`',   'dt' => 2, 'field' => 'description' ),
+    
     array( 'db' => '`c`.`title`',          'dt' => 3, 'field' => 'title' ),
     array( 'db' => '`l`.`businessname`',   'dt' => 4, 'field' => 'businessname' ),
     array( 'db' => '`l`.`firstname`',      'dt' => 5, 'field' => 'firstname' ),
@@ -61,6 +62,7 @@ $columns = array(
             'field' => 'id' )
     );
 
+
 // SQL server connection information
 $sql_details = array(
     'user' => 'root',
@@ -77,7 +79,50 @@ $sql_details = array(
 
     // require( 'ssp.php' );
     require('ssp.customized.class.php' );
-    
+    $extraWhere = "";
+    $status = htmlentities($_GET['status']);
+        $campaign = htmlentities($_GET['campaign']);
+        $user = htmlentities($_GET['user']);
+
+    if($_GET['status'] != 0 && $_GET['campaign'] != 0 && $_GET['user'] != 0) 
+    {
+        $extraWhere = "l.lead_status = '$status' AND cd.campaign_id = '$campaign' AND l.user = '$user' AND p.phonetypeid = 1 AND l.status = 1 ";
+        // $extraWhere = "l.lead_status = '$status' AND p.phonetypeid = 1 AND l.status = 1 ";
+    }
+    else if($_GET['status'] != 0 && $_GET['campaign'] != 0)
+    {
+        $extraWhere = "l.lead_status = '$status' AND cd.campaign_id = '$campaign' AND p.phonetypeid = 1 AND l.status = 1 ";
+    }
+    else if($_GET['status'] != 0 && $_GET['user'] != 0)
+    {
+        $extraWhere = "l.lead_status = '$status' AND l.user = '$user' AND p.phonetypeid = 1 AND l.status = 1 ";
+    }
+
+    else if($_GET['status'] != 0)
+    {
+
+        $extraWhere = "l.lead_status = '$status' AND p.phonetypeid = 1 AND l.status = 1 ";
+    }
+    else if($_GET['campaign'] != 0 && $_GET['user'] != 0)
+    {
+        $extraWhere = "cd.campaign_id = '$campaign' AND l.user = '$user' AND  p.phonetypeid = 1 AND l.status = 1 ";
+    }
+    else if($_GET['campaign'] != 0)
+    { 
+       $extraWhere = "cd.campaign_id = '$campaign' AND p.phonetypeid = 1 AND l.status = 1 ";
+    }
+    else if($_GET['user'] != 0)
+    {
+        $extraWhere = "l.user = '$user' AND p.phonetypeid = 1 AND l.status = 1 ";
+    }
+    else
+    {
+         $extraWhere =  "p.phonetypeid = 1 AND l.status = 1" ;
+    }
+
+
+
+    $name = $_GET['filter'];
     $joinQuery = "FROM leads l
                   JOIN lead_status ls
                   ON l.lead_status = ls.id
@@ -90,8 +135,9 @@ $sql_details = array(
                   LEFT JOIN phones p
                   ON l.id = p.leadid
                  ";
-    $extraWhere =  "p.phonetypeid = 1 AND l.status = 1" ;
+   
     echo json_encode(
         SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere )
     );
 
+endif;
