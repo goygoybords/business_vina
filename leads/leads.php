@@ -104,7 +104,7 @@
 												</div>
 											</div>
 											<!-- <input type = "text" name = "filter" id = "filter"> -->
-											<input type = "submit" id = "filteraction" value = "Search Filter" class = "btn btn-success">
+											<input type = "submit" id = "filteraction" value = "Apply Filter" class = "btn btn-success">
 												<br/>
 												<br/>
 												<table class = "table display responsive nowrap" id = "lead-tbl">

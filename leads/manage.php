@@ -312,12 +312,14 @@
 											<div class="col-sm-4">
 												<div class="form-group floating-label">
 													<?php 
-														$user = $user_model->checkUser('users' , array('firstname, lastname') , 'id = ?' , array($lead_record->getUser() ));
+														$user = $user_model->checkUser('users' , array('first_name, lastname') , 'id = ?' , array($lead_record->getUser() ));
 														foreach ($user as $u ) 
 														{
-															$user_record->setFirstname($u['firstname']);
+															$user_record = new User();
+															$user_record->setFirstname($u['first_name']);
 															$user_record->setLastname($u['lastname']);
 														}
+													
 													?>
 													<input type = "text" name = "user" class = "form-control" 
 													value = "<?php echo $user_record->getFirstname()." ".$user_record->getLastname();?>" disabled = "disabled">

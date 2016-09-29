@@ -8,7 +8,7 @@
 					<li class="header-nav-brand" >
 						<div class="brand-holder">
 							<a href="">
-								<span class="text-lg text-bold text-biz"><i class="fa fa-cube fa-fw"></i>Vina Business System</span>
+								<span class="text-lg text-bold text-biz"><i class="fa fa-cube fa-fw"></i>CRM</span>
 							</a>
 						</div>
 					</li>
