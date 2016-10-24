@@ -84,7 +84,7 @@ $sql_details = array(
         $campaign = htmlentities($_GET['campaign']);
         $user = htmlentities($_GET['user']);
 
-    if($_GET['status'] != 0 && $_GET['campaign'] != 0 && $_GET['user'] != 0) 
+    if($_GET['status'] != 0 && $_GET['campaign'] != 0 && $_GET['user'] != 0 ) 
     {
         $extraWhere = "l.lead_status = '$status' AND cd.campaign_id = '$campaign' AND l.user = '$user' AND p.phonetypeid = 1 AND l.status = 1 ";
         // $extraWhere = "l.lead_status = '$status' AND p.phonetypeid = 1 AND l.status = 1 ";

@@ -70,10 +70,20 @@
 										<div class="col-lg-offset-0 col-md-12">
 											<div id = "filters">
 												<div class="row">
+												<div class="col-sm-4">
+														<div class="form-group floating-label">
+															<select name = "campaign_filter" id = "campaign_filter" class = "form-control">
+																<option>Select Campaign </option>
+																<?php foreach ($campaigns as $u): ?>
+																	<option value = "<?php echo $u['id']; ?>"><?php echo $u['title']; ?></option>
+																<?php endforeach;?>
+															</select>
+														</div>
+													</div>
 													<div class="col-sm-4">
 														<div class="form-group floating-label">
 															<select name = "status_filter" id = "status_filter" class = "form-control">
-																<option>Select Status Filter</option>
+																<option>Select Status </option>
 																<?php foreach ($lead_status as $s ): ?>
 																	<option value = "<?php echo $s['id']; ?>"><?php echo $s['description']; ?></option>
 																<?php endforeach; ?>
@@ -83,22 +93,27 @@
 													</div>
 													<div class="col-sm-4">
 														<div class="form-group floating-label">
-															<select name = "campaign_filter" id = "campaign_filter" class = "form-control">
-																<option>Select Campaign Filter</option>
-																<?php foreach ($campaigns as $u): ?>
-																	<option value = "<?php echo $u['id']; ?>"><?php echo $u['title']; ?></option>
-																<?php endforeach;?>
-															</select>
-														</div>
-													</div>
-													<div class="col-sm-4">
-														<div class="form-group floating-label">
 															<select name = "user_filter" id = "user_filter" class = "form-control">
-																<option>Select User Filter</option>
+																<option>Select User </option>
 																<?php foreach ($users as $u): ?>
 																	<option value = "<?php echo $u['id']; ?>"><?php echo $u['first_name']; ?></option>
 																<?php endforeach;?>
 															</select>
+														</div>
+													</div>
+													<!-- date filters -->
+													<div class="col-sm-4">
+														<div class="form-group floating-label">
+															<div class="form-group floating-label">
+																<input type="text" name="start_date" id = "start" class = "form-control">
+															</div>
+														</div>
+													</div>
+													<div class="col-sm-4">
+														<div class="form-group floating-label">
+															<div class="form-group floating-label">
+																<input type="text" name="end_date" id = "end" class = "form-control">
+															</div>
 														</div>
 													</div>
 												</div>
@@ -155,6 +170,8 @@
 <script type="text/javascript">
 	$(document).ready(function()
 	{
+		$('#start').datepicker();
+		$("#end").datepicker();
 	    var dataTable = $('#lead-tbl').DataTable(
 	    {
 			"bProcessing": true,
@@ -174,8 +191,12 @@
 			var status   = $("#status_filter").val();
 			var campaign = $("#campaign_filter").val();
 			var user     = $("#user_filter").val();
-			var data = dataTable.ajax.url( "../process/lead_list2.php?status="+status+"&campaign="+campaign+"&user="+user).load();
-			console.log(status + " " + campaign + " " + user);
+
+			var start = $("#start").val();
+			var end = $("#end").val();
+
+			var data = dataTable.ajax.url( "../process/lead_list2.php?status="+status+"&campaign="+campaign+"&user="+user+"&start="+start+"&end="+end).load();
+			
 		});
 
 	   //  $("#employee-grid_filter").css("display","none");
