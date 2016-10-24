@@ -19,7 +19,8 @@
  */
 
 // DB table to use
-$table = 'leads';
+
+$table = 'users';
 
 // Table's primary key
 $primaryKey = 'id';
@@ -29,19 +30,23 @@ $primaryKey = 'id';
 // parameter represents the DataTables column identifier. In this case simple
 // indexes
 $columns = array(
-    array( 'db' => '`l`.`companyname`', 'dt' => 0, 'field' => 'companyname' ),
-    array( 'db' => '`l`.`firstname`',   'dt' => 1, 'field' => 'firstname' ),
-    array( 'db' => '`p`.`position`',    'dt' => 2, 'field' => 'position' ),
-    array( 'db' => '`s`.`description`', 'dt' => 3, 'field' => 'description' ),
-    array( 'db' => '`l`.`address`',     'dt' => 4, 'field' => 'address' ),
-    array( 'db' => '`c`.`event_name`', 'dt' => 5, 'field' => 'event_name' ),
-    array( 'db' => '`c`.`start_date`', 'dt' => 6, 'field' => 'start_date', 'formatter' => function( $d, $row ) {
-                                                                    return date( 'm/d/Y', $d);
-                                                                }),
-    array( 'db' => '`c`.`end_date`', 'dt' => 7, 'field' => 'end_date', 'formatter' => function( $d, $row ) {
-                                                                    return date( 'm/d/Y', $d);
-                                                                }),
-   
+    array( 'db' => '`u`.`id`',   'dt' => 0, 'field' => 'id' ),
+    array( 'db' => '`u`.`description`',    'dt' => 1, 'field' => 'description' ),
+    array( 'db' => '`u`.`id`',          'dt' => 2, 'formatter' => function( $d, $row )
+            {
+                return '<a href="manage.php?id='.$d.'" >
+                            <span class="label label-inverse" style = "color:black;">
+                                <i class="fa fa-edit"></i> Edit
+                            </span>
+                        </a> &nbsp;
+                        <a href="../process/status_manage.php?id='.$d.'&del" onclick="return confirm(\'Are you sure you want to delete this record?\')" >
+                            <span class="label label-inverse" style = "color:black;">
+                                <i class="fa fa-remove"></i> Delete
+                            </span>
+                        </a>
+                        ';
+            },
+            'field' => 'id' )
     );
 
 // SQL server connection information
@@ -61,16 +66,9 @@ $sql_details = array(
     // require( 'ssp.php' );
     require('ssp.customized.class.php' );
 
-
-    $joinQuery = "FROM leads l 
-                JOIN positions p
-                ON l.position = p.id 
-                JOIN siccode s
-                ON   l.siccode =  s.id
-                JOIN calendar_events c
-                ON l.id = c.leadid
-                 ";
-    $extraWhere =  "c.status = 0" ;
+    $joinQuery = "FROM lead_status u
+                ";
+    $extraWhere =  "u.status = 1" ;
     echo json_encode(
         SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere )
     );

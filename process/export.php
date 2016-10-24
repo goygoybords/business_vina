@@ -8,15 +8,15 @@
       $sql = "SELECT l.companyname, l.firstname, p.position, s.description, l.address, 
 			c.event_name, c.start_date, c.end_date
 			FROM leads l 
-			                JOIN positions p
-			                ON l.position = p.id 
-			                JOIN siccode s
-			                ON   l.siccode =  s.id
-			                JOIN calendar_events c
-			                ON l.id = c.lead_id
+                JOIN positions p
+                ON l.position = p.id 
+                JOIN siccode s
+                ON   l.siccode =  s.id
+                JOIN calendar_events c
+                ON l.id = c.leadid
        			WHERE c.status = ?";
       $cmd = $db->prepare($sql);
-      $cmd->execute(array(2));
+      $cmd->execute(array(0));
       $result = $cmd->fetchAll();  
       $output = '';
        $output .= '  
@@ -49,6 +49,7 @@
             ';  
        }
        $output .= '</table>';  
+     
        $filename = "Event_Report_".date('Y-m-d').".xls";
        header("Content-Type: application/xls");   
        header("Content-Disposition: attachment; filename=".$filename);  

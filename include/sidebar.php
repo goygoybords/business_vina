@@ -35,11 +35,11 @@
 								<span class="title">Campaign</span>
 							</a>
 						</li>
-						<li>
+						<!-- <li>
 							<a href="../campaign/campaign_type.php">
 								<span class="title">Campaign Type</span>
 							</a>
-						</li>
+						</li> -->
 					</ul><!--end /submenu -->
 				</li><!--end /menu-li -->
 				
@@ -89,6 +89,11 @@
 						<li>
 							<a href="../user/user.php">
 								<span class="title">User Accounts</span>
+							</a>
+						</li>
+						<li>
+							<a href="../status/status.php">
+								<span class="title">Status</span>
 							</a>
 						</li>
 

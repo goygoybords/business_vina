@@ -8,50 +8,48 @@
 	require('../include/header.php');
 
 	require '../class/database.php';
-	require '../class/user.php';
-	require '../model/user_model.php';
+	require '../class/lead_status.php';
+	require '../model/lead_status_model.php';
 
-	$user_id = (isset($_GET["id"]) ? $_GET["id"] : "");
-	$user = new User();
-	$user_model = new User_Model(new Database());
+	$status_id = (isset($_GET["id"]) ? $_GET["id"] : "");
+	$lead = new LeadStatus();
+	$lead_model = new Lead_Status_Model(new Database());
 	$form_state = 1;
-	$form_header = "Add User";
-	$submit_caption = "REGISTER USER";
-	$name = "register_user";
+	$form_header = "Add Status";
+	$submit_caption = "ADD STATUS";
+	$name = "add_status";
 	$msg = (isset($_GET["msg"]) ? $_GET["msg"] : "");
-	if($user_id)
+	if($status_id)
 	{
 			if($msg != 'deleted')
 			{
-				$table = 'users';
+				$table = 'lead_status';
 				$fields = array('*');
 				$where = " id = ? ";
-				$params = array($user_id);
-				$user_data = $user_model->checkUser($table, $fields, $where, $params);
+				$params = array($status_id);
+				$lead_data = $lead_model->get_all($table, $fields, $where, $params);
 
-				if(count($user_data))
+
+				if(count($lead_data))
 				{
-					foreach ($user_data as $l)
+					foreach ($lead_data as $l)
 					{
 
-						$user->setId($l['id']);
-						$user->setFirstname($l['first_name']);
-						$user->setLastname($l['lastname']);
-						$user->setPassword($l['password']);
-						$user->setEmail($l['email']);
-						$user->setUsertypeid($l['usertypeid']);
-						$user->setStatus($l['status']);
+						$lead->setId($l['id']);
+						$lead->setDescription($l['description']);
+						$lead->setStatus($l['status']);
+					
 					}
 
-					if($user->getStatus() == 1)
+					if($lead->getStatus() == 1)
 					{
 						$form_state = 2;
-						$form_header = "Edit User Details";
+						$form_header = "Edit Status Details";
 						$submit_caption = "Save Changes";
 					}
 					else
 					{
-						$user = new User();
+						$lead = new LeadStatus();
 						$_GET["msg"] = "prev_deleted";
 					}
 				}
@@ -88,56 +86,23 @@
 									<div class="card-body">
 										<div class="row">
 											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-11">
-												<form class="form-horizontal" method = "post" action = '../process/user_manage.php'>
-													<input type="hidden" name="id" id="id" value="<?php echo $user->getId(); ?>" />
+												<form class="form-horizontal" method = "post" action = '../process/status_manage.php'>
+													<input type="hidden" name="id" id="id" value="<?php echo $lead->getId(); ?>" />
 													<div class="card-body" id="div-add-user">
 														<div class="row">
 															<div class="col-sm-6">
 																<div class="form-group">
-																	<label for="Firstname5" class="col-sm-4 control-label">Firstname</label>
+																	<label for="Firstname5" class="col-sm-4 control-label">Description</label>
 																	<div class="col-sm-8">
-																		<input type="text" name = "firstname" class="form-control" id="Firstname5"
-																		value = "<?php echo $user->getFirstname(); ?>" required>
+																		<input type="text" name = "description" class="form-control" id="Firstname5"
+																		value = "<?php echo $lead->getDescription(); ?>" required>
 																	</div>
 																</div>
 															</div>
-															<div class="col-sm-6">
-																<div class="form-group">
-																	<label for="Lastname5" class="col-sm-4 control-label">Lastname</label>
-																	<div class="col-sm-8">
-																		<input type="text" name = "lastname" class="form-control" id="Lastname5"
-																		value = "<?php echo $user->getLastname(); ?>" required>
-																	</div>
-																</div>
-															</div>
-														</div>
-														<div class="form-group">
-															<label for="Email5" class="col-sm-2 control-label">Email</label>
-															<div class="col-sm-10">
-																<input type="text" name = "email" class="form-control"  id="Email5"
-																value = "<?php echo $user->getEmail(); ?>" required>
-															</div>
-														</div>
-														<div class="form-group">
-															<label for="Password5" class="col-sm-2 control-label">Password</label>
-															<div class="col-sm-10">
-																<input type="password" name = "password" class="form-control" id="Password5"
-																value = "<?php echo $user->getPassword(); ?>" required>
-															</div>
-														</div>
-														<div class="form-group">
-															<label for="UserType" class="col-sm-2 control-label">User Type</label>
-															<div class="col-sm-10">
-																<select name = "user_type" id="UserType" class = "form-control" required>
-																	<option value = "1" <?php if($user->getUsertypeid() == 1) echo "selected"; ?> >Agent</option>
-																	<option value = "2" <?php if($user->getUsertypeid() == 2) echo "selected"; ?> >Admin</option>
-																</select>
-															</div>
-														</div>
 														<br />
 														<div class="row">
 															<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-right">
-																<?php if($form_state == 2) $name = "update_user"; ?>
+																<?php if($form_state == 2) $name = "update_status"; ?>
 																<button type="submit" name = <?php echo $name; ?> class="btn btn-info"><?php echo $submit_caption; ?></button>
 															</div>
 														</div>
