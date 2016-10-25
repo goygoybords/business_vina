@@ -105,7 +105,7 @@
 													<div class="col-sm-4">
 														<div class="form-group">
 											                <div class='input-group date' id='datetimepicker1'>
-											                    <input type='text' id = "min" class="form-control" />
+											                    <input type='text' id = "min" class="form-control" placeholder="From" />
 											                    <span class="input-group-addon">
 											                        <span class="glyphicon glyphicon-calendar"></span>
 											                    </span>
@@ -115,7 +115,7 @@
 													<div class="col-sm-4">
 														<div class="form-group">
 											                <div class='input-group date' id='datetimepicker2'>
-											                    <input type='text' id = "max" class="form-control" />
+											                    <input type='text' id = "max" class="form-control" placeholder="To" />
 											                    <span class="input-group-addon">
 											                        <span class="glyphicon glyphicon-calendar"></span>
 											                    </span>

@@ -87,37 +87,46 @@ $sql_details = array(
         $max = strtotime(date('Y-m-d', strtotime($_GET['max'])));
   
 
-    if($_GET['status'] != 0 && $_GET['campaign'] != 0 && $_GET['user'] != 0 ) 
+    if($_GET['status'] != 0 && $_GET['campaign'] != 0 && $_GET['user'] != 0 ) //search by status, campaign, and user
     {
         $extraWhere = "l.lead_status = '$status' AND cd.campaign_id = '$campaign' AND l.user = '$user' AND p.phonetypeid = 1 AND l.status = 1 ";
         // $extraWhere = "l.lead_status = '$status' AND p.phonetypeid = 1 AND l.status = 1 ";
     }
-    else if($_GET['status'] != 0 && $_GET['campaign'] != 0)
+    else if($_GET['status'] != 0 && $_GET['campaign'] != 0) // status and campaign
     {
         $extraWhere = "l.lead_status = '$status' AND cd.campaign_id = '$campaign' AND p.phonetypeid = 1 AND l.status = 1 ";
     }
-    else if($_GET['status'] != 0 && $_GET['user'] != 0)
+    else if($_GET['status'] != 0 && $_GET['user'] != 0) // status and user
     {
         $extraWhere = "l.lead_status = '$status' AND l.user = '$user' AND p.phonetypeid = 1 AND l.status = 1 ";
     }
-    else if ($_GET['min'] != '' || $_GET['min'] != 0 && $_GET['max'] != '' && $_GET['max'] != 0)
+    else if($_GET['status'] != 0 && $_GET['min'] != 0 && $_GET['max'] != 0) // status and date
+    {
+        $extraWhere = "l.lead_status = '$status' AND l.datecreated BETWEEN $min AND $max AND p.phonetypeid = 1 AND l.status = 1 ";
+    }
+    else if ($_GET['min'] != 0 && $_GET['max'] != 0) //search by date
     {
         $extraWhere = "l.datecreated BETWEEN $min AND $max AND p.phonetypeid = 1 AND l.status = 1 ";
     }
-
-    else if($_GET['status'] != 0)
+    else if($_GET['status'] != 0) //search by status
     {
         $extraWhere = "l.lead_status = '$status' AND p.phonetypeid = 1 AND l.status = 1 ";
     }
-    else if($_GET['campaign'] != 0 && $_GET['user'] != 0)
+    else if($_GET['campaign'] != 0 && $_GET['user'] != 0) // campaign and user
     {
         $extraWhere = "cd.campaign_id = '$campaign' AND l.user = '$user' AND  p.phonetypeid = 1 AND l.status = 1 ";
     }
-    else if($_GET['campaign'] != 0)
+
+    else if($_GET['campaign'] != 0 && $_GET['min'] != 0 && $_GET['max'] != 0) // campaign and date
+    {
+        $extraWhere = "cd.campaign_id = '$campaign' AND l.datecreated BETWEEN $min AND $max AND  p.phonetypeid = 1 AND l.status = 1 ";
+    }
+
+    else if($_GET['campaign'] != 0) // campaign
     { 
        $extraWhere = "cd.campaign_id = '$campaign' AND p.phonetypeid = 1 AND l.status = 1 ";
     }
-    else if($_GET['user'] != 0)
+    else if($_GET['user'] != 0) // user
     {
         $extraWhere = "l.user = '$user' AND p.phonetypeid = 1 AND l.status = 1 ";
     }
