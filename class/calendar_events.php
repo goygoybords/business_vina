@@ -8,7 +8,37 @@
         private $end_date;
         private $datecreated;
         private $status;
+        private $description;
+        private $user;
+        private $event_type;
 
+
+        public function getEventType()
+        {
+            return $this->event_type;
+        }
+        public function setEventType($event_type)
+        {
+            return $this->event_type = $event_type;
+        }
+
+        public function getUser()
+        {
+            return $this->user;
+        }
+        public function setUser($user)
+        {
+            return $this->user = $user;
+        }
+
+        public function getDescription()
+        {
+            return $this->description;
+        }
+        public function setDescription($description)
+        {   
+            return $this->description = $description;
+        }
 
         public function getId()
         {

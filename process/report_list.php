@@ -68,9 +68,9 @@ $sql_details = array(
                 JOIN siccode s
                 ON   l.siccode =  s.id
                 JOIN calendar_events c
-                ON l.id = c.lead_id
+                ON l.id = c.leadid
                  ";
-    $extraWhere =  "c.status = 2" ;
+    $extraWhere =  "c.status = 0" ;
     echo json_encode(
         SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere )
     );

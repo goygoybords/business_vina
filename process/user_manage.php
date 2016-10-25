@@ -20,7 +20,7 @@
 		$user->setStatus(1);
 
 		$data = [
-					'firstname' => $user->getFirstname()  , 
+					'first_name' => $user->getFirstname()  , 
 					'lastname'  => $user->getLastname()   ,
 					'email'     => $user->getEmail()      ,
 					'password'  => $user->getPassword()   ,
@@ -56,7 +56,7 @@
 		$user->setUsertypeid($user_type);
 
 		$table  = "users";
-		$fields = array('firstname' ,'lastname' ,'email' , 'password' , 'usertypeid');
+		$fields = array('first_name' ,'lastname' ,'email' , 'password' , 'usertypeid');
 		$where  = "WHERE id = ?";
 		$params = array($user->getFirstname(), $user->getLastname(), $user->getEmail(),
 				$user->getPassword(), $user->getUsertypeid(),   $user->getId() );

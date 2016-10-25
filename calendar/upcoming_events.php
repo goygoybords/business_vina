@@ -69,6 +69,7 @@
 													<thead>
 														<th>Date Created</th>
 														<th>Customer</th>
+														<th>Event Type</th>
 														<th>Event Name</th>
 														<th>Start Date</th>
 														<th>End Date</th>
@@ -76,9 +77,11 @@
 													</thead>
 													<tbody>
 														<?php foreach ($event_data as $e ) : ?>
+
 														<?php
 															$events = new CalendarEvents();
 															$events->setDatecreated(date('Y-m-d', $e['datecreated']));
+															$events->setEventType($e['event_type']);
 															$events->setEvent_name($e['event_name']);
 															$events->setStart_date(date('Y-m-d' , $e['start_date']));
 															$events->setEnd_date(date('Y-m-d' , $e['end_date']));
@@ -87,6 +90,12 @@
 															<tr>
 																<td><?php echo $events->getDatecreated(); ?></td>
 																<td><?php echo $e['companyname']; ?></td>
+																<td>
+																	<?php 
+																		if( $events->getEventType() == 1 ) echo "Task";
+																		else if( $events->getEventType() == 2 ) echo "Appointment";  
+																	?>
+																</td>
 																<td><?php echo $events->getEvent_name(); ?></td>
 																<td><?php echo $events->getStart_date(); ?></td>
 																<td><?php echo $events->getEnd_date();  ?></td>

@@ -13,6 +13,8 @@
 	require '../model/campaign_details_model.php';
 	require '../model/calendar_events_model.php';
 	require '../model/position_model.php';
+	require '../model/lead_type_model.php';
+	require '../model/lead_status_model.php';
 
 
 	$leads = new Leads();
@@ -30,6 +32,8 @@
 	$calendar_event = new CalendarEvents();
 	$calendar_model = new Calendar_Events_Model(new Database());
 	$position_model = new Position_Model(new Database());
+	$lead_type_model = new Lead_Type_Model(new Database());
+	$lead_status_model = new Lead_Status_Model(new Database());
 
 	if(isset($_POST['create_lead']))
 	{
@@ -44,8 +48,20 @@
 			$data = [ 'description' => $new_sicode ];
 			$siccode = $sic_model->createPosition('siccode' , $data);
 		}
+		if($new_leadtype != null)
+		{
+			$data = [ 'description' => $new_leadtype  , 'status' => 1];
+			$lead_type = $lead_type_model->createType('lead_type', $data);
+		}
+		if($new_leadstatus != null)
+		{
+			$data = [ 'description' => $new_leadstatus , 'status' => 1];
+			$lead_status = $lead_status_model->createType('lead_status', $data);
+
+		}
 		$leads->setId(htmlentities($id));
 		$leads->setCompanyname(htmlentities($companyname));
+		$leads->setBusinessname(htmlentities($businessname));
 		$leads->setFirstname(htmlentities($firstname));
 		$leads->setMiddlename(htmlentities($middlename));
 		$leads->setLeadType(htmlentities($lead_type));
@@ -65,11 +81,12 @@
 		if(isset($_POST['create_lead']))
 		{
 			$leads->setStatus(1);
-			$fields = array('companyname' ,'position' ,'lead_type','firstname' , 'middlename' , 'lastname', 'email', 'siccode', 'address', 'city', 'zip', 
+			$fields = array('companyname' ,'businessname' ,'position' ,'lead_type','firstname' , 'middlename' , 'lastname', 'email', 'siccode', 'address', 'city', 'zip', 
 				'state', 'lead_status' ,'datelastupdated');
 			$where  = "WHERE id = ?";
 			$params = array(
 									$leads->getCompanyname(),
+									$leads->getBusinessname(),
 									$leads->getPosition(),
 									$leads->getLeadType(),
 									$leads->getFirstname(),
@@ -166,18 +183,24 @@
 					$start_date  = date('Y-m-d', strtotime($start_date));
 					$end_date    = date('Y-m-d', strtotime($end_date));
 					$calendar_event->setLeadid($id);
+					$calendar_event->setEventType(htmlentities($event_type));
 					$calendar_event->setEvent_name(htmlentities($eventname));
 					$calendar_event->setStart_date(strtotime($start_date));
 					$calendar_event->setEnd_date(strtotime($end_date));
 					$calendar_event->setDatecreated(strtotime(date('Y-m-d')));
+					$calendar_event->setDescription(htmlentities($event_description));
+					$calendar_event->setUser($_SESSION['id']);
 					$calendar_event->setStatus(1);
 
 					$data = [
 								'leadid' => $calendar_event->getLeadid() ,
+								'event_type' => $calendar_event->getEventType(), 
 								'event_name'  => $calendar_event->getEvent_name()   ,
+								'description' => $calendar_event->getDescription(),
 								'start_date' => $calendar_event->getStart_date() ,
 								'end_date' => $calendar_event->getEnd_date() ,
 								'datecreated'  => $calendar_event->getDatecreated()   ,
+								'user_id' => $calendar_event->setUser($_SESSION['id']),
 								'status' => $calendar_event->getStatus() 
 							];
 					$calendar_model->createEvent('calendar_events', $data);
@@ -188,14 +211,16 @@
 					$end_date    = date('Y-m-d', strtotime($end_date));
 
 					$calendar_event->setId($event_id);
+					$calendar_event->setEventType(htmlentities($event_type));
 					$calendar_event->setEvent_name(htmlentities($eventname));
 					$calendar_event->setStart_date(strtotime($start_date));
 					$calendar_event->setEnd_date(strtotime($end_date));
+					$calendar_event->setDescription(htmlentities($event_description));
 
-					$fields = array('event_name', 'start_date' , 'end_date');
+					$fields = array('event_type', 'event_name', 'start_date' , 'end_date' , 'description');
 					$where  = "WHERE id = ?";
-					$params = array($calendar_event->getEvent_name(), $calendar_event->getStart_date(), 
-									$calendar_event->getEnd_date() , $calendar_event->getId()
+					$params = array($calendar_event->getEventType(), $calendar_event->getEvent_name(), $calendar_event->getStart_date(), 
+									$calendar_event->getEnd_date() , $calendar_event->getDescription() , $calendar_event->getId()
 									);
 					$calendar_model->updateEvent("calendar_events", $fields, $where, $params);
 				}

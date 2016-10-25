@@ -35,7 +35,7 @@
 					{
 
 						$user->setId($l['id']);
-						$user->setFirstname($l['firstname']);
+						$user->setFirstname($l['first_name']);
 						$user->setLastname($l['lastname']);
 						$user->setPassword($l['password']);
 						$user->setEmail($l['email']);
