@@ -103,18 +103,24 @@
 													</div>
 													<!-- date filters -->
 													<div class="col-sm-4">
-														<div class="form-group floating-label">
-															<div class="form-group floating-label">
-																<input type="text" name="start_date" id = "start" class = "form-control">
-															</div>
-														</div>
+														<div class="form-group">
+											                <div class='input-group date' id='datetimepicker1'>
+											                    <input type='text' id = "min" class="form-control" />
+											                    <span class="input-group-addon">
+											                        <span class="glyphicon glyphicon-calendar"></span>
+											                    </span>
+											                </div>
+											            </div>
 													</div>
 													<div class="col-sm-4">
-														<div class="form-group floating-label">
-															<div class="form-group floating-label">
-																<input type="text" name="end_date" id = "end" class = "form-control">
-															</div>
-														</div>
+														<div class="form-group">
+											                <div class='input-group date' id='datetimepicker2'>
+											                    <input type='text' id = "max" class="form-control" />
+											                    <span class="input-group-addon">
+											                        <span class="glyphicon glyphicon-calendar"></span>
+											                    </span>
+											                </div>
+											            </div>
 													</div>
 												</div>
 											</div>
@@ -170,9 +176,10 @@
 <script type="text/javascript">
 	$(document).ready(function()
 	{
-		$('#start').datepicker();
-		$("#end").datepicker();
-	    var dataTable = $('#lead-tbl').DataTable(
+		$('#datetimepicker1').datepicker();
+		$("#datetimepicker2").datepicker();
+			
+		var dataTable = $('#lead-tbl').DataTable(
 	    {
 			"bProcessing": true,
 			"bServerSide": true,
@@ -183,20 +190,20 @@
 	                url :"../process/lead_list1.php", // json datasource
 	                type: "get",  // method  , by default get
 	            }
+
+
 	    } );
 
+ 
 	    $( "#filteraction" ).click(function() 
 		{
 			var filter   = $("#filter").val();
 			var status   = $("#status_filter").val();
 			var campaign = $("#campaign_filter").val();
 			var user     = $("#user_filter").val();
-
-			var start = $("#start").val();
-			var end = $("#end").val();
-
-			var data = dataTable.ajax.url( "../process/lead_list2.php?status="+status+"&campaign="+campaign+"&user="+user+"&start="+start+"&end="+end).load();
-			
+			var min = $("#min").val();
+			var max = $("#max").val();
+			var data = dataTable.ajax.url( "../process/lead_list2.php?status="+status+"&campaign="+campaign+"&user="+user+"&min="+min+"&max="+max).load();
 		});
 
 	   //  $("#employee-grid_filter").css("display","none");

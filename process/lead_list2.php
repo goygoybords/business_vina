@@ -83,6 +83,9 @@ $sql_details = array(
     $status = htmlentities($_GET['status']);
         $campaign = htmlentities($_GET['campaign']);
         $user = htmlentities($_GET['user']);
+        $min = strtotime(date('Y-m-d', strtotime($_GET['min'])));
+        $max = strtotime(date('Y-m-d', strtotime($_GET['max'])));
+  
 
     if($_GET['status'] != 0 && $_GET['campaign'] != 0 && $_GET['user'] != 0 ) 
     {
@@ -97,10 +100,13 @@ $sql_details = array(
     {
         $extraWhere = "l.lead_status = '$status' AND l.user = '$user' AND p.phonetypeid = 1 AND l.status = 1 ";
     }
+    else if ($_GET['min'] != '' || $_GET['min'] != 0 && $_GET['max'] != '' && $_GET['max'] != 0)
+    {
+        $extraWhere = "l.datecreated BETWEEN $min AND $max AND p.phonetypeid = 1 AND l.status = 1 ";
+    }
 
     else if($_GET['status'] != 0)
     {
-
         $extraWhere = "l.lead_status = '$status' AND p.phonetypeid = 1 AND l.status = 1 ";
     }
     else if($_GET['campaign'] != 0 && $_GET['user'] != 0)
